@@ -1,0 +1,19 @@
+# Compiled
+*.elc
+
+# Packaging
+.cask
+
+# Backup files
+*~
+
+# Undo-tree save-files
+*.~undo-tree
+.env
+bans.txt
+node_modules
+ffmpeg
+handler.txt
+xd.txt
+rankup.txt
+banners.json

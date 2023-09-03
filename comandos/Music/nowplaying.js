@@ -1,0 +1,35 @@
+const Discord = require('discord.js');
+const { EmbedBuilder } = require("discord.js")
+
+module.exports = {
+  name: "nowplaying",
+  alias: ["np"],
+  inVoiceChannel: true,
+execute (client, message, args){
+  const queue = client.distube.getQueue(message)
+  if (!queue) return message.channel.send("❌ | No hay nada en la cola!")
+  const song = queue.songs[0]
+
+  const embed = new EmbedBuilder()
+  .setTitle(song.name)
+  .setAuthor({ name: 'Sonando ahora', iconURL: 'https://imgur.com/gdMAUcK.png' })
+  .setURL(song.url)
+  .setThumbnail(song.thumbnail)
+  .addFields(
+      { name: "Duracion", value: `\`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\`` },
+      { name: "Visitas", value: `**\`[${song.views}]\`**`, inline: true },
+      { name: "Likes | Dislikes", value: `\`[${song.likes}] | [${song.dislikes}]\``, inline: true },
+      { name: "Volumen", value: `\`${queue.volume}%\``, inline: true },
+      { name: "Nombre del canal", value: `**\`${song.uploader.name}\`**` }
+    )
+  .setFooter({ text: `${song.user.username}`, iconURL: song.user.displayAvatarURL()})
+  .setTimestamp()
+  .setColor("White")
+
+  message.channel.send({ embeds: [embed] })
+
+  //message.channel.send(`☑️ | Sonando ahora mismo: **\`${song.name}\`**${song.thumbnail}\nDuracion: \`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\`\nPuesta por: ${song.user}`)
+
+ }
+
+}
