@@ -31,7 +31,7 @@ module.exports = {
             
             interaction.reply({ embeds: [warnsListEmbed], ephemeral: true })
           }else {
-            return interaction.reply({ content: "❌ || Este usuario no tiene ningun warneo!", ephemeral: true })
+            return interaction.reply({ content: "❌ | Este usuario no tiene ningun warneo!", ephemeral: true })
           } 
 
 //    interaction.reply({ content: `${warnData
