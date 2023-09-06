@@ -6,9 +6,17 @@ module.exports = {
 
 execute (client, message, args){
 
-  const helpEmbed = new EmbedBuilder()
-  .setTitle("Ayuda/Help")
+  const cmdEmbed = new EmbedBuilder()
+  .setTitle("Estatus de los sistemas de Wolfbot")
   .setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() })
+  .addFields(
+    { name: "Sistema de **Economia**", value: "\`Activo\`", inline: true },
+    { name: "Sistema de **Musica**", value: "\`Activo\`", inline: true },
+    { name: "Sistema de **Hacking**", value: "\`¡Work In Progress!\`", inline: true },
+    { name: "Sistema de **Experiencia**", value: "Activo`", inline: true },
+    { name: "Sistema de **Casino**", value: "\`¡Work In Progress!\`", inline: true },
+    { name: "Sistema de **Workshop**", value: "\`¡Work In Progress!\`", inline: true },
+  )
 
 /*   message.channel.send(`
   **Estatus de los sistemas de Wolfbot:**\n 
