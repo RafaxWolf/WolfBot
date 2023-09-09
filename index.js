@@ -113,7 +113,9 @@ if(message.guild && message.guild.id === "338373170463506442"){
     await levels.findOneAndUpdate({ guildID: message.guild.id, userID: message.author.id }, { xp: xpTotal })
 
     let currentlevel = Xpdata.level
-    let rolId = client.guild.role.id("1058095942835908770")
+
+    const thwguild = client.guilds.cache.get("852588155126677504")
+    let rolId = thwguild.roles.cache.find(role => role.id === "1058095942835908770")
 
     if(currentlevel >= "20") {
       return message.channel.send(`🎉 | Felicidades ${message.author}, haz alcanzado el nivel **20** y por eso seras premiado con el rol ${rolId}`).then(message.author.roles.add("1058095942835908770"))
