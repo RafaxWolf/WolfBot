@@ -266,7 +266,7 @@ client.distube
 
 .on('addSong', (queue, song) => 
     queue.textChannel.send(
-      `**| ☑️ | Añadido:**\n **\`${song.uploader.name}\`**\n*\`${song.name}\`* - \`[${song.formattedDuration}]\`\nSolicitada por: ${song.user}`
+      `**| ☑️ | Añadido | ☑️ |**\n **\`${song.uploader.name}\`**\n*\`${song.name}\`* - \`[${song.formattedDuration}]\`\nSolicitada por: ${song.user}`
     )
 )
 .on('addList', (queue, playlist) => 
