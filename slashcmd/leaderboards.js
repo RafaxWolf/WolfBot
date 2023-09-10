@@ -16,6 +16,10 @@ module.exports = {
 
     async run(client, interaction){
       
+        const leaderSelected = interaction.options.getString("select")
+
+        interaction.reply({ content: `${leaderSelected}`, ephemeral: true })
+
     }
         
 }
