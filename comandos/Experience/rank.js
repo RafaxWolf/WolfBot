@@ -26,7 +26,7 @@ async execute (client, message, args){
   .setStatus(user.presence ? author.presence.status : "offline")
   .setProgressBar("#0D6E00", "COLOR")
   .setUsername(user.username)
-  .setDiscriminator(user.discriminator)
+  .setDiscriminator(message.guild.name)
   .setRank(dataGlobal.findIndex(dataUser => dataUser.userID === user.id) + 1)
 
   const buffer = await rankCard.build()
