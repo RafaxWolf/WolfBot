@@ -1,0 +1,11 @@
+# Binaries
+*.txt
+banners.json
+*.env
+bannedsongs.js
+dailys.js
+
+# Directories
+Templates/
+node_modules/
+ffmpeg/
