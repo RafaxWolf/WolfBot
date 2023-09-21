@@ -32,13 +32,16 @@ async execute (client, message, args){
       skip: true
     })
   }else {
-    const queue = client.distube.getQueue(message)
+    //const queue = client.distube.getQueue(message)
     if(queue.paused) {
       queue.resume()
       return message.channel.send("▶️ | Reproduciendo la cancion!")
     }
   }
-
+  const queue = client.distube.getQueue(message)
+  if(!queue && !string){
+    return await message.channel.send(`▶️ | No se esta Reproduciendo nada actualmente y no hay ninguna Cancion en la cola.\n Agrega una Cancion con **w!play (Nombre o enlace de la cancion)**!`)
+  }
 
  }
 
