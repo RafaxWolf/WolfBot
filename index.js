@@ -135,7 +135,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
      }
 
      const pagoTotal = economyData.dinero + randomXp
-     console.log(`pagoTotal: ${pagoTotal}`)
+     console.log(`pagoTotal: ${pagoTotal}\n\n`)
      //if(isNaN(pagoTotal)) return;
      await economy.findOneAndUpdate({ guildID: message.guild.id, userID: message.author.id }, { dinero: pagoTotal })
 
