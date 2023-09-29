@@ -25,10 +25,10 @@ module.exports = {
 
         if(leaderSelected === "money-leader"){
             //let moneyLeaderboard = await economy.find().sort([["Money","descending"]]).limit(10)
-            interaction.reply({ content: "asdsadfg", ephemeral: true })
+            interaction.editReply({ content: "asdsadfg", ephemeral: true })
         }
         if(leaderSelected === "xp-leader"){
-            interaction.reply({ content: "qwerty", ephemeral: true })
+            interaction.editReply({ content: "qwerty", ephemeral: true })
         }
 
     }
