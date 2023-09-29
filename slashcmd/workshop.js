@@ -55,10 +55,6 @@ module.exports = {
         await interaction.reply({ ephemeral: true, components: [row] })
 
       //if (interaction.options.getSubcommand("about")) {
-
-        //interaction.edit({ ephemeral: true, embeds: [aboutEmbed] })
-      //}
-
           
 
     }
