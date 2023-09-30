@@ -4,6 +4,7 @@ banners.json
 *.env
 dailys.js
 bannedsongs.js
+shopItems.js
 
 # Directories
 Templates/
