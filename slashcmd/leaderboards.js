@@ -24,11 +24,12 @@ module.exports = {
         interaction.reply({ content: `${leaderSelected}`, ephemeral: true })
 
         if(leaderSelected === "money-leader"){
+            
             //let moneyLeaderboard = await economy.find().sort([["Money","descending"]]).limit(10)
-            interaction.editReply({ content: "asdsadfg", ephemeral: true })
+            interaction.update({ content: "asdsadfg", ephemeral: true })
         }
         if(leaderSelected === "xp-leader"){
-            interaction.editReply({ content: "qwerty", ephemeral: true })
+            interaction.update({ content: "qwerty", ephemeral: true })
         }
 
     }
