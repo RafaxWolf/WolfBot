@@ -19,13 +19,13 @@ module.exports = {
       if (interaction.customId === 'workshop') {
         const workshopSelectedValue = interaction.values[0];
 
-        async function aboutEmbed (client, interaction) {
-          const aboutEmbed = new EmbedBuilder()
+        function aboutEmbed (client, interaction, icon) {
+          const embed = new EmbedBuilder()
             .setTitle('Sobre la Workshop')
-            .setThumbnail(interaction.guild.iconURL())
             .setDescription('La Workshop es un sistema creado para que la comunidad comparta sus ideas de items')
             .setTimestamp();
-            return await interaction.update({ ephemeral: true, embeds: [aboutEmbed], components: [] });
+            if(icon) embed.setThumbnail(icon)
+            return interaction.update({ ephemeral: true, embeds: [embed], components: [] });
         }
 
         if (workshopSelectedValue === 'wshome') {
@@ -35,7 +35,7 @@ module.exports = {
           // Acciones para wssearch
         }
         if (workshopSelectedValue === 'wsabout') {
-          aboutEmbed();
+          aboutEmbed(client, interaction, `${interaction.guild.iconURL()}`);
         }
 
       }

@@ -330,7 +330,7 @@ function embedNormalBuilder(client, message, color, title, description){
 
 }
 
-function embedSlashBuilder(client, interaction, color, title, description){
+/*function embedSlashBuilder(client, interaction, color, title, description){
 
   let embed = new EmbedBuilder()
   .setColor(color)
@@ -339,7 +339,7 @@ function embedSlashBuilder(client, interaction, color, title, description){
   if(description) embed.setDescription(description)
   return interaction.reply({ embeds: [embed] })
 
-}
+}*/
 
 //Token in .env
 client.login(process.env.TOKEN);

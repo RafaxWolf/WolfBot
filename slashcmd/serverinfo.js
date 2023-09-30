@@ -7,7 +7,7 @@ module.exports = {
     .setDescription("Ver la informacion del servidor"),
 
     async run(client, interaction){
-      interaction.reply({ content: `Nombre del servidor: \`${interaction.guild.name}\`\nMiembros en total: **${interaction.guild.memberCount}**`, ephemeral: true })
+      interaction.reply({ content: `Nombre del servidor: \`${interaction.guild.name}\`\nMiembros en total: **${interaction.guild.memberCount}**\nDueño del servidor ${interaction.guild.owner}`, ephemeral: true })
     }
         
 }
