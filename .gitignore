@@ -2,8 +2,8 @@
 *.txt
 banners.json
 *.env
-bannedsongs.js
 dailys.js
+bannedsongs.js
 
 # Directories
 Templates/
