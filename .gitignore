@@ -1,10 +1,10 @@
 # Binaries
 *.txt
 banners.json
-*.env
-dailys.js
+missions.js
 bannedsongs.js
-shopItems.js
+shopitems.js
+*.env
 
 # Directories
 Templates/
@@ -12,3 +12,4 @@ node_modules/
 ffmpeg/
 openai/
 hacking/
+Database/
