@@ -1,6 +1,7 @@
 const enocomia = require("../Schema/economia-schema")
 const xp = require("../Schema/xp-schema")
 const { SlashCommandBuilder } = require("discord.js")
+const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -24,7 +25,7 @@ module.exports = {
         interaction.reply({ content: `${leaderSelected}`, ephemeral: true })
 
         if(leaderSelected === "money-leader"){
-            
+            await interaction.deferReply();
             //let moneyLeaderboard = await economy.find().sort([["Money","descending"]]).limit(10)
             interaction.update({ content: "asdsadfg", ephemeral: true })
         }

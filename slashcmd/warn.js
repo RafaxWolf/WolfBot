@@ -15,14 +15,13 @@ module.exports = {
         option
         .setName("reason")
         .setDescription("Razon del warn")
-        .setRequired(true)
         )
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setDMPermission(false),
     async run(client, interaction){
         if(!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) return interaction.reply({ content: "No eres un moderador!", ephemeral: true })
       const user = interaction.options.getUser("user")
-      const reason = interaction.options.getString("reason")
+      const reason = interaction.options.getString("reason") ?? "Razon no proporcionada"
         let datosnuevos = new warn({
             userID: user.id,
             moderadorID: interaction.member,
@@ -32,7 +31,7 @@ module.exports = {
         await datosnuevos.save()
 
         var modLog = client.channels.cache.find(channel => channel.id === '991746789034184725');
-        modLog.send(`***MODLOG*** || El moderador ${interaction.member} Ha Warneado a ${user} por la razon: **\`${reason}\`**`)
+        modLog.send(`***MODLOG*** || El moderador ${interaction.member}, Ha Sancionado al usuario ${user}, por la razon: **\`${reason}\`**`)
 
       const warned = new EmbedBuilder()
       .setTitle("**¡Nuevo Warn!**")
@@ -40,7 +39,7 @@ module.exports = {
       .setThumbnail(user.displayAvatarURL())
       .addFields(
         { name:"Moderador", value: `${interaction.member}`, inline: true },
-        { name: "Warneado", value: `${user}`, inline: true },
+        { name: "Sancionado", value: `${user}`, inline: true },
         { name: "Razon", value: `**${reason}**`, inline: true }
         )
       .setTimestamp();
