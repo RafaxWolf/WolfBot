@@ -2,7 +2,7 @@ const moment = require('moment');
 const format = require("moment")
 const tz = require("moment-timezone");
 
-const { CHANNEL_ID, TIMEZONE, FORMAT, UPDATE_INTERVAL, CHANNEL_THW } = process.env;
+const { CHANNEL_ID, TIMEZONE, FORMAT, UPDATE_INTERVAL } = process.env;
 
 module.exports = {
   name: 'ready',
@@ -12,7 +12,7 @@ module.exports = {
 
     const clockChannel = client.channels.cache.get(CHANNEL_ID)
     
-    const thwClockChannel = client.channels.cache.get(CHANNEL_THW)
+    //const thwClockChannel = client.channels.cache.get(CHANNEL_THW)
 
       clockChannel.edit({ name: `🕒 ${timeNow}` }, 'Clock update')
         .catch(console.error)
@@ -22,7 +22,7 @@ module.exports = {
       clockChannel.edit({ name: `🕒 ${timeNowUpdate}`}, 'Clock update')
           .catch(console.error)
 }, UPDATE_INTERVAL)
-
+/*
       thwClockChannel.edit({ name: `🕒 ${timeNow}` }, 'Clock update')
         .catch(console.error)
 
@@ -30,7 +30,7 @@ module.exports = {
     const timeNowUpdate = moment().tz(TIMEZONE).format(FORMAT)
       thwClockChannel.edit({ name: `🕒 ${timeNowUpdate}`}, 'Clock update')
           .catch(console.error)
-}, UPDATE_INTERVAL)
+}, UPDATE_INTERVAL) */
 
 //    memberCountChannel.edit({ name: `👥 ${memberCount}` }, 'Member count')
 //      .catch(console.error)

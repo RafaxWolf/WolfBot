@@ -22,15 +22,18 @@ module.exports = {
       
         const leaderSelected = interaction.options.getString("select")
 
-        interaction.reply({ content: `${leaderSelected}`, ephemeral: true })
+        //interaction.reply({ content: `${leaderSelected}`, ephemeral: true })
 
         if(leaderSelected === "money-leader"){
             await interaction.deferReply();
+            await wait(5000)
             //let moneyLeaderboard = await economy.find().sort([["Money","descending"]]).limit(10)
-            interaction.update({ content: "asdsadfg", ephemeral: true })
+            await interaction.editReply({ content: "asdsadfg", ephemeral: true })
         }
         if(leaderSelected === "xp-leader"){
-            interaction.update({ content: "qwerty", ephemeral: true })
+            await interaction.deferReply();
+            await wait(5000)
+            await interaction.editReply({ content: "qwerty", ephemeral: true })
         }
 
     }
