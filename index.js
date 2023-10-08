@@ -201,8 +201,15 @@ for (const file of eventFiles) {
         console.error(error)
       }
     })
-  } else
-  if (event.once) {
+  } else if(event.name === 'guildCreate' || event.name === 'guildDelete') {
+    client.on(event.name, async (guild) => {
+      try{
+        await event.execute(client, guild)
+      } catch (error) {
+        console.error(error)
+      }
+    })
+  } else if (event.once) {
     client.once(event.name, (...args) => event.execute(...args));
   } else {
     client.on(event.name, (...args) => event.execute(...args));
