@@ -1,74 +1,42 @@
-const axios = require('axios')
 const { EmbedBuilder } = require('discord.js')
+const Genius = require('genius-lyrics')
+require("dotenv").config()
 
 module.exports = {
     name: "lyrics",
     alias: ["letra"],
   
-async execute (client, message, args){
+  async execute (client, message, args){
+  
+    const Client = new Genius.Client(process.env.GENIUS_API_KEY)
+
     const queue = client.distube.getQueue(message)
+    if (!queue) return message.channel.send("❌ | No hay nada en la cola!")
+
     const song = queue.songs[0]
-    let title = song.name
 
-    let lyricsTitle = title.toLowerCase()
+    try{
+      const searches = await Client.songs.search(song.name)
 
-    const getLyrics = (lyricsTitle) => 
-        new Promise(async (ful, rej) => {
-        const url = new URL('https://some-random-api.ml/lyrics')
-        url.searchParams.append('title', title)
-        console.log("url", url)
+      const firstSong = searches[0];
 
-        try {
-            const { data } = await axios.get(url.href)
-            ful(data)
-        } catch (error) {
-            rej(error)
-        }
-    });
+      console.log("Sobre la cancion:\n", firstSong, "\n")
 
-    function substring(length, value) {
-        const replaced = value.replace(/\n/g, "--")
-        const regex = `.{1,${length}}`
-        const lines = replaced
-            .match(new RegExp(regex, "g"))
-            .map((line) => line.replace(/--/g, "\n"))
+      const lyrics = await firstSong.lyrics();
 
-            return lines;
+      if(lyrics) {
+        const embed = new EmbedBuilder()
+        .setTitle("Letra")
+        .setTimestamp()
+        .setDescription(lyrics)
+
+        message.channel.send({ embeds: [embed] })
+      } else {
+        message.channel.send("❌ | No se ha podido encontrar la letra de la cancion!")
+      }
+    } catch (error) {
+      console.error(error)
     }
-
-    const createMessage = async (title) => {
-        try{
-
-            const data = await getLyrics(title)
-
-            const embedlyrics = substring(4096, data.lyrics).map((value, index) => {
-                const isFirst = index === 0;
-    
-                return new EmbedBuilder()
-                    .setTitle(isFirst ? `${data.title} - ${data.author}` : null)
-                    .setThumbnail(isFirst ? { url: data.thumbnail.genius } : null)
-                    .setDescription(value)
-                
-            })
-        
-        return  { embeds: [embedlyrics] }
-        //message.channel.send({ embeds: [embedlol] })
-        } catch (error) {
-            return "❌ | No pude encontrar la letra de esta cancion."
-           //message.channel.send("❌ | No he podido encontrar la letra de esta cancion")
-        }
-    }
-
-    const sendLyrics = (songTitle) => {
-        return createMessage(songTitle)
-        .then(async (res) => {
-            console.log({ res })
-            await message.channel.send(res)
-        })
-        .catch((err) => console.log({ err }))
-    }
-
-    if (title) return sendLyrics(title)
   
    }
   

@@ -25,6 +25,7 @@
     "express": "^4.18.2",
     "ffmpeg-static": "^4.4.1",
     "fs": "0.0.1-security",
+    "genius-lyrics": "^4.4.6",
     "libsodium-wrappers": "^0.7.11",
     "module-alias": "^2.2.2",
     "moment": "^2.29.4",
