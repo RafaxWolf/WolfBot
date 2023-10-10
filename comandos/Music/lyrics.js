@@ -18,6 +18,8 @@ module.exports = {
     try{
       const searches = await Client.songs.search(song.name)
 
+      console.log(song.name)
+
       const firstSong = searches[0];
 
       console.log("Sobre la cancion:\n", firstSong, "\n")
@@ -26,9 +28,13 @@ module.exports = {
 
       if(lyrics) {
         const embed = new EmbedBuilder()
-        .setTitle("Letra")
-        .setTimestamp()
+        .setAuthor({ name: "Letra", iconURL: "https://i.imgur.com/SaDhsHb.png" })
+        .setThumbnail(song.thumbnail)
+        .setTitle(`${song.name}`)//\n${song.uploader.name}
+        .setURL(song.url)
         .setDescription(lyrics)
+        .setFooter({ text: 'Letra obtenida via Genius', iconURL: 'https://i.imgur.com/NwLxeay.png' })
+        .setTimestamp()
 
         message.channel.send({ embeds: [embed] })
       } else {

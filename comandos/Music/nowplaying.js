@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const { EmbedBuilder } = require("discord.js")
 
 module.exports = {
@@ -17,10 +16,11 @@ execute (client, message, args){
   .setThumbnail(song.thumbnail)
   .addFields(
       { name: "Duracion", value: `\`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\`` },
-      { name: "Visitas", value: `**\`[${song.views}]\`**`, inline: true },
+      { name: "Visitas", value: `**\`[${song.views}]\`**` },
       { name: "Likes | Dislikes", value: `\`[${song.likes}] | [${song.dislikes}]\``, inline: true },
       { name: "Volumen", value: `\`${queue.volume}%\``, inline: true },
-      { name: "Nombre del canal", value: `**\`${song.uploader.name}\`**` }
+      { name: "Nombre del canal", value: `**\`${song.uploader.name}\`**` },
+      { name: "Source", value : `**${song.source}**` }
     )
   .setFooter({ text: `${song.user.username}`, iconURL: song.user.displayAvatarURL()})
   .setTimestamp()
