@@ -23,12 +23,16 @@ async execute (client, message, args){
    */
   //if (!string) return message.channel.send("❌ | Por favor ingrese la URL de la cancion o el nombre para iniciar la busqueda.")
   if(string){
-    client.distube.play(message.member.voice.channel, string, {
-      member: message.member,
-      textChannel: message.channel,
-      message,
-      skip: true
-    })
+    try{
+      client.distube.play(message.member.voice.channel, string, {
+        member: message.member,
+        textChannel: message.channel,
+        message,
+        skip: true
+      })
+    } catch (error) {
+      message.channel.send(error)
+    }
   }else {
     //const queue = client.distube.getQueue(message)
     if(queue.paused) {
@@ -36,6 +40,7 @@ async execute (client, message, args){
       return message.channel.send("▶️ | Reproduciendo la cancion!")
     }
   }
+  
   const queue = client.distube.getQueue(message)
   if(!queue && !string){
     return await message.channel.send(`▶️ | No se esta Reproduciendo nada actualmente y no hay ninguna Cancion en la cola.\n Agrega una Cancion con **w!play (Nombre o enlace de la cancion)**!`)

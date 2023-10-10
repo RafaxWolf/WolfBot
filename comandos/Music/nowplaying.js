@@ -15,12 +15,12 @@ execute (client, message, args){
   .setURL(song.url)
   .setThumbnail(song.thumbnail)
   .addFields(
-      { name: "Duracion", value: `\`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\`` },
-      { name: "Visitas", value: `**\`[${song.views}]\`**` },
+      { name: "Duracion", value: `\`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\``, inline: true },
+      { name: "Visitas", value: `**\`[${song.views}]\`**`, inline: true },
       { name: "Likes | Dislikes", value: `\`[${song.likes}] | [${song.dislikes}]\``, inline: true },
       { name: "Volumen", value: `\`${queue.volume}%\``, inline: true },
       { name: "Nombre del canal", value: `**\`${song.uploader.name}\`**` },
-      { name: "Source", value : `**${song.source}**` }
+      { name: "Source", value : `**${song.source}**`, inline: true }
     )
   .setFooter({ text: `${song.user.username}`, iconURL: song.user.displayAvatarURL()})
   .setTimestamp()

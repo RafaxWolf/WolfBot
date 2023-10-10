@@ -33,7 +33,7 @@ module.exports = {
         .setTitle(`${song.name}`)//\n${song.uploader.name}
         .setURL(song.url)
         .setDescription(lyrics)
-        .setFooter({ text: 'Letra obtenida via Genius', iconURL: 'https://i.imgur.com/NwLxeay.png' })
+        .setFooter({ text: 'Fuente Genius', iconURL: 'https://i.imgur.com/NwLxeay.png' })
         .setTimestamp()
 
         message.channel.send({ embeds: [embed] })
