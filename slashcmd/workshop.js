@@ -1,6 +1,6 @@
-const workshop = require('../Schema/workshop-schema')
+//const workshop = require('../Schema/workshop-schema')
 const { SlashCommandBuilder, StringSelectMenuOptionBuilder } = require("discord.js")
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require("discord.js")
+const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
