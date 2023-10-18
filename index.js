@@ -56,7 +56,13 @@ let carpetas = fs.readdirSync('./comandos/').map((subCarpetas) => {
 });
 
 client.on("messageCreate", async (message) => {
-console.log(`Server Name: [${message.guild.name}]\nServer ID: ([${message.guild.id}])\n\n${message.content}\n `)
+console.log(`
+Server Name: [${message.guild.name}]
+  Server ID: ([${message.guild.id}])
+    UserName: [${message.author.username}]
+    UserID: (${message.author.id})
+      Message: ${message.content}
+`)
 
  let prefix = "w!"
 
