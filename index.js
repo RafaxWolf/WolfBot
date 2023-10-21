@@ -8,6 +8,7 @@ const { SoundCloudPlugin } = require('@distube/soundcloud')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const fs = require('fs');
+const util = require('util')
 const wait = require('node:timers/promises').setTimeout;
 
 //const now = new Date(Date.now());
@@ -56,12 +57,36 @@ let carpetas = fs.readdirSync('./comandos/').map((subCarpetas) => {
 });
 
 client.on("messageCreate", async (message) => {
+
+const logFileName = 'ConsoleLog.txt'
+
+const logFilePath = path.join(__dirname, logFileName);
+
+function consoleToRegistry() {
+  const logStream = fs.createWriteStream(logFilePath, { flags: 'a' })
+    
+    console.log = (message) => {
+      const logMessage = `${message}`
+      logStream.write(logMessage)
+      process.stdout.write(logMessage)
+    }
+}
+
+/*   function getCurrentTime() {
+    const now = new Date();
+    return `[${now.toISOString}]`
+  } */
+
+consoleToRegistry()
+
 console.log(`
 Server Name: [${message.guild.name}]
   Server ID: ([${message.guild.id}])
     UserName: [${message.author.username}]
     UserID: (${message.author.id})
       Message: ${message.content}
+
+      
 `)
 
  let prefix = "w!"
@@ -96,7 +121,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
   } else if(message.content.length > 80){
     randomXp = Math.floor(Math.random() * 75) + 1
   }
-  console.log(`randomXp: ${randomXp}`)
+  console.log(`randomXp: ${randomXp}\n`)
 
     if(!Xpdata){
       const newXpdata = new levels({
@@ -108,8 +133,8 @@ if(message.guild && message.guild.id === "338373170463506442"){
     }
 
     const xpTotal = Xpdata.xp + randomXp
-    console.log(`xpTotal: ${xpTotal}`)
-    console.log(`Limite: ${Xpdata.limit}`)
+    console.log(`xpTotal: ${xpTotal}\n`)
+    console.log(`Limite: ${Xpdata.limit}\n`)
 
       if(xpTotal >= Xpdata.limit && !Xpdata.level === "20"){
       message.channel.send(`¡Felicidades ${message.author}, has acendido a nivel **${Xpdata.level + 1}**!`)
