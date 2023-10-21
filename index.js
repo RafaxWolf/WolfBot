@@ -86,7 +86,7 @@ Server Name: [${message.guild.name}]
     UserID: (${message.author.id})
       Message: ${message.content}
 
-      
+
 `)
 
  let prefix = "w!"
