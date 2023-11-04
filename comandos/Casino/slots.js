@@ -6,8 +6,6 @@ module.exports = {
   alias: ["tragamonedas"],
 
 async execute (client, message, args){
-
-  message.delete();
   
 let datos = await economia.findOne({ userID: message.author.id })
   if(!datos) {
@@ -30,7 +28,7 @@ let datos = await economia.findOne({ userID: message.author.id })
     var SlotFail = Math.floor(Math.random()*(Fail.length));
     var SlotWin = Math.floor(Math.random()*(Win.length));
 
-    if(dineronuestro < '200') return message.reply("No tienes el suficientes <:wolfcoin:935657063621726208> WolfCoins!")
+    if(dineronuestro < '200') return message.channel.send(`${message.author} No tienes el suficientes <:wolfcoin:935657063621726208> WolfCoins!`)
 
     if(probabilidad < 100){
         message.channel.send(Fail[SlotFail])

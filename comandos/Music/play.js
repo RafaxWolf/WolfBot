@@ -8,12 +8,18 @@ async execute (client, message, args){
 
   const string = args.join(' ')
   const bannedSongsName = ['Eso Tilin', 'El rap de eso tilin', 'el rap de eso tilin', 'el rap de eso tilin remix', 'El rap de eso tilin remix', 'el rap del tilin', 'El rap del tilin']
-  //const bannedSongsUrl = ['https://www.youtube.com/watch?v=YgGFc_pOR3w&pp=ygUTZWwgcmFwIGRlIGVzbyB0aWxpbg%3D%3D', 'https://www.youtube.com/watch?v=YRC277E6Amw&pp=ygUTZWwgcmFwIGRlIGVzbyB0aWxpbg%3D%3D', 'https://www.youtube.com/shorts/sAkOUY0sjQw']
+  const bannedSongsUrl = ['https://www.youtube.com/watch?v=YgGFc_pOR3w&pp=ygUTZWwgcmFwIGRlIGVzbyB0aWxpbg%3D%3D', 'https://www.youtube.com/watch?v=YRC277E6Amw&pp=ygUTZWwgcmFwIGRlIGVzbyB0aWxpbg%3D%3D', 'https://www.youtube.com/shorts/sAkOUY0sjQw', 'https://www.youtube.com/watch?v=Kb_tm5uk0CQ', 'https://www.youtube.com/watch?v=3OkqimWqdNQ']
 
   //if(bannedSongsUrl.includes(string) || bannedSongsUrl.includes(args[0])) return message.channel.send("❌ | Esta Cancion/Video ha sido baneada del sistema de musica!")
 
-  if(bannedSongsName.includes(string) || bannedSongsName.includes(args[0])) return message.channel.send("❌ | Esta Cancion/Video ha sido baneada del sistema de musica!")
-  
+  if(bannedSongsName.includes(string) || bannedSongsName.includes(args[0])) {
+    message.channel.send("❌ | Esta Cancion/Video ha sido baneada del sistema de musica!")
+    return;
+  } 
+  if(bannedSongsUrl.includes(string) || bannedSongsUrl.includes(args[0])) {
+    message.channel.send("❌ | Esta Cancion/Video ha sido baneada del sistema de musica!")
+    return;
+  } 
 /*    //---------------------
   const bannedSongsName = ['Eso Tilin', 'El rap de eso tilin', 'el rap de eso tilin']
   //const bannedSondId = ['', '']
