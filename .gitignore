@@ -5,6 +5,11 @@ missions.js
 bannedsongs.js
 shopitems.js
 *.env
+asd.js
+dsa.js
+gacha.js
+ruleta.js
+giverole.js
 
 # Directories
 Templates/
@@ -13,4 +18,3 @@ ffmpeg/
 openai/
 hacking/
 Database/
-slashcmd/asd.js
