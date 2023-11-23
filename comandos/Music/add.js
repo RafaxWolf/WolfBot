@@ -27,5 +27,5 @@ module.exports = {
         }) // Reproduce la cancion y/o video
 
    }
-  
+
   }

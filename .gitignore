@@ -5,6 +5,7 @@ missions.js
 bannedsongs.js
 shopitems.js
 *.env
+slashcmd/asd.js
 
 # Directories
 Templates/

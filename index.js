@@ -76,8 +76,12 @@ function consoleToRegistry() {
     const now = new Date();
     return `[${now.toISOString}]`
   } */
+try {
+  consoleToRegistry()
+} catch (error) {
+  console.log(`[!] Ha ocurrido un Error!\n${error}`)
+}
 
-consoleToRegistry()
 
 console.log(`
 Server Name: [${message.guild.name}]
