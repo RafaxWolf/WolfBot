@@ -1,15 +1,10 @@
 # Binaries
 *.txt
+*.env
 banners.json
 missions.js
 bannedsongs.js
 shopitems.js
-*.env
-asd.js
-dsa.js
-gacha.js
-ruleta.js
-giverole.js
 
 # Directories
 Templates/
