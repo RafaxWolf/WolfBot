@@ -20,6 +20,7 @@
     "canvacord": "^5.4.10",
     "canvas": "^2.11.2",
     "convertapi": "^0.0.0",
+    "crypto-js": "^4.2.0",
     "cryptr": "^6.3.0",
     "discord.js": "^14.13.0",
     "distube": "^4.1.0",

@@ -13,19 +13,19 @@ module.exports = {
     .addStringOption(option =>
       option
       .setName("title")
-      .setDescription("title of the verify embed")
+      .setDescription("Title of the verify embed")
       .setRequired(true)
-      )
+    )
     .addStringOption(option =>
       option
       .setName("description")
-      .setDescription("description of the verify embed")
+      .setDescription("Description of the verify embed")
       .setRequired(true)
-      )
+    )
     .addStringOption(option =>
       option
       .setName("color")
-      .setDescription("color of the verify embed")
+      .setDescription("Color of the verify embed")
       .setRequired(true)
       .addChoices(
         { name: 'Gris', value: 'Grey' },
@@ -35,15 +35,15 @@ module.exports = {
         { name: 'Blanco', value: 'White' },
         { name: 'Amarillo', value: 'Yellow' },
       )
-      )
+    )
     .addRoleOption(option =>
       option
       .setName("role")
-      .setDescription("role to verify")
+      .setDescription("Role to verify")
       .setRequired(true)
-      )
-      .setDMPermission(false)
-      .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    )
+    .setDMPermission(false)
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     async run(client, interaction){
 //      const ch = interaction.options.getChannel("channel")
