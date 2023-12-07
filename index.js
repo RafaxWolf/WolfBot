@@ -99,6 +99,8 @@ Server Name: [${message.guild.name}]
     message.author.send("asd")
   }
 
+ //if(message.content.startsWith( ':v' | ':V' | ':u' | ':U' | ':y' | ':Y' )) return message.delete().then(message.author.send("[!] | Has incumplido una regla, pero no te preocupes solo tu mensaje sera eliminado por el bien mental del servidor."))
+
  if(message.content === prefix) return;
 
  if(message.author.bot) return;
