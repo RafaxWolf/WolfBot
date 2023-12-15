@@ -8,23 +8,24 @@ const { SoundCloudPlugin } = require('@distube/soundcloud')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const fs = require('fs');
-const util = require('util')
-const wait = require('node:timers/promises').setTimeout;
 
-//const now = new Date(Date.now());
+//! const util = require('util')
+//! const wait = require('node:timers/promises').setTimeout;
 
-//const current = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-//const withPmAm = now.toLocaleTimeString('es-CL', {
-//  hour: '2-digit',
-//  minute: '2-digit',
-//});
+//! const now = new Date(Date.now());
+
+//! const current = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+//! const withPmAm = now.toLocaleTimeString('es-CL', {
+//!  hour: '2-digit',
+//!  minute: '2-digit',
+//!});
 
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildVoiceStates,
-    GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildMembers
   ]
 })
@@ -47,7 +48,7 @@ client.distube = new DisTube(client, {
   ]
 })
 
-//Command Handler
+//* Command Handler
 client.commands = new Discord.Collection();
 let carpetas = fs.readdirSync('./comandos/').map((subCarpetas) => {
   const archivos = fs.readdirSync(`./comandos/${subCarpetas}`).map((comandos) => {
@@ -99,7 +100,32 @@ Server Name: [${message.guild.name}]
     message.author.send("asd")
   }
 
- //if(message.content.startsWith( ':v' | ':V' | ':u' | ':U' | ':y' | ':Y' )) return message.delete().then(message.author.send("[!] | Has incumplido una regla, pero no te preocupes solo tu mensaje sera eliminado por el bien mental del servidor."))
+  if(message.content.startsWith(":v")){
+    //message.author.send("[!] | Has incumplido una regla, pero no te preocupes solo tu mensaje sera eliminado por el bien mental del servidor.")
+    message.delete()
+  } else if(message.content.startsWith(":V")){
+    message.delete()
+  } else if(message.content.startsWith(":u")){
+    message.delete()
+  } else if(message.content.startsWith(":U")){
+    message.delete()
+  } else if(message.content.startsWith(":y")){
+    message.delete()
+  } else if(message.content.startsWith(":Y")){
+    message.delete()
+  } else if(message.content.startsWith(";v")){
+    message.delete()
+  } else if(message.content.startsWith(";V")){
+    message.delete()
+  } else if(message.content.startsWith(";u")){
+    message.delete()
+  } else if(message.content.startsWith(";U")){
+    message.delete()
+  } else if(message.content.startsWith(";y")){
+    message.delete()
+  } else if(message.content.startsWith(";Y")){
+    message.delete()
+  }
 
  if(message.content === prefix) return;
 
@@ -112,7 +138,6 @@ if(message.guild && message.guild.id === "338373170463506442"){
   console.log("¡Access Denied!")
   return;
 } else {
-
   let randomXp
   if(message.content.length <= 5){
     randomXp = Math.floor(Math.random() * 3) + 1
@@ -143,7 +168,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
     console.log(`Limite: ${Xpdata.limit}\n`)
 
       if(xpTotal >= Xpdata.limit && !Xpdata.level === "20"){
-      message.channel.send(`¡Felicidades ${message.author}, has acendido a nivel **${Xpdata.level + 1}**!`)
+      message.channel.send(`¡Felicidades ${message.author}, has ascendido a nivel **${Xpdata.level + 1}**!`)
      return levels.findOneAndUpdate({ guildID: message.guild.id, userID: message.author.id }, { xp: randomXp, level: Xpdata.level + 1, limit: Xpdata.limit + 500 })
     }
 
@@ -254,12 +279,13 @@ for (const file of eventFiles) {
   
 }
 
-//  setInterval(() => {
-//  var general = client.channels.cache.find(channel => channel.id === '1001992290174242877');
-//  general.send("")
-//  }, 60000)
 
-//verificacion para entrar al server
+//?  setInterval(() => {
+//?  var general = client.channels.cache.find(channel => channel.id === '1001992290174242877');
+//?  general.send("")
+//?  }, 60000)
+
+// TODO: verificación para entrar al server
 //client.on("messageCreate", message => {
 //  if(message.channel.id === "927605760152707172"){
 //      if(message.author.bot) return;
@@ -299,7 +325,7 @@ client.distube
     if(voiceChannel) {
       voiceChannel.leave();
     }
-    message.reply("❌ | Esta Cancion/Video ha sido baneada del sistema de musica!")
+    message.reply("❌ | Esta Canción/Video ha sido baneada del sistema de música!")
 
   }  */
    queue.textChannel.send(
@@ -324,8 +350,8 @@ client.distube
   if (channel) channel.send(`❌ | Un error ha ocurrido: ${e.toString().slice(0, 1974)}`).then(console.error(e))
   else console.error(e)
 })
-.on('empty', message => message.channel.send("El canal de voz esa vacio! Saliendo del canal..."))
-//.on('empty', interaction => interaction.reply({ content: "El canal de voz esa vacio! Saliendo del canal..." }))
+.on('empty', message => message.channel.send("El canal de voz esa vació! Saliendo del canal..."))
+//.on('empty', interaction => interaction.reply({ content: "El canal de voz esa vació! Saliendo del canal..." }))
 .on('searchNoResult', (message, query) =>
   message.channel.send(`❌ | No se ha encontrado un resultado para \`${query}\``)
 )
@@ -352,12 +378,12 @@ client.distube
 //.on("searchCancel", interaction => interaction.reply({ content: "❌ | Busqueda cancelada"}))
 .on("searchInvalidAnswer", message => {
     return message.channel.send(
-    `❌ | Respuesta Invalida, Busqueda cancelada!`
+    `❌ | Respuesta Invalida, Búsqueda cancelada!`
   )
 })
 //.on("searchInvalidAnswer", interaction => {
 //    return interaction.reply({
-//    content: `❌ | Respuesta Invalida, Busqueda cancelada!`
+//    content: `❌ | Respuesta Invalida, Búsqueda cancelada!`
 //  })
 //})
 .on("searchDone", () => {})

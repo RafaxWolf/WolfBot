@@ -5,6 +5,21 @@ banners.json
 missions.js
 bannedsongs.js
 shopitems.js
+*asd.js
+*dsa.js
+embed.js
+testimages.js
+iFrame.js
+spritesheet.js
+createfile.js
+createEmbed.js
+genderMe.js
+giverole.js
+uploadfile.js
+gacha.js
+poll-schema.js
+gacha-schema.js
+testimages.js
 
 # Directories
 Templates/
@@ -13,3 +28,4 @@ ffmpeg/
 openai/
 hacking/
 Database/
+.vscode/settings.json
