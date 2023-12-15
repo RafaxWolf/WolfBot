@@ -17,8 +17,6 @@ genderMe.js
 giverole.js
 uploadfile.js
 gacha.js
-poll-schema.js
-gacha-schema.js
 testimages.js
 
 # Directories
@@ -29,3 +27,5 @@ openai/
 hacking/
 Database/
 .vscode/settings.json
+Schema/gacha-schema.js
+Schema/poll-schema.js
