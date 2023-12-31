@@ -1,6 +1,7 @@
 # Binaries
 *.txt
 *.env
+verification_message_id.json
 banners.json
 missions.js
 bannedsongs.js
@@ -17,6 +18,7 @@ giverole.js
 uploadfile.js
 gacha.js
 testimages.js
+pwned.js
 
 # Directories
 Templates/
