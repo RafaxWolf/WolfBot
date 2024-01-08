@@ -69,7 +69,7 @@ let datos = await economia.findOne({ userID: message.author.id })
       }
     }
 
-    message.author.send(`El último resultado fue: ${lastResult}`)
+    //message.author.send(`El último resultado fue: ${lastResult}`)
 
     if(allEqual){
       await economia.findOneAndUpdate({ userID: message.author.id }, { dinero: dineronuestro + Number(randomMoney) })
