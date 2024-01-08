@@ -1,0 +1,17 @@
+module.exports = [
+    { pacman: ":v" }, { pacman: "v:" }, { pacman: ":V" }, { pacman: "V:" },
+    { pacman: ";v" }, { pacman: "v;" }, { pacman: ";V" }, { pacman: "V;" },
+    { pacman: ":u" }, { pacman: "u:" }, { pacman: ":U" }, { pacman: "U:" },
+    { pacman: ";u" }, { pacman: "u;" }, { pacman: ";U" }, { pacman: "U;" }, 
+    { pacman: ":y" }, { pacman: "y:" }, { pacman: ":Y" }, { pacman: "Y:" },
+    { pacman: ";y" }, { pacman: "y;" }, { pacman: ";Y" }, { pacman: "Y;" },
+    { pacman: ":,v" }, { pacman: "v,:" }, { pacman: ":,V" }, { pacman: "V,:" },
+    { pacman: ":,u" }, { pacman: "u,:" }, { pacman: ":,U" }, { pacman: "U,:" },
+    { pacman: ":,y" }, { pacman: "y,:" }, { pacman: ":,Y" }, { pacman: "Y,:" },
+    { pacman: ": v" }, { pacman: ": V" }, { pacman: "v :" }, { pacman: "V :" },
+    { pacman: "; v" }, { pacman: "; V" }, { pacman: "v ;" }, { pacman: "V ;" }, 
+    { pacman: ": u" }, { pacman: ": U" }, { pacman: "u :" }, { pacman: "U :" }, 
+    { pacman: "; u" }, { pacman: "; U" }, { pacman: "u ;" }, { pacman: "U ;" }, 
+    { pacman: ": y" }, { pacman: ": Y" }, { pacman: "y :" }, { pacman: "Y :" }, 
+    { pacman: "; y" }, { pacman: "; Y" }, { pacman: "y ;" }, { pacman: "Y ;" }, 
+]

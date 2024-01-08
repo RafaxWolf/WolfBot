@@ -1,9 +1,8 @@
-const Discord = require('discord.js');
 const economia = require('../../Schema/economia-schema')
 
 module.exports = {
   name: "with",
-  alias: [""],
+  alias: ["withdraw"],
 
 async execute (client, message, args){
 
@@ -16,31 +15,31 @@ async execute (client, message, args){
           dinerobanco: 0
       })
       await nuevosdatos.save()
-      return message.reply("Tus datos están siendo guardados, use otra vez el comando.")
+      return message.channel.send("🔁 | Tus datos están siendo guardados, use otra vez el comando.")
       }
   
       let dinerototal = datos.dinero
       let dinerobancototal = datos.dinerobanco
 
       var cantidad = args[0]
-      if(!cantidad) return message.reply("Debes poner una cantidad.")
+      if(!cantidad) return message.author.send("❌ | Debes poner una cantidad.").then(message.author.send("❌ | Syntax Error | ❌\nUso correcto del comando:\nw!with <numero o all> (all es para sacar todo el dinero que tengas en el banco)"))
 
       if(cantidad === 'all'){
         await economia.findOneAndUpdate({ userID: message.author.id }, { dinerobanco: 0 })
         await economia.findOneAndUpdate({ userID: message.author.id }, { dinero: dinerototal + Number(dinerobancototal) })
 
-        return message.reply(`Has sacado **${dinerobancototal}** WolfCoins del banco.`)
+        return message.channel.send(`✅ | Has sacado **${dinerobancototal}** WolfCoins del banco.`)
       }
 
       if(cantidad !== 'all'){
-          if(isNaN(cantidad)) return message.reply("Debes poner una cantidad valida!")
-          if(cantidad < '1') return message.reply("La cantidad debe ser mayor que 0!")
-          if(cantidad > dinerobancototal) return message.reply("No puedes sacar una cantidad de WolfCoins mayor a la que tienes en el banco!")
+          if(isNaN(cantidad)) return message.author.send("❌ | Debes poner una cantidad valida!").then(message.author.send("❌ | Syntax Error | ❌\nUso correcto del comando:\nw!with <numero o all> (all es para sacar todo el dinero que tengas en el banco)"))
+          if(cantidad < '1') return message.author.send("❌ | La cantidad debe ser mayor que 0!").then(message.author.send("❌ | Syntax Error | ❌\nUso correcto del comando:\nw!with <numero o all> (all es para sacar todo el dinero que tengas en el banco)"))
+          if(cantidad > dinerobancototal) return message.author.send("❌ | No puedes sacar una cantidad de WolfCoins mayor a la que tienes en el banco!").then(message.author.send("❌ | Syntax Error | ❌\nUso correcto del comando:\nw!with <numero o all> (all es para sacar todo el dinero que tengas en el banco)"))
           
           await economia.findOneAndUpdate({ userID: message.author.id }, { dinerobanco: dinerobancototal - Number(cantidad) })
           await economia.findOneAndUpdate({ userID: message.author.id }, { dinero: dinerototal + Number(cantidad) })
 
-          return message.channel.send(`${message.author} Has sacado **${cantidad}** WolfCoins del banco.`).then(msg => msg.delete({timeout: 5000}));
+          return message.channel.send(`✅ | ${message.author} Has sacado **${cantidad}** WolfCoins del banco.`)
       }
  }
 

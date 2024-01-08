@@ -25,7 +25,7 @@ module.exports = {
     .addStringOption(option =>
         option
         .setName("method")
-        .setDescription("Metodo de encriptacion a usar (por defecto 'Hex')")
+        .setDescription("Método de encriptacion a usar (por defecto 'Hex')")
         .setChoices(
             { name: "Base64", value: "b64" },
             { name: "Hexadecimal", value: "hex" },
@@ -40,16 +40,24 @@ module.exports = {
         const encryptionMethod = interaction.options.get("method").value
 
         if(encryptionMethod){
-            interaction.reply({ content: `${encryptionMethod}`, ephemeral: true })
+            interaction.followUp({ content: `${encryptionMethod}`, ephemeral: true })
         }else {
             return;
         }
 
-        if(password4Encrypt){
+        if(encryptionMethod === "aes" && !password4Encrypt){
+            var ciphertext = CryptoJS.AES.encrypt(`${text2Encrypt}`, defaultPasswd)
+            interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, ephemeral: true })
+        } else if(encryptionMethod === "aes" && password4Encrypt){
+            var ciphertext = CryptoJS.AES.encrypt(`${text2Encrypt}`, password4Encrypt)
+            interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, ephemeral: true })
+        }
+
+        if(encryptionMethod !== "aes" && password4Encrypt){
             const cryptr = new Cryptr(password4Encrypt)
             const encryptedText = cryptr.encrypt(text2Encrypt)
             interaction.reply({ content: `${encryptedText}`, ephemeral: true })
-        }else {
+        }else if(encryptionMethod !== "aes" && !password4Encrypt){
             const cryptr = new Cryptr(defaultPasswd)
             const encryptedText = cryptr.encrypt(text2Encrypt)
             interaction.reply({ content: `${encryptedText}`, ephemeral: true })

@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require("discord.js")
 module.exports = {
     data: new SlashCommandBuilder()
     .setName("play")
-    .setDescription("Escuchar musica en cualquier canal!")
+    .setDescription("Escuchar música en cualquier canal!")
     .addSubcommand(subcommand =>
         subcommand
         .setName("songs")
@@ -11,12 +11,12 @@ module.exports = {
         .addStringOption(option =>
             option
             .setName("song")
-            .setDescription("Introduce una cancion para buscar o introduce el link para reproducirla automaticamente")
+            .setDescription("Introduce una canción para buscar o introduce el link para reproducirla automáticamente")
             )
         .addAttachmentOption(option =>
             option
             .setName("audio")
-            .setDescription("Reproduce una cancion directamente de un archivo mp3!")
+            .setDescription("Reproduce una canción directamente de un archivo mp3!")
             )
         )
     .addSubcommand(subcommand =>
@@ -42,8 +42,8 @@ module.exports = {
       if(audioFile){
         const audioFileUrl = audioFile.url
         const audioFileType = audioFile.contentType
-        if(audioFileType !== "audio/mpeg") return interaction.reply({ content: `❌ | No puedes reproducir nada que no sea una cancion en **mp3**!\n${fileType}` })
-        interaction.reply({ content: "✅ | Ok reproduciendo cancion | ✅", ephemeral: true })
+        if(audioFileType !== "audio/mpeg") return interaction.reply({ content: `❌ | No puedes reproducir nada que no sea una canción en **mp3**!\n${fileType}` })
+        interaction.reply({ content: "✅ | Ok reproduciendo canción | ✅", ephemeral: true })
         client.distube.play(interaction.member.voice.channel, audioFileUrl, {
             member: interaction.member,
             textChannel: interaction.channel,
@@ -63,10 +63,10 @@ module.exports = {
           })      
     }
       
-        //if(!fileType === "video/mp4") return interaction.reply({ content: "❌ | No puedes reproducir nada que no sea un video o una cancion!" })
+        //if(!fileType === "video/mp4") return interaction.reply({ content: "❌ | No puedes reproducir nada que no sea un video o una canción!" })
 
         if(string) {
-        interaction.reply({ content: "✅ | Ok reproduciendo cancion | ✅", ephemeral: true })
+        interaction.reply({ content: "✅ | Ok reproduciendo canción | ✅", ephemeral: true })
             client.distube.play(interaction.member.voice.channel, string, {
                 member: interaction.member,
                 textChannel: interaction.channel,

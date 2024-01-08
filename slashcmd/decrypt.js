@@ -25,7 +25,7 @@ module.exports = {
     .addStringOption(option =>
         option
         .setName("method")
-        .setDescription("Metodo de encriptacion a usar (por defecto 'Hex')")
+        .setDescription("Método de encriptacion a usar (por defecto 'Hex')")
         .setChoices(
             { name: "Base64", value: "b64" },
             { name: "Hexadecimal", value: "hex" },

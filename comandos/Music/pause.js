@@ -1,5 +1,3 @@
-const Discord = require('discord.js');
-
 module.exports = {
   name: "pause",
   alias: ["stop", "hold"],
@@ -10,10 +8,10 @@ execute (client, message, args){
   if (!queue) return message.channel.send("❌ | No hay nada en la cola ahora mismo!")
   if (queue.paused) {
     queue.resume()
-    return message.channel.send("▶️ | Reproduciendo la cancion!")
+    return message.channel.send("▶️ | Reproduciendo la canción!")
   }
   queue.pause()
-  message.channel.send("⏹️ | Cancion pausada!")
+  message.channel.send("⏹️ | Canción pausada!")
  }
 
 }

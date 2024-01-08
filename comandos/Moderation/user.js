@@ -46,12 +46,12 @@ async execute (client, message, args){
   .setColor("DarkBlue")
   .setTitle("User Info:")
   .addFields(
-    { name: "Usuario:", value: `**${member.user.tag}**` },
-    { name: "Id del usuario:", value: `**${member.id}**` },
-    { name: "Esta vac baneado/a:", value: `${vacBan}` },
-    { name: "Es un/a moderador:", value: `${moderador}` },
-    { name: "Es un/a hacker:", value: `${hacker}` },
-    { name: "Es un/a VIP:", value: `${vip}` },
+    { name: "Usuario:", value: `**${member.user.tag}**`, inline: true },
+    { name: "Id del usuario:", value: `**${member.id}**`, inline: true },
+    { name: "Esta vac baneado/a:", value: `${vacBan}`, inline: true },
+    { name: "Es un/a moderador:", value: `${moderador}`, inline: true },
+    { name: "Es un/a hacker:", value: `${hacker}`, inline: true },
+    { name: "Es un/a VIP:", value: `${vip}`, inline: true },
   )
 
   message.channel.send({ embeds: [userInfo] })

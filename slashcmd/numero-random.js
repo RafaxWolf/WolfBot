@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require("discord.js")
 module.exports = {
     data: new SlashCommandBuilder()
     .setName("numerorandom")
-    .setDescription("Numeros aleatorios con un minimo y un maximo custom!")
+    .setDescription("Números aleatorios con un mínimo y un máximo custom!")
     .addNumberOption(option => 
         option
             .setName("input1")
@@ -11,11 +11,11 @@ module.exports = {
             .setRequired(true)
         )
     .addNumberOption(option => 
-            option
-                .setName("input2")
-                .setDescription("Numero mas alto")
-                .setRequired(true)
-            ),
+        option
+            .setName("input2")
+            .setDescription("Numero mas alto")
+            .setRequired(true)
+        ),
     async run(client, interaction){
       const n1 = interaction.options.getNumber("input1")
       const n2 = interaction.options.getNumber("input2")

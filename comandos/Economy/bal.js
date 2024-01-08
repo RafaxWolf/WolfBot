@@ -9,6 +9,7 @@ async execute (client, message, args){
     
   let user = message.mentions.users.first() || message.author
 
+  if(user === client.user) return message.channel.send("[!] No tienes permisos suficientes...")
   let datos = await economia.findOne({ userID: user.id, guildID: message.guild.id })
     if(!datos) {
       message.author.send(`❌ | El usuario ${user} No esta registrado en la base de datos`)
@@ -21,7 +22,7 @@ async execute (client, message, args){
   const embed = new EmbedBuilder()
   .setTitle("Balance")
   .setThumbnail(user.displayAvatarURL())
-  .setDescription(`WolfCoins de **${user.username}**`)
+  .setDescription(`WolfCoins de **${user}**`)
   .addFields(
     { name: "<:wolfcoin:935657063621726208> WolfCoins en la cartera:", value: `\`${dinerototal}\``, inline: true },
     { name: "<:wolfcoin:935657063621726208> WolfCoins en el banco:", value: `\`${dinerobancototal}\``, inline: true },

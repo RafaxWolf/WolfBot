@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const economia = require('../../Schema/economia-schema')
 const { EmbedBuilder } = require('discord.js')
 
@@ -8,7 +7,7 @@ module.exports = {
 
 async execute (client, message, args){
 
-  let datos = await economia.findOne({ userID: message.author.id })
+let datos = await economia.findOne({ userID: message.author.id })
   if(!datos){
       let datosnuevos = new economia({
           userID: message.author.id,
@@ -20,23 +19,47 @@ async execute (client, message, args){
       return message.channel.send("Tus datos están siendo guardados, use otra vez el comando.")
   }
 
-  let dinerototal = datos.dinero
+let dinerototal = datos.dinero
 
-  let random = Math.floor(Math.random() * 325) + 150
+let random = Math.floor(Math.random() * 325) + 150
 
   await economia.findOneAndUpdate({ userID: message.author.id }, {dinero: dinerototal + Number(random) })
 
-  var companys = ["ctOS", "NASA", "Galilei", "Instagram", "Twitch", "Twitter", "Youtube"]
+  var companys = [
+    "ctOS",
+     "NASA",
+      "Galilei",
+       "Instagram",
+        "Twitch",
+         "Twitter",
+          "Google",
+           "Reddit",
+            "Github",
+             "Kick",
+              "Ubisoft",
+               "Square Enix",
+                "Electronic Arts",
+                 "Mojang",
+                  "Discord",
+                   "Microsoft"
+                   ]
 
-  const companyrandom = companys[Math.floor(Math.random() * companys.length)]
+  var vulnerabilities = ["Path Traversal", "SQL Injection", "Buffer Overflow", "Code Injection", "EternalBlue", "BlueKeep"]
 
-  const embed = new EmbedBuilder()
+const vulnerabilitiesrandom = vulnerabilities[Math.floor(Math.random() * vulnerabilities.length)]
+
+const companyrandom = companys[Math.floor(Math.random() * companys.length)]
+
+const embed = new EmbedBuilder()
   .setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL() })
-  .setTitle("Trabajo")
-  .setColor("GREEN")
-  .setDescription(`**${message.author.username}**`)
-  .addField("Hackeo a", `**${companyrandom}**`, true)
-  .addField("Y gano", `**${random}** <:wolfcoin:935657063621726208> WolfCoins`)
+  .setTitle("Auditoria")
+  .setColor("Green")
+  //.setDescription(`**${message.author.username}**`)
+  .addFields(
+    { name: "Hackeo con éxito a", value: `**${companyrandom}**`, inline: true },
+    { name: "Y recibió", value: `**${random}** <:wolfcoin:935657063621726208> **WolfCoins** como recompensa`, inline: true },
+    { name: "Usando la vulnerabilidad", value: `**${vulnerabilitiesrandom}**` }
+    )
   .setTimestamp()
 
   message.channel.send({ embeds: [embed] })

@@ -22,7 +22,7 @@ let dataGlobal = await economia.find({ guildID: message.guild.id }).sort([["dine
     .setColor("Aqua")
     .setFooter({ text: `Te encuentras en el puesto: ${puestoUsuario}`, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
     .setTimestamp()
-
+      
     message.channel.send({ embeds: [embed] })
 
  }

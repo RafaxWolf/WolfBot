@@ -1,13 +1,17 @@
-const Discord = require("discord.js");
 const path = require('node:path');
 const economy = require('./Schema/economia-schema')
 const levels = require('./Schema/xp-schema')
+const pacmans = require('./pacmans')
 const { DisTube } = require('distube')
 const { SpotifyPlugin } = require('@distube/spotify')
 const { SoundCloudPlugin } = require('@distube/soundcloud')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fs = require('fs');
+const chalk = require("chalk");
+const canalesExcluidos = require('./canalesExcluidos')
+
+const cooldowns = new Map()
 
 //! const util = require('util')
 //! const wait = require('node:timers/promises').setTimeout;
@@ -49,83 +53,76 @@ client.distube = new DisTube(client, {
 })
 
 //* Command Handler
-client.commands = new Discord.Collection();
-let carpetas = fs.readdirSync('./comandos/').map((subCarpetas) => {
-  const archivos = fs.readdirSync(`./comandos/${subCarpetas}`).map((comandos) => {
-    let comando = require(`./comandos/${subCarpetas}/${comandos}`)
-    client.commands.set(comando.name, comando)
-  })
-});
+  client.commands = new Collection();
+    let carpetas = fs.readdirSync('./comandos/').map((subCarpetas) => { // Búsqueda de carpeta donde se aloja el comando
+      const archivos = fs.readdirSync(`./comandos/${subCarpetas}`).map((comandos) => {
+        let comando = require(`./comandos/${subCarpetas}/${comandos}`) // Detectar el comando
+          client.commands.set(comando.name, comando) // Ejecución de comandos
+      })
+  });
 
+//-------------------------------------------------------------------------------------------
 client.on("messageCreate", async (message) => {
 
-const logFileName = 'ConsoleLog.txt'
+  const logFileName = 'ConsoleLog.txt'
 
-const logFilePath = path.join(__dirname, logFileName);
+  const logFilePath = path.join(__dirname, logFileName);
 
-function consoleToRegistry() {
-  const logStream = fs.createWriteStream(logFilePath, { flags: 'a' })
+  function consoleToRegistry() {
+    const logStream = fs.createWriteStream(logFilePath, { flags: 'a' })
     
-    console.log = (message) => {
-      const logMessage = `${message}`
-      logStream.write(logMessage)
-      process.stdout.write(logMessage)
+      console.log = (message) => {
+        const logMessage = `${message}`
+        logStream.write(logMessage)
+        process.stdout.write(logMessage)
+      }
     }
-}
 
 /*   function getCurrentTime() {
     const now = new Date();
     return `[${now.toISOString}]`
   } */
-try {
-  consoleToRegistry()
-} catch (error) {
-  console.log(`[!] Ha ocurrido un Error!\n${error}`)
-}
+    try {
+      consoleToRegistry()
+    } catch (error) {
+      console.log(chalk.redBright(`[!]`) + `Ha ocurrido un Error! \n` + (`${error}`))
+    }
 
 
-console.log(`
-Server Name: [${message.guild.name}]
-  Server ID: ([${message.guild.id}])
-    UserName: [${message.author.username}]
-    UserID: (${message.author.id})
-      Message: ${message.content}
-
-
-`)
+console.log(chalk.greenBright(`Server Name: [${message.guild.name}]\n`) + chalk.blueBright(`Server ID: ([${message.guild.id}])\n`) +
+chalk.cyanBright(`Channel ID: (${message.channel.id})\n`) + chalk.redBright(`User Name: [${message.author.username}]\n`) +
+(`User ID: (${message.author.id})\n`) + (`Message: ${message.content}\n`))
 
  let prefix = "w!"
 
-  if(message.content.startsWith("wolfbot") && message.content.endsWith("test")){
-    message.author.send("asd")
+  if(message.content.includes(":v")){
+    ////message.author.send("[!] | Has incumplido una regla, pero no te preocupes solo tu mensaje sera eliminado por el bien mental del servidor.")
+    message.delete()
+  } else if(message.content.includes(":V")){
+    message.delete()
+  } else if(message.content.includes(":u")){
+    message.delete()
+  } else if(message.content.includes(":U")){
+    message.delete()
+  } else if(message.content.includes(":y")){
+    message.delete()
+  } else if(message.content.includes(":Y")){
+    message.delete()
+  } else if(message.content.includes(";v")){
+    message.delete()
+  } else if(message.content.includes(";V")){
+    message.delete()
+  } else if(message.content.includes(";u")){
+    message.delete()
+  } else if(message.content.includes(";U")){
+    message.delete()
+  } else if(message.content.includes(";y")){
+    message.delete()
+  } else if(message.content.includes(";Y")){
+    message.delete()
   }
 
-  if(message.content.startsWith(":v")){
-    //message.author.send("[!] | Has incumplido una regla, pero no te preocupes solo tu mensaje sera eliminado por el bien mental del servidor.")
-    message.delete()
-  } else if(message.content.startsWith(":V")){
-    message.delete()
-  } else if(message.content.startsWith(":u")){
-    message.delete()
-  } else if(message.content.startsWith(":U")){
-    message.delete()
-  } else if(message.content.startsWith(":y")){
-    message.delete()
-  } else if(message.content.startsWith(":Y")){
-    message.delete()
-  } else if(message.content.startsWith(";v")){
-    message.delete()
-  } else if(message.content.startsWith(";V")){
-    message.delete()
-  } else if(message.content.startsWith(";u")){
-    message.delete()
-  } else if(message.content.startsWith(";U")){
-    message.delete()
-  } else if(message.content.startsWith(";y")){
-    message.delete()
-  } else if(message.content.startsWith(";Y")){
-    message.delete()
-  }
+  // TODO: baneo de Pacmans
 
  if(message.content === prefix) return;
 
@@ -135,7 +132,7 @@ Server Name: [${message.guild.name}]
   const Xpdata = await levels.findOne({ userID: message.author.id, guildID: message.guild.id }) //Datos
 
 if(message.guild && message.guild.id === "338373170463506442"){
-  console.log("¡Access Denied!")
+  console.log(chalk.bgRed("¡Access Denied!"))
   return;
 } else {
   let randomXp
@@ -152,7 +149,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
   } else if(message.content.length > 80){
     randomXp = Math.floor(Math.random() * 75) + 1
   }
-  console.log(`randomXp: ${randomXp}\n`)
+  console.log(chalk.blue(`randomXp: ${randomXp}\n`))
 
     if(!Xpdata){
       const newXpdata = new levels({
@@ -164,10 +161,10 @@ if(message.guild && message.guild.id === "338373170463506442"){
     }
 
     const xpTotal = Xpdata.xp + randomXp
-    console.log(`xpTotal: ${xpTotal}\n`)
-    console.log(`Limite: ${Xpdata.limit}\n`)
+    console.log(chalk.blueBright(`xpTotal: ${xpTotal}\n`))
+    console.log(chalk.cyan(`Limite: ${Xpdata.limit}\n`))
 
-      if(xpTotal >= Xpdata.limit && !Xpdata.level === "20"){
+      if(xpTotal >= Xpdata.limit){
       message.channel.send(`¡Felicidades ${message.author}, has ascendido a nivel **${Xpdata.level + 1}**!`)
      return levels.findOneAndUpdate({ guildID: message.guild.id, userID: message.author.id }, { xp: randomXp, level: Xpdata.level + 1, limit: Xpdata.limit + 500 })
     }
@@ -197,7 +194,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
      }
 
      const pagoTotal = economyData.dinero + randomXp
-     console.log(`pagoTotal: ${pagoTotal}\n\n`)
+     console.log(chalk.green(`pagoTotal: ${pagoTotal}\n\n`))
      //if(isNaN(pagoTotal)) return;
      await economy.findOneAndUpdate({ guildID: message.guild.id, userID: message.author.id }, { dinero: pagoTotal })
 
@@ -209,6 +206,30 @@ if(message.guild && message.guild.id === "338373170463506442"){
 
  const args = message.content.slice(prefix.length).trim().split(/ +/g);
  const command = args.shift().toLowerCase()
+
+ //* Cooldown de los comandos normales
+ const cooldownTime = 5
+
+ if(!cooldowns.has(command)) {
+  cooldowns.set(command, new Map());
+ }
+
+ const now = Date.now()
+  const timestamps = cooldowns.get(command)
+    const cooldownAmount = cooldownTime * 1000
+
+ if(timestamps.has(message.author.id)) {
+  const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+  if(now < expirationTime) {
+    message.delete()
+    const leftTime = (expirationTime - now) / 1000
+    return message.author.send(`Por favor, espera ${leftTime.toFixed(1)} segundos antes de poder usar el comando **\`w!${command}\`**`)
+  }
+ }
+
+ timestamps.set(message.author.id, now)
+ setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
 
 let cmd = client.commands.find((c) => c.name === command || c.alias && c.alias.includes(command));
   if(cmd){
@@ -236,10 +257,10 @@ let cmd = client.commands.find((c) => c.name === command || c.alias && c.alias.i
     message.channel.send({ embeds: [errorEmbed] })
   }
 
- })
+})
 
-//Slash Commands Handler
-client.slashcommands = new Discord.Collection();
+//* Slash Commands Handler
+client.slashcommands = new Collection();
 const slashcommandsFiles = fs.readdirSync("./slashcmd").filter(file => file.endsWith("js"))
 
   for(const file of slashcommandsFiles){
@@ -248,7 +269,7 @@ const slashcommandsFiles = fs.readdirSync("./slashcmd").filter(file => file.ends
     client.slashcommands.set(slash.data.name, slash)
   }
 
-//Events Handler
+//* Events Handler
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
 
@@ -329,14 +350,14 @@ client.distube
 
   }  */
    queue.textChannel.send(
-    `**| ▶️ | Reproduciendo | ▶️ |**\n **\`${song.uploader.name}\`**\n*\`${song.name}\`* - \`[${song.formattedDuration}]\`\nSolicitado por: ${
+    `**| ▶️ | Reproduciendo | ▶️ |** \n**\`${song.uploader.name}\`** \n*\`${song.name} - [${song.formattedDuration}]\`*\nSolicitada por: ${
       song.user
     }\n${status(queue)}`
 )})  
 
-.on('addSong', (queue, song) => 
+.on('addSong', (queue, song) =>  
     queue.textChannel.send(
-      `**| ☑️ | Añadido | ☑️ |**\n **\`${song.uploader.name}\`**\n*\`${song.name}\`* - \`[${song.formattedDuration}]\`\nSolicitada por: ${song.user}`
+      `**| ☑️ | Añadido | ☑️ |** \n**\`${song.uploader.name}\`** \n*\`${song.name} - [${song.formattedDuration}]\`* \nSolicitada por: ${song.user}`
     )
 )
 .on('addList', (queue, playlist) => 
@@ -350,7 +371,7 @@ client.distube
   if (channel) channel.send(`❌ | Un error ha ocurrido: ${e.toString().slice(0, 1974)}`).then(console.error(e))
   else console.error(e)
 })
-.on('empty', message => message.channel.send("El canal de voz esa vació! Saliendo del canal..."))
+.on('empty', message => message.channel.send("[!] El canal de voz actual esta vació\n\n Saliendo..."))
 //.on('empty', interaction => interaction.reply({ content: "El canal de voz esa vació! Saliendo del canal..." }))
 .on('searchNoResult', (message, query) =>
   message.channel.send(`❌ | No se ha encontrado un resultado para \`${query}\``)
@@ -374,8 +395,8 @@ client.distube
 //    .join("\n")}\n*Ingresa cualquiera o espera 60 segundos para cancelar*`
 //  )
 
-.on("searchCancel", message => message.channel.send("❌ | Busqueda cancelada"))
-//.on("searchCancel", interaction => interaction.reply({ content: "❌ | Busqueda cancelada"}))
+.on("searchCancel", message => message.channel.send("❌ | Búsqueda cancelada"))
+//.on("searchCancel", interaction => interaction.reply({ content: "❌ | Búsqueda cancelada"}))
 .on("searchInvalidAnswer", message => {
     return message.channel.send(
     `❌ | Respuesta Invalida, Búsqueda cancelada!`
@@ -411,5 +432,5 @@ function embedNormalBuilder(client, message, color, title, description){
 
 }*/
 
-//Token in .env
+//! Token in .env
 client.login(process.env.TOKEN);

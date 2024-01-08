@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js")
-const Discord = require("discord.js")
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
@@ -24,7 +23,7 @@ module.exports = {
             .setStyle('Danger')
         )
 
-        interaction.reply({ content: 'Acepta los terminos?', components: [row] })
+        interaction.reply({ content: 'Acepta los términos?', components: [row] })
 
         const filter1 = i => i.customId === 'accept'
 
@@ -34,13 +33,13 @@ module.exports = {
         
         collector.on('collect', async i => {
             if (i.customId === 'accept') {
-                await i.update({ content: 'Has aceptado los terminos y condiciones.', ephemeral: true, components: [] })
+                await i.update({ content: 'Has aceptado los términos y condiciones.', ephemeral: true, components: [] })
             }
         });
 
         collector.on('collect', async d => {
             if (d.customId === 'decline') {
-                await d.update({ content: 'Has rechazado los terminos y condiciones.', ephemeral: true, components: [] })
+                await d.update({ content: 'Has rechazado los términos y condiciones.', ephemeral: true, components: [] })
             }
         });
         collector.on('end', collected => console.log(`Collected ${collected.size} items`));

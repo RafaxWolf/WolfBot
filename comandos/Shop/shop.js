@@ -9,7 +9,7 @@ module.exports = {
 async execute (client, message, args){
     const q = items
       .map((value, index) => {
-      return `**${index + 1})** ${value.item}*#${value.Id}*\nDescripcion: *${value.description}* **${value.price}** Wolfcoins!`
+      return `**${index + 1})** ${value.item}*#${value.Id}*\nDescripción: \`*${value.description}*\`\nPrecio: **${value.price}** Wolfcoins!`
         }).join(`\n`)
 
     const shopping = await message.channel.send(`

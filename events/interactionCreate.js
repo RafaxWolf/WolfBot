@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const chalk = require("chalk")
 
 module.exports = {
   name: 'interactionCreate',
@@ -40,6 +41,26 @@ module.exports = {
 
       }
 
+    } else if(interaction.isButton()) {
+      if(interaction.customId === "verification") {
+        const member = interaction.member
+
+        if(!member) return;
+
+        const roleID = "862054591323570186"
+
+        try {
+          const role = interaction.guild.roles.cache.get(roleID)
+
+          if(!role) return interaction.reply({ content: "El rol no pudo ser encontrado!", ephemeral: true })
+
+          await member.roles.add(role)
+          await interaction.reply({ content: "¡Te has verificado exitosamente!\nRecuerda seguir las reglas del servidor", ephemeral: true })
+        } catch (err) {
+          console.log(chalk.redBright("[!] Error al asignar el rol [!]"), err)
+          interaction.reply({ content: "Hubo un error al intentar asignar el Rol!", ephemeral: true })
+        }
+      }
     }
 
   },

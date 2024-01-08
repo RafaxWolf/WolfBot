@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const { EmbedBuilder } = require('discord.js')
 
 module.exports = {
@@ -18,7 +17,7 @@ async execute (client, message, args){
   .setURL(song.url)
   .setThumbnail(song.thumbnail)
   .addFields(
-    { name: "Duracion", value: `\`[${song.formattedDuration}]\`` },
+    { name: "Duración", value: `\`[${song.formattedDuration}]\`` },
     { name: "Volumen", value: `\`${queue.volume}%\``},
     { name: "Nombre del canal", value: `**\`${song.uploader.name}\`**` }
   )
