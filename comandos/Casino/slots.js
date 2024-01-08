@@ -18,10 +18,7 @@ let datos = await economia.findOne({ userID: message.author.id })
     }
 
     let dineronuestro = datos.dinero
-    //let probabilidad = Math.floor(Math.random() * 200) + 1
     let randomMoney = Math.floor(Math.random() * 200) + 100
-
-    // TODO: Hacer mejor los Slots
 
     const emojis = {
       '1': ':mouse:',
@@ -69,8 +66,6 @@ let datos = await economia.findOne({ userID: message.author.id })
       }
     }
 
-    //message.author.send(`El último resultado fue: ${lastResult}`)
-
     if(allEqual){
       await economia.findOneAndUpdate({ userID: message.author.id }, { dinero: dineronuestro + Number(randomMoney) })
       message.channel.send(`**${message.author}** Ha ganado **${randomMoney}** <:wolfcoin:935657063621726208> WolfCoins`)
@@ -79,24 +74,7 @@ let datos = await economia.findOne({ userID: message.author.id })
       message.channel.send(`**${message.author}** Ha perdido **${randomMoney}** <:wolfcoin:935657063621726208> WolfCoins`)
     }
 
-    //var Fail = [":seven: :mouse: :strawberry:", ":seven: :seven: :cherries:", ":seven: :cherries: :strawberry:", ":sunglasses: :strawberry: :mouse:"]
-    //var Win = [":mouse: :mouse: :mouse:", ":strawberry: :strawberry: :strawberry:", ":cherries: :cherries: :cherries:", " :sunglasses: :sunglasses:", ":seven: :seven: :seven:"]
-
-    //var SlotFail = Math.floor(Math.random()*(Fail.length));
-    //var SlotWin = Math.floor(Math.random()*(Win.length));
-
     if(dineronuestro < '200') return message.author.send(`No tienes suficientes <:wolfcoin:935657063621726208> WolfCoins!`)
-
-    //if(probabilidad < 100){
-        //message.channel.send(Fail[SlotFail])
-        //await economia.findOneAndUpdate({ userID: message.author.id }, { dinero: dineronuestro - Number(random) })
-        //message.channel.send(`**${message.author}** Ha perdido **${random}** <:wolfcoin:935657063621726208> WolfCoins`)
-    //}
-    //if(probabilidad > 100){
-        //message.channel.send(Win[SlotWin])
-        //await economia.findOneAndUpdate({ userID: message.author.id }, { dinero: dineronuestro + Number(random) })
-        //message.channel.send(`**${message.author}** Ha ganado **${random}** <:wolfcoin:935657063621726208> WolfCoins`)
-    //}
 
  }
 
