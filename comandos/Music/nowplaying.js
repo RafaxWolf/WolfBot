@@ -16,7 +16,7 @@ execute (client, message, args){
   .setThumbnail(song.thumbnail)
   .addFields(
       { name: "Duración", value: `\`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\``, inline: true },
-      { name: "Visitas", value: `**\`[${song.views}]\`**`, inline: true },
+      { name: "Visitas", value: `**\`[${parseInt(song.views).toLocaleString()}]\`**`, inline: true },
       { name: "Likes | Dislikes", value: `\`[${song.likes}] | [${song.dislikes}]\``, inline: true },
       { name: "Volumen", value: `\`${queue.volume}%\``, inline: true },
       { name: "Nombre del canal", value: `**\`${song.uploader.name}\`**` },

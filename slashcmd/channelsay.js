@@ -30,5 +30,5 @@ module.exports = {
 
       interaction.reply({ content: 'Message sent!', ephemeral: true })
     }
-        
+     
 }

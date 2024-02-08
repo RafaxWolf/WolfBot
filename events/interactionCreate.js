@@ -42,7 +42,7 @@ module.exports = {
       }
 
     } else if(interaction.isButton()) {
-      if(interaction.customId === "verification") {
+      if(interaction.customId === "verification"){
         const member = interaction.member
 
         if(!member) return;
@@ -59,6 +59,40 @@ module.exports = {
         } catch (err) {
           console.log(chalk.redBright("[!] Error al asignar el rol [!]"), err)
           interaction.reply({ content: "Hubo un error al intentar asignar el Rol!", ephemeral: true })
+        }
+      }
+    } else if(interaction.isModalSubmit()){
+      if(interaction.customId === "report"){
+        const bugchannel = client.channels.cache.find(channel => channel.id === "1198523701709254656")
+
+        const bugcategory = interaction.fields.getTextInputValue("category")
+
+        const bugreport = interaction.fields.getTextInputValue("bugreport")
+
+        if(!bugcategory){
+          const reportEmbed = new EmbedBuilder()
+          .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
+          .setColor("DarkRed")
+          .setTitle("¡Reporte de Bug!")
+          .addFields(
+            { name: "**Categoría**", value: "No Proporcionada" },
+            { name: "**Reporte**", value: bugreport },
+          )
+          .setTimestamp()
+
+            bugchannel.send({ embeds: [reportEmbed] })
+        } else if(bugcategory){
+          const reportEmbed = new EmbedBuilder()
+          .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
+          .setColor("DarkRed")
+          .setTitle("¡Reporte de Bug!")
+          .addFields(
+            { name: "**Categoría**", value: bugcategory },
+            { name: "**Reporte**", value: bugreport },
+          )
+          .setTimestamp()
+
+            bugchannel.send({ embeds: [reportEmbed] })
         }
       }
     }

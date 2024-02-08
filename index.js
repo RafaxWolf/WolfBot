@@ -93,7 +93,7 @@ console.log(chalk.greenBright(`Server Name: [${message.guild.name}]\n`) + chalk.
 chalk.cyanBright(`Channel ID: (${message.channel.id})\n`) + chalk.redBright(`User Name: [${message.author.username}]\n`) +
 (`User ID: (${message.author.id})\n`) + (`Message: ${message.content}\n`))
 
- let prefix = "w!"
+ var prefix = "w!"
 
   if(message.content.includes(":v")){
     ////message.author.send("[!] | Has incumplido una regla, pero no te preocupes solo tu mensaje sera eliminado por el bien mental del servidor.")
@@ -202,60 +202,73 @@ if(message.guild && message.guild.id === "338373170463506442"){
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }
 
- if(!message.content.startsWith(prefix)) return;
+ if(message.content.startsWith(prefix) || message.content.startsWith(prefix.toUpperCase())) {
 
- const args = message.content.slice(prefix.length).trim().split(/ +/g);
- const command = args.shift().toLowerCase()
-
- //* Cooldown de los comandos normales
- const cooldownTime = 5
-
- if(!cooldowns.has(command)) {
-  cooldowns.set(command, new Map());
- }
-
- const now = Date.now()
-  const timestamps = cooldowns.get(command)
-    const cooldownAmount = cooldownTime * 1000
-
- if(timestamps.has(message.author.id)) {
-  const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-  if(now < expirationTime) {
-    message.delete()
-    const leftTime = (expirationTime - now) / 1000
-    return message.author.send(`Por favor, espera ${leftTime.toFixed(1)} segundos antes de poder usar el comando **\`w!${command}\`**`)
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase()
+ 
+  //* Cooldown de los comandos normales
+  const cooldownTime = 5
+ 
+  if(!cooldowns.has(command)) {
+   cooldowns.set(command, new Map());
   }
- }
+ 
+  const now = Date.now()
+   const timestamps = cooldowns.get(command)
+     const cooldownAmount = cooldownTime * 1000
+ 
+  if(timestamps.has(message.author.id)) {
+   const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+ 
+   if(now < expirationTime) {
+     message.delete()
+     const leftTime = (expirationTime - now) / 1000
+     return message.author.send(`Por favor, espera ${leftTime.toFixed(1)} segundos antes de poder usar el comando **\`w!${command}\`**`)
+   }
+  }
+ 
+  timestamps.set(message.author.id, now)
+  setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
+ 
+ let cmd = client.commands.find((c) => c.name === command || c.alias && c.alias.includes(command));
 
- timestamps.set(message.author.id, now)
- setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
-
-let cmd = client.commands.find((c) => c.name === command || c.alias && c.alias.includes(command));
-  if(cmd){
-    setTimeout(function(){
-      message.delete()
-    }, 750)
+    if(cmd === "nuke"){
+      try {
+        cmd.execute(client, message, args)
+        } catch (e) {
+          console.log(e)
+          //message.channel.send(`:x: | Error | :x:\n\`${e}\``)
+        }
+    } else if(cmd){
+      
+      setTimeout(function(){
+        message.delete()
+      }, 750)
+  
     if (cmd.inVoiceChannel && !message.member.voice.channel) {
-      return message.channel.send("Debes estar en un canal de voz!")
+      return message.author.send("[!] Debes estar en un canal de voz!")
     }
     try {
       cmd.execute(client, message, args)
-      } catch (e) {
-        console.log(e)
-        message.channel.send(`:x: | Error | :x:\n\`${e}\``)
-      }
-  }
-  if(!cmd) {
-    const errorEmbed = new EmbedBuilder()
-    .setTitle("❌ | Command Type Error")
-    .setDescription(`El comando "**${command}**" no existe!`)
-    .setTimestamp()
-    .setColor("Red")
-    .setFooter({ text: "(Para saber todos los comandos usa: w!help o /help)\n", iconURL: client.user.displayAvatarURL() })
-
-    message.channel.send({ embeds: [errorEmbed] })
-  }
+    } catch (e) {
+      console.log(e)
+      message.channel.send(`:x: | Error | :x:\n\`${e}\``)
+    }
+   }
+   if(!cmd) {
+     const errorEmbed = new EmbedBuilder()
+     .setTitle("❌ | Command Type Error")
+     .setDescription(`El comando "**${command}**" no existe!`)
+     .setTimestamp()
+     .setColor("Red")
+     .setFooter({ text: "(Para saber todos los comandos usa: w!help o /help)\n", iconURL: client.user.displayAvatarURL() })
+ 
+     message.channel.send({ embeds: [errorEmbed] })
+     message.delete()
+   }
+ 
+ }
 
 })
 
@@ -334,9 +347,8 @@ for (const file of eventFiles) {
 //}, 10000)
 
 const status = (queue) => 
-  `Volumen: \`${queue.volume}%\` | Filtro: \`${queue.filters.names.join(', ') || 'Ninguno'}\` | Loop: \`${
-    (queue.repeatMode === 1 ? 'Activado' : 'Desactivado')
-  }\` | Autoplay: \`${queue.autoplay ? 'Activado' : 'Desactivado'}\``
+  //`Volumen: \`${queue.volume}%\` | Filtro: \`${queue.filters.names.join(', ') || 'Ninguno'}\` | Loop: \`${
+  `Volumen: \`${queue.volume}%\` | Loop: \`${(queue.repeatMode === 1 ? 'Activado' : 'Desactivado')}\` | Autoplay: \`${queue.autoplay ? 'Activado' : 'Desactivado'}\``
 
 client.distube
  .on('playSong', (queue, song) => {

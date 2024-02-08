@@ -16,7 +16,6 @@ createEmbed.js
 genderMe.js
 giverole.js
 uploadfile.js
-gacha.js
 testimages.js
 pwned.js
 
@@ -25,7 +24,6 @@ Templates/
 node_modules/
 ffmpeg/
 openai/
-hacking/
 Database/
 .vscode/settings.json
 Schema/gacha-schema.js

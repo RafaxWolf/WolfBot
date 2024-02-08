@@ -5,7 +5,7 @@ module.exports = {
   alias: ["tragamonedas", "tragaperras"],
 
 async execute (client, message, args){
-  
+  if(!message.channel.id === "983166704500744243") return message.author.send("[!] Este comando esta restringido a solo poder usarse en el canal <#983166704500744243>")
 let datos = await economia.findOne({ userID: message.author.id })
   if(!datos) {
     let nuevosdatos = new economia({

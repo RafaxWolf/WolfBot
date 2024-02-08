@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js")
-const Discord = require("discord.js")
 const {  EmbedBuilder } = require("discord.js")
 
 module.exports = {
@@ -9,7 +8,7 @@ module.exports = {
     .addUserOption(option =>
         option
         .setName('user')
-        .setDescription('Usuario al cual ver la informacion')
+        .setDescription('Usuario al cual ver su información')
         .setRequired(true))
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
@@ -43,15 +42,15 @@ module.exports = {
       }
 
       const userInfo = new EmbedBuilder()
-      .setAuthor({ name: "Informacion del usuario:", iconURL: botImage })
+      .setAuthor({ name: "Información del usuario:", iconURL: botImage })
       .setThumbnail(user.displayAvatarURL())
       .setTitle(`Usuario: ${user.tag}`)
       .setFields(
         { name: "ID", value: `${user.id}` },
-        { name: "Mod", value: `${Mod}` },
-        { name: "Hacker", value: `${Hacker}` },
-        { name: "Vip", value: `${Vip}` },
-        { name: "Vac Banned", value: `${Vac}` },
+        { name: "Is a Moderator?", value: `${Mod}` },
+        { name: "Is a Hacker?", value: `${Hacker}` },
+        { name: "Is a Vip?", value: `${Vip}` },
+        { name: "Is Vac Banned?", value: `${Vac}` },
       )
       .setTimestamp()
 

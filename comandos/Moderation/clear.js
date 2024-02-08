@@ -7,9 +7,6 @@ module.exports = {
 
 execute (client, message, args){
 
-  var botPerms = client.user.permissions.has(PermissionsBitField.Flags.Administrator)
-  if(!botPerms) return message.reply({ content: "❌ | |No tengo los permisos necesarios!" })
-
   var perms = message.member.permissions.has(PermissionsBitField.Flags.Administrator)
   if(!perms) return message.reply({ content: "❌ | No tienes los permisos necesarios!" })
 

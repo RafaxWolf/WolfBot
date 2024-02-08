@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const { EmbedBuilder, PermissionsBitField } = require('discord.js')
 
 module.exports = {
@@ -7,20 +6,24 @@ module.exports = {
 
 execute (client, message, args){
 
-    var botPerms = client.user.permissions.has(PermissionsBitField.Flags.Administrator)
-    if(!botPerms) return message.reply({ content: "❌ | |No tengo los permisos necesarios!" })
-
-    var perms = message.member.permissions.has(PermissionsBitField.Flags.Administrator)
-    if (!perms) return message.channel.send("¡No tienes los permisos necesarios!")
+    const perms = message.member.permissions.has(PermissionsBitField.Flags.Administrator)
+    if (!perms) return message.author.send("❌ | ¡No tienes los permisos necesarios!")
   
-    var posicion = message.channel.position;
+    const position = message.channel.position;
   
     message.channel.clone().then(ch => {
       message.channel.delete()
   
-      ch.setPosition(posicion)
+      ch.setPosition(position)
 
-      client.channels.cache.get(ch.id)//.send({ embeds: [nuked] })
+      const nukedEmbed = new EmbedBuilder()
+      .setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL() })
+      .setTitle("¡Canal Nukeado!")
+      .setDescription(`¡El canal **${ch.name}** ha sido Nukeado por ${message.author}!`)
+      .setTimestamp()
+      .setColor("DarkRed")
+
+      client.channels.cache.get(ch.id).send({ embeds: [nukedEmbed] })
     })
 
  }
