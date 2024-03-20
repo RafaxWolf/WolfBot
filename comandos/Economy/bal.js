@@ -6,7 +6,7 @@ module.exports = {
   alias: ["balance"],
 
 async execute (client, message, args){
-    
+
   let user = message.mentions.users.first() || message.author
 
   if(user === client.user) return message.channel.send("[!] No tienes permisos suficientes...")

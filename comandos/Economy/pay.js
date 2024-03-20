@@ -29,7 +29,7 @@ async execute (client, message, args){
           dinerobanco: 0
       })
       await peo.save()
-      return message.channel.send(`✅ | Los datos de ${user} estan siendo guardados, vuelve a usar el comando.`)
+      return message.channel.send(`✅ | Los datos de ${user} están siendo guardados, vuelve a usar el comando.`)
   }
 
   let dinerototal = datosnuestros.dinero

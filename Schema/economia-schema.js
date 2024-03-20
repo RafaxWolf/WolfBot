@@ -12,10 +12,6 @@ const economia = new Schema({
         type: Number,
         default: 0
     },
-    fichas: {
-        type: Number,
-        default: 0
-    },
 //    id: ObjectId
 });
 

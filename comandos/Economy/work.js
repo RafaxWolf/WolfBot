@@ -26,7 +26,7 @@ let random = Math.floor(Math.random() * 325) + 150
   await economia.findOneAndUpdate({ userID: message.author.id }, {dinero: dinerototal + Number(random) })
 
   var companys = [
-    "ctOS",
+    "Blume",
      "NASA",
       "Galilei",
        "Instagram",
@@ -44,7 +44,14 @@ let random = Math.floor(Math.random() * 325) + 150
                    "Microsoft"
                    ]
 
-  var vulnerabilities = ["Path Traversal", "SQL Injection", "Buffer Overflow", "Code Injection", "EternalBlue", "BlueKeep"]
+  var vulnerabilities = [
+    "Path Traversal",
+     "SQL Injection",
+      "Buffer Overflow",
+       "Code Injection",
+        "EternalBlue",
+         "BlueKeep",
+          "Log Poisoning"]
 
 const vulnerabilitiesrandom = vulnerabilities[Math.floor(Math.random() * vulnerabilities.length)]
 
@@ -56,8 +63,8 @@ const embed = new EmbedBuilder()
   .setColor("Green")
   //.setDescription(`**${message.author.username}**`)
   .addFields(
-    { name: "Hackeo con éxito a", value: `**${companyrandom}**`, inline: true },
-    { name: "Y recibió", value: `**${random}** <:wolfcoin:935657063621726208> **WolfCoins** como recompensa`, inline: true },
+    { name: "Vulnero a la compañía", value: `**${companyrandom}**`, inline: true },
+    { name: "Y como recompensa recibió", value: `**${random}** <:wolfcoin:935657063621726208> **WolfCoins** como recompensa`, inline: true },
     { name: "Usando la vulnerabilidad", value: `**${vulnerabilitiesrandom}**` }
     )
   .setTimestamp()

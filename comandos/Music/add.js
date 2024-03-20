@@ -23,7 +23,7 @@ module.exports = {
           member: message.member,
           textChannel: message.channel,
           message,
-          position: 1
+          position: 100
         }) // Reproduce la canción y/o video
 
    }

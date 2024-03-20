@@ -1,0 +1,51 @@
+Comandos normales
+
+module.exports = {
+  name: "",
+  alias: [""],
+
+execute (client, message, args){
+
+  
+
+ }
+
+}
+
+Slash Commands
+
+const { SlashCommandBuilder } = require("discord.js")
+
+module.exports = {
+    data: new SlashCommandBuilder()
+    .setName("")
+    .setDescription(""),
+
+    async run(client, interaction){
+      
+      
+
+    }
+        
+}
+
+Eventos
+
+module.exports = {
+  name: '',
+  execute(client) {
+
+  },
+};
+
+Schemas
+
+const { Schema, model} = require("mongoose")
+
+const 'randomName' = new Schema({
+  guildID: String,
+  userID: String
+
+});
+
+module.exports = model(''randomName'', 'randomName')

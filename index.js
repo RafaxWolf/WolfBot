@@ -42,7 +42,8 @@ client.distube = new DisTube(client, {
   emitAddSongWhenCreatingQueue: false,
   emitAddListWhenCreatingQueue: false,
   leaveOnEmpty: true,
-  searchSongs: 10,
+  searchSongs: 15,
+  searchCooldown: 20,
   plugins: [
     new SpotifyPlugin({
       emitEventsAfterFetching: true
@@ -53,13 +54,11 @@ client.distube = new DisTube(client, {
 })
 
 //* Command Handler
-  client.commands = new Collection();
-    let carpetas = fs.readdirSync('./comandos/').map((subCarpetas) => { // Búsqueda de carpeta donde se aloja el comando
-      const archivos = fs.readdirSync(`./comandos/${subCarpetas}`).map((comandos) => {
-        let comando = require(`./comandos/${subCarpetas}/${comandos}`) // Detectar el comando
-          client.commands.set(comando.name, comando) // Ejecución de comandos
-      })
-  });
+const commandHandler = require("./functions/commandsHandler")
+const slashCommandHandler = require("./functions/slashCommandsHandler")
+
+client.commands = commandHandler
+client.slashCommands = slashCommandHandler
 
 //-------------------------------------------------------------------------------------------
 client.on("messageCreate", async (message) => {
@@ -233,15 +232,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
  
  let cmd = client.commands.find((c) => c.name === command || c.alias && c.alias.includes(command));
 
-    if(cmd === "nuke"){
-      try {
-        cmd.execute(client, message, args)
-        } catch (e) {
-          console.log(e)
-          //message.channel.send(`:x: | Error | :x:\n\`${e}\``)
-        }
-    } else if(cmd){
-      
+  if(cmd){
       setTimeout(function(){
         message.delete()
       }, 750)
@@ -256,6 +247,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
       message.channel.send(`:x: | Error | :x:\n\`${e}\``)
     }
    }
+
    if(!cmd) {
      const errorEmbed = new EmbedBuilder()
      .setTitle("❌ | Command Type Error")
@@ -271,16 +263,6 @@ if(message.guild && message.guild.id === "338373170463506442"){
  }
 
 })
-
-//* Slash Commands Handler
-client.slashcommands = new Collection();
-const slashcommandsFiles = fs.readdirSync("./slashcmd").filter(file => file.endsWith("js"))
-
-  for(const file of slashcommandsFiles){
-    const slash = require(`./slashcmd/${file}`)
-    console.log(`Slash Commands - ${file} cargado.`)
-    client.slashcommands.set(slash.data.name, slash)
-  }
 
 //* Events Handler
 const eventsPath = path.join(__dirname, 'events');
@@ -394,7 +376,7 @@ client.distube
 .on("searchResult", (message, result) => {
   let i = 0
   embedNormalBuilder(client, message, "Yellow", "**Elige una de las opciones de abajo**", `${result.map(song => `**${++i}**.) **\`${song.uploader.name}\`** | *${song.name}* - *\`[${song.formattedDuration}]\`*`)
-.join("\n")}\n*Elige cualquiera o espera 60 segundos para cancelar.*`)
+.join("\n")}\n*Elige cualquier opcion o espera 20 segundos para cancelar.*`)
 })
 //.on("searchResult", (interaction, result) => {
 //  let i = 0
