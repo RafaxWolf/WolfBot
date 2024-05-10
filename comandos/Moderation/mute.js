@@ -10,7 +10,7 @@ execute (client, message, args){
   var perms = message.member.permissions.has(PermissionsBitField.Flags.ManageMessages) //permisos del mod
   if(perms) {
 
-     const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) //mencion
+     const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) //mención
 
   if(user) {
 
@@ -35,7 +35,7 @@ execute (client, message, args){
     },ms(args[1]));
 
   }else {
-    message.channel.send("Usuario desconocido!") //err de no mencion
+    message.channel.send("Usuario desconocido!") //err de no mención
   }
   message.delete({timeout: 100})
   }else {

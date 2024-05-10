@@ -1,10 +1,3 @@
-////const moment = require('moment');
-////const format = require("moment")
-////const tz = require('moment-timezone')
-////require("dotenv").config();
-
-////const { CHANNEL_ID, TIMEZONE, FORMAT, UPDATE_INTERVAL } = process.env;
-
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js")
 const fs = require("fs")
 const chalk = require("chalk")
@@ -13,13 +6,12 @@ module.exports = {
   name: 'ready',
   async execute(client) {
 
-// TODO: Sistema de Verificación
+//Sistema de Verificación
 
 const channelID = '1063533274233852005';
 const filePath = "./events/verification_message_id.json";
 
 try {
-  
   let data = {};
   if(fs.existsSync(filePath)) {
     data = fs.readFileSync(filePath, 'utf-8')
@@ -102,50 +94,16 @@ try {
   console.log(chalk.bgRed("[!] Error al Leer/Escribir al archivo [!]\n"), err)
 }
 
-    ////const timeNow = moment().tz(TIMEZONE).format(FORMAT);
-/*   setInterval(() => {
-    const timeNowUpdate = moment().tz(TIMEZONE).format(FORMAT)
-    const clockChannel = client.channels.cache.get("1078813186737840209")
-
-    if(clockChannel) {
-      clockChannel.setName(`🕒 ${timeNowUpdate}`)
-        .then(updated => console.log(`Reloj actualizado: ${updated.name}`))
-        .catch(console.error);
-    } else {
-      console.log('[!] Canal de voz/texto no encontrado!')
-    }
-  }, UPDATE_INTERVAL) */
-/*       clockChannel.edit({ name: `🕒 ${timeNowUpdate}`}, 'Clock update')
-          .catch(console.error)
-  }, UPDATE_INTERVAL) */
-/*
-    const thwClockChannel = client.channels.cache.get(CHANNEL_THW)
-
-      thwClockChannel.edit({ name: `🕒 ${timeNow}` }, 'Clock update')
-        .catch(console.error)
-
-      setInterval(() => {
-    const timeNowUpdate = moment().tz(TIMEZONE).format(FORMAT)
-      thwClockChannel.edit({ name: `🕒 ${timeNowUpdate}`}, 'Clock update')
-          .catch(console.error)
-}, UPDATE_INTERVAL) */
-
-//    memberCountChannel.edit({ name: `👥 ${memberCount}` }, 'Member count')
-//      .catch(console.error)
-
-//    setInterval(() => {
-//    const newMemberCount = guild.members.cache.filter(member => !member.user.bot).size;
-//    memberCountChannel.edit({ name: `👥 ${newMemberCount}` }, 'Member count')
-//      .catch(console.error)
-//}, 10000)
-
-    console.log(`Logged in as ${client.user.tag}.\n`);
+    //Encendido del bot
+    console.log(chalk.cyanBright(`Logged in as ${client.user.tag}.\n`));
     client.user.setPresence({ activities: [{ name: "w!help - /help" }], status: "dnd"});
 
+    //Votaciones y likes
     const poll = require('../poll')
     const likes = require('../likes')
 
     poll(client)
     likes(client)
+    
   },
 };

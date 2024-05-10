@@ -8,7 +8,7 @@ module.exports = {
 async execute (client, message, args){
 
     let member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-    if(!member) return message.author.send(":x: | Para saber la informacion de un usuario primero debes mencionarlo!");
+    if(!member) return message.author.send(":x: | Para saber la información de un usuario primero debes mencionarlo!");
 
     if(!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) return message.author.send(":x: | No eres un moderador")      
 

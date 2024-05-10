@@ -1,12 +1,13 @@
+const { PermissionsBitField } = require('discord.js')
 const economia = require('../../Schema/economia-schema')
 
 module.exports = {
   name: "addmoney",
-  alias: ["addm"],
+  alias: ["añadir-dinero"],
 
 async execute (client, message, args){
 
-  var perms = message.member.permissions.has("ADMINISTRATOR")
+  var perms = message.member.permissions.has(PermissionsBitField.Flags.Administrator)
   if(!perms) return message.author.send("❌ | No puedes usar este comando!")
 
   const user = message.mentions.users.first()

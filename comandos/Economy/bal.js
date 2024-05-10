@@ -24,9 +24,9 @@ async execute (client, message, args){
   .setThumbnail(user.displayAvatarURL())
   .setDescription(`WolfCoins de **${user}**`)
   .addFields(
-    { name: "<:wolfcoin:935657063621726208> WolfCoins en la cartera:", value: `\`${dinerototal}\``, inline: true },
-    { name: "<:wolfcoin:935657063621726208> WolfCoins en el banco:", value: `\`${dinerobancototal}\``, inline: true },
-    { name: "<:wolfcoin:935657063621726208> WolfCoins totales:", value: `\`${dinerototal + dinerobancototal}\``, inline: true }
+    { name: "<:wolfcoin:935657063621726208> WolfCoins en la cartera:", value: `\`${parseInt(dinerototal).toLocaleString()}\``, inline: true },
+    { name: "<:wolfcoin:935657063621726208> WolfCoins en el banco:", value: `\`${parseInt(dinerobancototal).toLocaleString()}\``, inline: true },
+    { name: "<:wolfcoin:935657063621726208> WolfCoins totales:", value: `\`${parseInt(dinerototal + dinerobancototal).toLocaleString()}\``, inline: true }
 //    { name: "ObjectId" , value: `${ObjectId}` }
   )
   .setColor("Green")

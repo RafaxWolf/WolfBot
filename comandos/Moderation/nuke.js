@@ -9,6 +9,7 @@ execute (client, message, args){
     const perms = message.member.permissions.has(PermissionsBitField.Flags.Administrator)
     if (!perms) return message.author.send("❌ | ¡No tienes los permisos necesarios!")
   
+  setTimeout(() => {
     const position = message.channel.position;
   
     message.channel.clone().then(ch => {
@@ -25,6 +26,7 @@ execute (client, message, args){
 
       client.channels.cache.get(ch.id).send({ embeds: [nukedEmbed] })
     })
+  }, 1000)
 
  }
 

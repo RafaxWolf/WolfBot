@@ -1,6 +1,7 @@
 module.exports = (client) => {
     const channelLikes = [
-        '1001987746442772561', '1001990780925251634'
+        //'1001987746442772561',
+        '1001990780925251634'
     ]
 
     const addLikes = message => {

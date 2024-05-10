@@ -38,7 +38,7 @@ require('./conexion')
 
 client.distube = new DisTube(client, {
   leaveOnStop: false,
-  emitNewSongOnly: true,
+  emitNewSongOnly: false,
   emitAddSongWhenCreatingQueue: false,
   emitAddListWhenCreatingQueue: false,
   leaveOnEmpty: true,
@@ -238,13 +238,14 @@ if(message.guild && message.guild.id === "338373170463506442"){
       }, 750)
   
     if (cmd.inVoiceChannel && !message.member.voice.channel) {
-      return message.author.send("[!] Debes estar en un canal de voz!")
+      return message.author.send("❌ | Debes estar en un canal de voz!")
     }
+
     try {
       cmd.execute(client, message, args)
     } catch (e) {
       console.log(e)
-      message.channel.send(`:x: | Error | :x:\n\`${e}\``)
+      message.channel.send(`[❌ | Error | ❌]\n\`${e}\``)
     }
    }
 
@@ -295,54 +296,12 @@ for (const file of eventFiles) {
   
 }
 
-
-//?  setInterval(() => {
-//?  var general = client.channels.cache.find(channel => channel.id === '1001992290174242877');
-//?  general.send("")
-//?  }, 60000)
-
-// TODO: verificación para entrar al server
-//client.on("messageCreate", message => {
-//  if(message.channel.id === "927605760152707172"){
-//      if(message.author.bot) return;
-
-//      if(message.content === "Acepto"){
-//          message.member.roles.add("862054591323570186").then(message.member.roles.add("937229695966117888"));
-//          message.author.send("Gracias por verificarte\nPara que no te banen lee las normas");
-//          message.delete();
-//      }
-//      else{
-//          message.author.send("Para verificarte tienes que poner el mensaje **Acepto**\nSi tienes problemas habla con un Admin");
-//          message.delete();
-//      }
-//    }
-//});
-
-//Distube CMD'S
-//let guild = client.guilds.cache.get("852588155126677504")
-
-//setInterval(() => {
-//  let asd = client.channels.cache.get("991746789034184725")
-//  var asdf = ['ASD', 'FGH', 'JKL', 'Ñ & Q', 'WER', 'TYU', 'IOP']
-//  var randomASD = Math.floor(Math.random()*(asdf.length))
-//  asd.send(asdf[randomASD])
-//}, 10000)
-
 const status = (queue) => 
   //`Volumen: \`${queue.volume}%\` | Filtro: \`${queue.filters.names.join(', ') || 'Ninguno'}\` | Loop: \`${
   `Volumen: \`${queue.volume}%\` | Loop: \`${(queue.repeatMode === 1 ? 'Activado' : 'Desactivado')}\` | Autoplay: \`${queue.autoplay ? 'Activado' : 'Desactivado'}\``
 
 client.distube
  .on('playSong', (queue, song) => {
-/*   if(song && song.name && bannedSongsName.includes(song.name)) {
-    distube.stop(message)
-    const voiceChannel = message.member.voice.channel
-    if(voiceChannel) {
-      voiceChannel.leave();
-    }
-    message.reply("❌ | Esta Canción/Video ha sido baneada del sistema de música!")
-
-  }  */
    queue.textChannel.send(
     `**| ▶️ | Reproduciendo | ▶️ |** \n**\`${song.uploader.name}\`** \n*\`${song.name} - [${song.formattedDuration}]\`*\nSolicitada por: ${
       song.user
