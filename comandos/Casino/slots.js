@@ -1,24 +1,25 @@
-const economia = require('../../Schema/economia-schema')
+const economia = require('../../Schema/economia-schema');
 
 module.exports = {
   name: "slots",
   alias: ["tragamonedas", "tragaperras"],
 
-async execute (client, message, args){
-  if(!message.channel.id === "983166704500744243") return message.author.send("[!] Este comando esta restringido a solo poder usarse en el canal <#983166704500744243>")
-let datos = await economia.findOne({ userID: message.author.id })
-  if(!datos) {
-    let nuevosdatos = new economia({
+  async execute(client, message, args) {
+    //if (message.channel.id !== "983166704500744243") return message.author.send("[!] Este comando está restringido y solo puede usarse en el canal <#983166704500744243>");
+
+    let datos = await economia.findOne({ userID: message.author.id });
+    if (!datos) {
+      let nuevosdatos = new economia({
         userID: message.author.id,
         dinero: 0,
         dinerobanco: 0
-    })
-    await nuevosdatos.save()
-    return message.channel.send("Tus datos están siendo guardados, use otra vez el comando.")
+      });
+      await nuevosdatos.save();
+      return message.channel.send("Tus datos están siendo guardados, use nuevamente el comando.");
     }
 
-    let dineronuestro = datos.dinero
-    let randomMoney = Math.floor(Math.random() * 200) + 100
+    //let dineronuestro = datos.dinero;
+    //let randomMoney = Math.floor(Math.random() * 200) + 100;
 
     const emojis = {
       '1': ':mouse:',
@@ -26,56 +27,30 @@ let datos = await economia.findOne({ userID: message.author.id })
       '3': ':cherries:',
       '4': ':sunglasses:',
       '5': ':seven:',
-    }
+    };
 
-    let randomNumbers = ''
-    let lastResult = ''
+    let randomNumbers = '';
+    let matchCount = 0;
 
-    for(let i = 0; i < 5; i++){
+    for (let i = 0; i < 5; i++) {
       const randomNumber = Math.floor(Math.random() * 5) + 1;
-      randomNumbers += randomNumber.toString()
+      randomNumbers += randomNumber.toString();
     }
 
-    let resultWithEmojis = ''
+    const resultWithEmojis = randomNumbers.split('').map(num => emojis[num]).join('');
 
-    for(const num of randomNumbers) {
-      resultWithEmojis += emojis[num]
-    }
-    const sentMessage = await message.channel.send(`Resultado: ${resultWithEmojis}`)
+    const sentMessage = await message.channel.send(`Slots: ${resultWithEmojis}`);
 
-    const allEqual = randomNumbers.split('').every((val, i, arr) => val === arr[0])
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const delay = 1000
-    for(let i = 0; i < 2; i++){
-      await new Promise((resolve) => setTimeout(resolve, delay))
-      randomNumbers = ''
-      for(let j = 0; j < 5; j++){
-        const randomNumber = Math.floor(Math.random() * 5) + 1
-        randomNumbers += randomNumber.toString()
-      }
-
-      resultWithEmojis = ''
-      for(const num of randomNumbers) {
-        resultWithEmojis += emojis[num]
-      }
-
-      await sentMessage.edit(`Resultado: ${resultWithEmojis}`)
-
-      if(i === 1) {
-        lastResult = resultWithEmojis
-      }
+    if (randomNumbers.split('').some((val, i, arr) => val === arr[i + 1] && val === arr[i + 2])) {
+      matchCount++;
     }
 
-    if(allEqual){
-      await economia.findOneAndUpdate({ userID: message.author.id }, { dinero: dineronuestro + Number(randomMoney) })
-      message.channel.send(`**${message.author}** Ha ganado **${randomMoney}** <:wolfcoin:935657063621726208> WolfCoins`)
+    if (matchCount > 0) {
+      message.channel.send("asd WON! **W.I.P** \n*WolfBot Signature.*");
     } else {
-      await economia.findOneAndUpdate({ userID: message.author.id }, { dinero: dineronuestro - Number(randomMoney) })
-      message.channel.send(`**${message.author}** Ha perdido **${randomMoney}** <:wolfcoin:935657063621726208> WolfCoins`)
+      message.channel.send("dsa LOSE! **W.I.P** \n*WolfBot Signature.*");
     }
-
-    if(dineronuestro < '200') return message.author.send(`No tienes suficientes <:wolfcoin:935657063621726208> WolfCoins!`)
-
- }
-
-}
+  }
+};
