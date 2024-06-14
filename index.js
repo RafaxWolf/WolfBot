@@ -1,15 +1,28 @@
+//*---------------------------------------------Necessary---------------------------------------------
+
+//*JavaScript
+const fs = require('fs');
 const path = require('node:path');
-const economy = require('./Schema/economia-schema')
-const levels = require('./Schema/xp-schema')
-const pacmans = require('./pacmans')
+const chalk = require("chalk");
+
+//*Discord.js
+const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+
+//*Distube
 const { DisTube } = require('distube')
 const { SpotifyPlugin } = require('@distube/spotify')
-const { SoundCloudPlugin } = require('@distube/soundcloud')
-const { YtDlpPlugin } = require('@distube/yt-dlp')
-const { Client, GatewayIntentBits, EmbedBuilder, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const fs = require('fs');
-const chalk = require("chalk");
+const { YtDlpPlugin } = require("@distube/yt-dlp")
+
+//*---------------------------------------------Necessary---------------------------------------------
+
+//*Schemas
+const economy = require('./Schema/economia-schema')
+const levels = require('./Schema/xp-schema')
+
+//*Random
+const pacmans = require('./pacmans')
 const canalesExcluidos = require('./canalesExcluidos')
+
 
 const cooldowns = new Map()
 
@@ -48,12 +61,11 @@ client.distube = new DisTube(client, {
     new SpotifyPlugin({
       emitEventsAfterFetching: true
     }),
-    new SoundCloudPlugin(),
-    new YtDlpPlugin()
+    new YtDlpPlugin(),
   ]
 })
 
-//* Command Handler
+//* Functions
 const commandHandler = require("./functions/commandsHandler")
 const slashCommandHandler = require("./functions/slashCommandsHandler")
 
@@ -63,36 +75,15 @@ client.slashCommands = slashCommandHandler
 //-------------------------------------------------------------------------------------------
 client.on("messageCreate", async (message) => {
 
-  const logFileName = 'ConsoleLog.txt'
-
-  const logFilePath = path.join(__dirname, logFileName);
-
-  function consoleToRegistry() {
-    const logStream = fs.createWriteStream(logFilePath, { flags: 'a' })
-    
-      console.log = (message) => {
-        const logMessage = `${message}`
-        logStream.write(logMessage)
-        process.stdout.write(logMessage)
-      }
-    }
-
-/*   function getCurrentTime() {
-    const now = new Date();
-    return `[${now.toISOString}]`
-  } */
-    try {
-      consoleToRegistry()
-    } catch (error) {
-      console.log(chalk.redBright(`[!]`) + `Ha ocurrido un Error! \n` + (`${error}`))
-    }
-
-
-console.log(chalk.greenBright(`Server Name: [${message.guild.name}]\n`) + chalk.blueBright(`Server ID: ([${message.guild.id}])\n`) +
-chalk.cyanBright(`Channel ID: (${message.channel.id})\n`) + chalk.redBright(`User Name: [${message.author.username}]\n`) +
-(`User ID: (${message.author.id})\n`) + (`Message: ${message.content}\n`))
-
  var prefix = "w!"
+
+  console.log(chalk.greenBright(`Server Name: [${message.guild.name}]\n`) +
+   chalk.blueBright(`Server ID: ([${message.guild.id}])\n`) +
+    chalk.cyanBright(`Channel ID: (${message.channel.id})\n`) +
+     chalk.redBright(`User Name: [${message.author.username}]\n`) +
+      (`User ID: (${message.author.id})\n`) + (`Message: ${message.content}\n`))
+
+  //TODO: baneo de Pacmans
 
   if(message.content.includes(":v")){
     ////message.author.send("[!] | Has incumplido una regla, pero no te preocupes solo tu mensaje sera eliminado por el bien mental del servidor.")
@@ -121,8 +112,6 @@ chalk.cyanBright(`Channel ID: (${message.channel.id})\n`) + chalk.redBright(`Use
     message.delete()
   }
 
-  // TODO: baneo de Pacmans
-
  if(message.content === prefix) return;
 
  if(message.author.bot) return;
@@ -148,7 +137,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
   } else if(message.content.length > 80){
     randomXp = Math.floor(Math.random() * 75) + 1
   }
-  console.log(chalk.blue(`randomXp: ${randomXp}\n`))
+  console.log(chalk.blue(`randomXp: ${randomXp}`))
 
     if(!Xpdata){
       const newXpdata = new levels({
@@ -160,8 +149,8 @@ if(message.guild && message.guild.id === "338373170463506442"){
     }
 
     const xpTotal = Xpdata.xp + randomXp
-    console.log(chalk.blueBright(`xpTotal: ${xpTotal}\n`))
-    console.log(chalk.cyan(`Limite: ${Xpdata.limit}\n`))
+    console.log(chalk.blueBright(`xpTotal: ${xpTotal}`))
+    console.log(chalk.cyan(`Limite: ${Xpdata.limit}`))
 
       if(xpTotal >= Xpdata.limit){
       message.channel.send(`¡Felicidades ${message.author}, has ascendido a nivel **${Xpdata.level + 1}**!`)
@@ -244,12 +233,10 @@ if(message.guild && message.guild.id === "338373170463506442"){
     try {
       cmd.execute(client, message, args)
     } catch (e) {
-      console.log(e)
+      console.error(e)
       message.channel.send(`[❌ | Error | ❌]\n\`${e}\``)
     }
-   }
-
-   if(!cmd) {
+   } else {
      const errorEmbed = new EmbedBuilder()
      .setTitle("❌ | Command Type Error")
      .setDescription(`El comando "**${command}**" no existe!`)
@@ -302,11 +289,13 @@ const status = (queue) =>
 
 client.distube
  .on('playSong', (queue, song) => {
-   queue.textChannel.send(
-    `**| ▶️ | Reproduciendo | ▶️ |** \n**\`${song.uploader.name}\`** \n*\`${song.name} - [${song.formattedDuration}]\`*\nSolicitada por: ${
+    queue.textChannel.send(
+      `**| ▶️ | Reproduciendo | ▶️ |** \n**\`${song.uploader.name}\`** \n*\`${song.name} - [${song.formattedDuration}]\`*\nSolicitada por: ${
       song.user
-    }\n${status(queue)}`
-)})  
+      }\n${status(queue)}`
+    )
+  } 
+)  
 
 .on('addSong', (queue, song) =>  
     queue.textChannel.send(
@@ -325,41 +314,26 @@ client.distube
   else console.error(e)
 })
 .on('empty', message => message.channel.send("[!] El canal de voz actual esta vació\n\n Saliendo..."))
-//.on('empty', interaction => interaction.reply({ content: "El canal de voz esa vació! Saliendo del canal..." }))
 .on('searchNoResult', (message, query) =>
   message.channel.send(`❌ | No se ha encontrado un resultado para \`${query}\``)
 )
-//.on('searchNoResult', (interaction, query) =>
-//  interaction.reply({ content: `❌ | No se ha encontrado un resultado para \`${query}\`` })
-//)
-.on("searchResult", (message, result) => {
+.on("searchResult", async(message, result) => {
   let i = 0
-  embedNormalBuilder(client, message, "Yellow", "**Elige una de las opciones de abajo**", `${result.map(song => `**${++i}**.) **\`${song.uploader.name}\`** | *${song.name}* - *\`[${song.formattedDuration}]\`*`)
+  const search = await embedNormalBuilder(client, message, "Yellow", "**Elige una de las opciones de abajo**", `${result.map(song => `**${++i}**.) **\`${song.uploader.name}\`** | *${song.name}* - *\`[${song.formattedDuration}]\`*`)
 .join("\n")}\n*Elige cualquier opcion o espera 20 segundos para cancelar.*`)
-})
-//.on("searchResult", (interaction, result) => {
-//  let i = 0
-//  embedSlashBuilder(client, interaction, "Yellow", "**Elige una de las opciones de abajo**", `${result.map(song => `**${++i}**.) **\`${song.uploader.name}\`** | *${song.name}* - *\`[${song.formattedDuration}]\`*`)
-//.join("\n")}\n*Elige cualquiera o espera 60 segundos para cancelar.*`)
-//})
-//  message.channel.send(
-//    `**Elige una de las opciones de abajo**\n${result
-//    .map(song => `**${++i}**. **\`${song.uploader.name}\`** | ${song.name} - \`${song.formattedDuration}\``)
-//    .join("\n")}\n*Ingresa cualquiera o espera 60 segundos para cancelar*`
-//  )
 
+  setTimeout(() => {
+    search.delete().catch(console.error)
+  }, 20000)
+
+})
 .on("searchCancel", message => message.channel.send("❌ | Búsqueda cancelada"))
-//.on("searchCancel", interaction => interaction.reply({ content: "❌ | Búsqueda cancelada"}))
 .on("searchInvalidAnswer", message => {
     return message.channel.send(
     `❌ | Respuesta Invalida, Búsqueda cancelada!`
   )
 })
-//.on("searchInvalidAnswer", interaction => {
-//    return interaction.reply({
-//    content: `❌ | Respuesta Invalida, Búsqueda cancelada!`
-//  })
-//})
+
 .on("searchDone", () => {})
 
 //Embeds
@@ -373,17 +347,6 @@ function embedNormalBuilder(client, message, color, title, description){
   return message.channel.send({ embeds: [embed] })
 
 }
-
-/*function embedSlashBuilder(client, interaction, color, title, description){
-
-  let embed = new EmbedBuilder()
-  .setColor(color)
-  .setFooter({ text: `${interaction.author.username}`, iconURL: `${interaction.author.displayAvatarURL()}` })
-  if(title) embed.setTitle(title)
-  if(description) embed.setDescription(description)
-  return interaction.reply({ embeds: [embed] })
-
-}*/
 
 //! Token in .env
 client.login(process.env.TOKEN);

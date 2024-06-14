@@ -19,6 +19,8 @@ giverole.js
 uploadfile.js
 testimages.js
 pwned.js
+Dockerfile
+*.dockerignore
 
 # Directories
 Templates/

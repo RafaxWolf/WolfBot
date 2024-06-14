@@ -38,8 +38,8 @@ module.exports = {
             )
         .addNumberOption(option => 
             option
-            .setName("sdgf")
-            .setDescription("sdafh")))
+            .setName("number")
+            .setDescription("asd")))
     .setDMPermission(false),
 
     async run(client, interaction){

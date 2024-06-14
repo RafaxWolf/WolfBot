@@ -32,7 +32,10 @@ async execute (client, message, args){
   .setColor("Green")
   .setTimestamp()
 
-  message.channel.send({ embeds: [embed] })
+  const reply = await message.channel.send({ embeds: [embed] })
+  setTimeout(() => {
+    reply.delete().catch(console.error)
+  }, 15000)
 
  }
 

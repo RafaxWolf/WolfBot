@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
@@ -7,21 +7,22 @@ module.exports = {
 
 execute (client, message, args){
 
-  var perms = message.member.hasPermission("MANAGE_MESSAGES") //permisos del moderador
+  var perms = message.member.permissions.has(PermissionsBitField.Flags.ManageMessages) //permisos del moderador
+  if(!perms) return message.reply({ content: "❌ | No tienes los permisos necesarios!" })
 
-  let ms = args[2]
+  let ms = args[1]
 
   let mainrole = message.guild.roles.cache.find(role => role.id === "862054591323570186")
   let banrole = message.guild.roles.cache.find(role => role.id === "935623139025620992")
 
-  let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) //mencion
+  let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) //mención
 
   if(!user) return message.reply("Tienes que mencionar a uun usuario!")
-  if(!reason) return message.reply(`Debes poner una razon para banear al usuario ${user.user.username}!`)
+  if(!reason) return message.reply(`Debes poner una razon para Banear al usuario ${user.user.username}!`)
 
   if(perms){
-    if(!args[1]){
-      const ban = new Discord.MessageEmbed()
+    if(!args[2]){
+      const ban = new EmbedBuilder()
       .setAuthor(message.author.username, message.author.displayAvatarURL())
       .setTitle("Nuevo Baneado!")
       .setColor("RED")
@@ -36,24 +37,21 @@ execute (client, message, args){
       },ms(args[2]));
     }
 
-    const tempban = new Discord.MessageEmbed()
+    const tempban = new EmbedBuilder()
     .setAuthor(message.author.username, message.author.displayAvatarURL())
     .setTitle("Nuevo Baneado!")
     .setColor("RED")
     .addField("Moderador:", `**${message.author.username}**`, true)
     .addField("Baneado:", `**${user.username}**`, true)
-    .addField("Durante", `**${ms(ms(args[2]))}**`)
+    .addField("Durante", `**${ms(ms(args[1]))}**`)
     .setTimestamp()
 
     message.channel.send({ embed: tempban })
     setTimeout(function () {
       user.roles.remove(mainrole);
       user.roles.add(banrole);
-    },ms(args[2]));
-  }else {
-    message.author.send("No eres un moderador!")
+    },ms(args[1]));
   }
-  message.delete({timeout: 100})
 
  }
 

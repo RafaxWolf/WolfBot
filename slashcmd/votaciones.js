@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js")
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js')
-const Discord = require("discord.js")
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
 const poll = require("../Schema/poll-schema")
 
 let MessageButton = ButtonBuilder
@@ -13,26 +12,26 @@ module.exports = {
     .setDescription("Hace votaciones")
     .addStringOption(option => 
         option
-        .setName("votacion")
+        .setName("question")
         .setDescription("tema de la votacion")
         .setRequired(true)
     )
     .addStringOption(option =>
         option
-        .setName("opcion1")
-        .setDescription("1ra opcion de la votacion")
+        .setName("option1")
+        .setDescription("1ra opción de la votacion")
         .setRequired(true)
         )
     .addStringOption(option =>
         option
-        .setName("opcion2")
-        .setDescription("2da opcion de la votacion")
+        .setName("option2")
+        .setDescription("2da opción de la votacion")
         .setRequired(true)
         ),
     async run(client, interaction){
-      const ask = interaction.options.getString("votacion")
-      const op1 = interaction.options.getString("opcion1")
-      const op2 = interaction.options.getString("opcion2")
+      const ask = interaction.options.getString("question")
+      const op1 = interaction.options.getString("option1")
+      const op2 = interaction.options.getString("option2")
 
       let newdata = new poll({
         userID: interaction.member,
@@ -48,50 +47,22 @@ module.exports = {
         new MessageButton()
         .setCustomId('option1')
         .setLabel(op1)
-        .setStyle('PRIMARY')
+        .setStyle(ButtonStyle.Primary)
       )
       .addComponents(
         new MessageButton()
         .setCustomId('option2')
         .setLabel(op2)
-        .setStyle('PRIMARY')
-      )
-
-      const answer1 = new MessageActionRow()
-      .addComponents(
-        new MessageButton()
-        .setCustomId('asd')
-        .setLabel(op1)
-        .setStyle('SUCCESS')
-        .setDisabled(true)
-      )
-      .addComponents(
-        new MessageButton()
-        .setCustomId('dsa')
-        .setLabel(op2)
-        .setStyle('SECONDARY')
-        .setDisabled(true)
-      )
-
-      const answer2 = new MessageActionRow()
-      .addComponents(
-        new MessageButton()
-        .setCustomId('asd')
-        .setLabel(op1)
-        .setStyle('SECONDARY')
-        .setDisabled(true)
-      )
-      .addComponents(
-        new MessageButton()
-        .setCustomId('dsa')
-        .setLabel(op2)
-        .setStyle('SUCCESS')
-        .setDisabled(true)
+        .setStyle(ButtonStyle.Primary)
       )
 
     const strawpoll = new MessageEmbed()
     .setTitle(ask)
-    .setColor("BLURPLE")
+    .addFields(
+      { name: `${op1}`, value: ``, inline: true },
+      { name: `${op2}`, value: ``, inline: true },
+    )
+    .setColor("Blurple")
     .setTimestamp()
 
     interaction.reply({ embeds: [strawpoll], components: [poll1] })

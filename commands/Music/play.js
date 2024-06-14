@@ -31,17 +31,20 @@ if(string){
       })
 
     } catch (error) {
-      console.error(error)
+      console.log(error)
       message.channel.send(`**[❌ | ¡Ha ocurrido un error! | ❌]**\n${error}`)
     }
-  } else if(queue.paused) {
+
+/*     if(queue.paused) {
       queue.resume()
       return message.channel.send("▶️ | Reproduciendo la canción!")
     } else {
       if(!queue && !string){
         return await message.channel.send(`▶️ | No se esta Reproduciendo nada actualmente y no hay ninguna Canción en la cola.\n Agrega una Canción con **w!play (Nombre o enlace de la canción)**!`)
       }      
-    }
+    } */
+
+  }
 
  }
 

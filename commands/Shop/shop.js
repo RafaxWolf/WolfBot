@@ -1,6 +1,7 @@
 const items = require("../../shopItems");
 const inventory = require('../../Schema/inventory-schema');
-const economia = require('../../Schema/economia-schema')
+const economia = require('../../Schema/economia-schema');
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   name: "shop",
@@ -10,12 +11,23 @@ async execute (client, message, args){
     const q = items
       .map((value, index) => {
       return `**${index + 1})** ${value.item}*#${value.Id}*\nDescripción: \`*${value.description}*\`\nPrecio: **${value.price}** Wolfcoins!`
-        }).join(`\n`)
+        }).join(`\n`) // Detector de 
+
+        const shoppingEmbed = new EmbedBuilder() // Embed de la tienda
+        .setTitle(`¡Bienvenido a la Tienda ${message.author}!`)
+        .setAuthor({ name: "Tienda", iconURL: "https://imgur.com/8OYBVIJ.png" })
+        .setColor()
+        .setTimestamp()
+        .addFields(
+          { name: "Para ver el listado de items que dispone actualmente la tienda", value: "**w!shop list**" }
+        )
+
 
     const shopping = await message.channel.send(`
-      ¡Bienvenido a la tienda ${message.author}!\nPara ver el listado de items que dispone actualmente la tienda, Use: **w!shop list**\nPara comprar un item de la tienda, Use: **w!shop buy <Item>**`)
+      ¡Bienvenido a la tienda ${message.author}!\nPara ver el listado de items que dispone actualmente la tienda, Use: **w!shop list**\nPara comprar un item de la tienda, Use: **w!shop buy <Item>**`
+      )
 
-    if (items.length === 0) return message.reply({ content: 'No hay nada en la tienda!' });
+    if (items.length === 0) return message.reply({ content: '[!] No hay nada en la tienda!' });
         if(args[1]) {
           const shopping = null;
         }

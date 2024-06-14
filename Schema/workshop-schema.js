@@ -1,6 +1,6 @@
 const { Schema, model} = require("mongoose")
 
-const Workshop = new Schema({
+const workshop = new Schema({
     //-----Creador/Servidor------
     creatorID: String,
     guildID: String,
@@ -40,4 +40,4 @@ const Workshop = new Schema({
     }
 });
 
-module.exports = model('Workshop', Workshop)
+module.exports = model('workshop', workshop)
