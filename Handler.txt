@@ -1,4 +1,4 @@
-Comandos normales
+Prefix Commands
 
 module.exports = {
   name: "",
@@ -29,7 +29,7 @@ module.exports = {
         
 }
 
-Eventos
+Events
 
 module.exports = {
   name: '',
@@ -42,10 +42,10 @@ Schemas
 
 const { Schema, model} = require("mongoose")
 
-const 'randomName' = new Schema({
+const <name> = new Schema({
   guildID: String,
   userID: String
 
 });
 
-module.exports = model(''randomName'', 'randomName')
+module.exports = model('<name>', <name>)

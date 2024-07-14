@@ -1,7 +1,7 @@
 {
   "name": "wolfbot",
-  "version": "5.0.0",
-  "description": "asd",
+  "version": "6.0.0",
+  "description": "a Discord Bot made by RafaxWolf for the Discord Server The Hidden Wolfs",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
@@ -42,6 +42,7 @@
     "music-metadata": "^7.14.0",
     "openai": "^4.19.0",
     "opusscript": "^0.0.8",
+    "sodium-native": "^4.1.1",
     "string-progressbar": "^1.0.4"
   }
 }

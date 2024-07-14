@@ -7,6 +7,7 @@ module.exports = {
     .setDMPermission(false),
 
     async run(client, interaction){
+
       const modal = new ModalBuilder()
       .setCustomId('report')
       .setTitle('Reportar un bug');

@@ -17,12 +17,12 @@ execute (client, message, args){
   .addFields(
       { name: "Duración", value: `\`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\``, inline: true },
       { name: "Visitas", value: `**\`[${parseInt(song.views).toLocaleString()}]\`**`, inline: true },
-      { name: "Likes | Dislikes", value: `\`[${song.likes}] | [${song.dislikes}]\``, inline: true },
+      { name: "Likes | Dislikes", value: `\`[${parseInt(song.likes).toLocaleString()}] | [${parseInt(song.dislikes).toLocaleString()}]\``, inline: true },
       { name: "Volumen", value: `\`${queue.volume}%\``, inline: true },
       { name: "Nombre del canal", value: `**\`${song.uploader.name}\`**` },
       { name: "Source", value : `**${song.source}**`, inline: true }
     )
-  .setFooter({ text: `${song.user.username}`, iconURL: song.user.displayAvatarURL()})
+  .setFooter({ text: `Solicitada por: ${song.user.username}`, iconURL: song.user.displayAvatarURL()})
   .setTimestamp()
   .setColor("White")
 

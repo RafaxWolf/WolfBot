@@ -6,7 +6,7 @@ const path = require('node:path');
 const chalk = require("chalk");
 
 //*Discord.js
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, ActivityType } = require('discord.js');
 
 //*Distube
 const { DisTube } = require('distube')
@@ -23,20 +23,7 @@ const levels = require('./Schema/xp-schema')
 const pacmans = require('./pacmans')
 const canalesExcluidos = require('./canalesExcluidos')
 
-
 const cooldowns = new Map()
-
-//! const util = require('util')
-//! const wait = require('node:timers/promises').setTimeout;
-
-//! const now = new Date(Date.now());
-
-//! const current = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-//! const withPmAm = now.toLocaleTimeString('es-CL', {
-//!  hour: '2-digit',
-//!  minute: '2-digit',
-//!});
-
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -48,6 +35,7 @@ const client = new Client({
 })
 require("dotenv").config();
 require('./conexion')
+
 
 client.distube = new DisTube(client, {
   leaveOnStop: false,
@@ -293,9 +281,16 @@ client.distube
       `**| ▶️ | Reproduciendo | ▶️ |** \n**\`${song.uploader.name}\`** \n*\`${song.name} - [${song.formattedDuration}]\`*\nSolicitada por: ${
       song.user
       }\n${status(queue)}`
-    )
-  } 
-)  
+    );
+    try {
+      console.log(`[+] Cambiando presencia a: Escuchando a ${song.name} / ${song.uploader.name}`);
+      client.user.setPresence({ activities: [{ name: `${song.name} / ${song.uploader.name}`, type: ActivityType.Listening }], status: "dnd" })
+    } catch (error) {
+      console.error(error)
+    }
+
+  }
+)
 
 .on('addSong', (queue, song) =>  
     queue.textChannel.send(
@@ -313,7 +308,12 @@ client.distube
   if (channel) channel.send(`❌ | Un error ha ocurrido: ${e.toString().slice(0, 1974)}`).then(console.error(e))
   else console.error(e)
 })
-.on('empty', message => message.channel.send("[!] El canal de voz actual esta vació\n\n Saliendo..."))
+.on('empty', (message) => {
+    message.channel.send("[!] El canal de voz actual esta vació\n\nSaliendo...")
+  }
+)
+
+//* Search
 .on('searchNoResult', (message, query) =>
   message.channel.send(`❌ | No se ha encontrado un resultado para \`${query}\``)
 )
@@ -333,8 +333,17 @@ client.distube
     `❌ | Respuesta Invalida, Búsqueda cancelada!`
   )
 })
+.on("searchDone", () => {
+  //message.delete()
+})
 
-.on("searchDone", () => {})
+//* Finish
+.on("finish", (queue) => { //* When all of the songs of the queue has passed set the presence back to Normal
+  client.user.setPresence({ activities: [{ name: "w!help - /help", type: ActivityType.Playing }], status: "dnd"});
+})
+.on("disconnect", (queue) => { //* When the bot disconnects set back the presence to Normal
+  client.user.setPresence({ activities: [{ name: "w!help - /help", type: ActivityType.Playing }], status: "dnd"});
+})
 
 //Embeds
 function embedNormalBuilder(client, message, color, title, description){
@@ -348,5 +357,5 @@ function embedNormalBuilder(client, message, color, title, description){
 
 }
 
-//! Token in .env
+//! Token in .env file
 client.login(process.env.TOKEN);

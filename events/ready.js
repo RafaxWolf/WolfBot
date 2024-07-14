@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js")
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ActivityType } = require("discord.js")
 const fs = require("fs")
 const chalk = require("chalk")
 
@@ -96,7 +96,7 @@ try {
 
     //Encendido del bot
     console.log(chalk.cyanBright(`Logged in as ${client.user.tag}.\n`));
-    client.user.setPresence({ activities: [{ name: "w!help - /help" }], status: "dnd"});
+    client.user.setPresence({ activities: [{ name: "w!help - /help", type: ActivityType.Playing }], status: "dnd"});
 
     //Votaciones y likes
     const poll = require('../poll')
