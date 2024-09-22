@@ -1,6 +1,6 @@
 module.exports = {
     name: "add",
-    alias: [""],
+    alias: ["añadir"],
     inVoiceChannel: true,
   execute (client, message, args){
   

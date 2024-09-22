@@ -3,8 +3,8 @@ const { EmbedBuilder } = require("discord.js")
 module.exports = {
   name: "nowplaying",
   alias: ["np"],
-  inVoiceChannel: true,
-execute (client, message, args){
+  //inVoiceChannel: true,
+async execute (client, message, args){
   const queue = client.distube.getQueue(message)
   if (!queue) return message.channel.send("❌ | No hay nada en la cola!")
   const song = queue.songs[0]
@@ -26,7 +26,11 @@ execute (client, message, args){
   .setTimestamp()
   .setColor("White")
 
-  message.channel.send({ embeds: [embed] })
+  const nowPlay = await message.channel.send({ embeds: [embed] })
+
+  setTimeout(() => {
+    nowPlay.delete().catch(console.error)
+  }, 10000)
 
   //! message.channel.send(`☑️ | Sonando ahora mismo: **\`${song.name}\`**${song.thumbnail}\nDuración: \`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\`\nPuesta por: ${song.user}`)
 

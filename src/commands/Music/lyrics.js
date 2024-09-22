@@ -22,7 +22,7 @@ module.exports = {
 
       const firstSong = searches[0];
 
-      console.log("Sobre la cancion:\n", firstSong, "\n")
+      console.log("Sobre la canción:\n", firstSong, "\n")
 
       const lyrics = await firstSong.lyrics();
 
@@ -38,7 +38,7 @@ module.exports = {
 
         message.channel.send({ embeds: [embed] })
       } else {
-        message.channel.send("❌ | No se ha podido encontrar la letra de la cancion!")
+        message.channel.send("❌ | No se ha podido encontrar la letra de la canción!")
       }
     } catch (error) {
       console.error(error)

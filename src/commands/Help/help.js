@@ -15,10 +15,10 @@ async execute (client, message, args){
         .addFields(
           { name: "\u200B", value: "\u200B" },
           { name: "Ayuda del sistema de economia", value: "**\`w!help economy (or w!help money)\`**", inline: true },
-          { name: "Ayuda del sistema de hackeo", value: "**\`w!help hacking\`**", inline: true },
-          { name: "Ayuda de las recompensas de los niveles de patreon", value: "**\`w!help patreon\`**", inline: true },
+          { name: "Ayuda del sistema de Hackeo", value: "**\`w!help hacking\`**", inline: true },
+          { name: "Ayuda de las recompensas de los niveles de Patreon", value: "**\`w!help Patreon\`**", inline: true },
           { name: "Ayuda del casino", value: "**\`w!help casino\`**", inline: true },
-          { name: "Ayuda del sistema de musica", value: "**\`w!help music\`**", inline: true },
+          { name: "Ayuda del sistema de música", value: "**\`w!help music\`**", inline: true },
           { name: "Ayuda del sistema de experiencia", value: "**\`w!help experience (or w!help xp)\`**", inline: true },
         )
         .setTimestamp()
@@ -28,10 +28,10 @@ async execute (client, message, args){
     /*`
     **Lista de Ayuda:**
     \n**w!help economy**\n\`Ayuda del sistema de economia\`
-    \n**w!help hacking**\n\`Ayuda del sistema de hackeo\`
-    \n**w!help patreon**\n\`Ayuda de las recompensas de los niveles de patreon\`
+    \n**w!help hacking**\n\`Ayuda del sistema de Hackeo\`
+    \n**w!help Patreon**\n\`Ayuda de las recompensas de los niveles de Patreon\`
     \n**w!help casino**\n\`Ayuda del casino\`
-    \n**w!help music**\n\`Ayuda del sistema de musica\`
+    \n**w!help music**\n\`Ayuda del sistema de música\`
     \n**w!help xp**\n\`Ayuda del sistema de experiencia\`
     `*/
     switch (args[0]) {
@@ -44,7 +44,7 @@ async execute (client, message, args){
 
         const economy = new EmbedBuilder()
         .setTitle("Economia")
-        .setColor("White")
+        .setColor("LightGrey")
         .addFields(
           { name: "\u200B", value: "\u200B" },
           { name: "Balance", value: "w!bal", inline: true },
@@ -59,18 +59,7 @@ async execute (client, message, args){
         )
         .setTimestamp()
 
-        message.channel.send({ embeds: [economy] })/*`
-      Comandos:\n
-      w!bal\n
-      w!work\n
-      w!dep\n
-      w!with\n
-      w!shop\n
-      w!leaderboard\n
-      w!rob\n
-      w!pay\n
-      w!addmoney \`(**Solo para ADMINS!**)\`
-        `*/
+        message.channel.send({ embeds: [economy] })
         break
       case 'hacking':
         message.channel.send(`
@@ -88,6 +77,30 @@ async execute (client, message, args){
         `)
         break
       case 'music':
+        messages.forEach(msg => {
+          if(msg.author.id === client.user.id) {
+            msg.delete();
+          }
+        });
+        
+        const music = new EmbedBuilder()
+        .setTitle("Música")
+        .setColor("Red")
+        .addFields(
+          { name: "\u200B", value: "\u200B" },
+          { name: "Unir", value: "w!join <Channel ID or Nothing>", inline: true },
+          { name: "Reproducir", value: "w!play / w!p <song URL or Name>", inline: true },
+          { name: "Salir", value: "w!leave", inline: true },
+          { name: "Cola", value: "w!queue", inline: true },
+          { name: "Loop", value: "w!loop <song/queue/off>", inline: true },
+          { name: "Pausar", value: "w!pause / w!stop", inline: true },
+          { name: "Sonando Ahora", value: "w!nowplaying / w!np", inline: true },
+          { name: "Saltar", value: "w!skip", inline: true },
+          { name: "AutoPlay", value: "w!autoplay", inline: true },
+          { name: "Volumen", value: "w!volume <Number>", inline: true },
+        )
+
+        message.channel.send({ embeds: [music] })
       /*helper.edit(`
         Comandos:
         w!join

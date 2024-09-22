@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const { Constants } = require('discord.js')
 
 module.exports = {
@@ -17,6 +16,7 @@ async execute (client, message, args){
   if (!voiceChannel) {
     return message.channel.send(`❌ | Debes estar en un canal de voz!`)
   }
+
   client.distube.voices.join(voiceChannel)
  }
 

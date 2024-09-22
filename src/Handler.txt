@@ -12,6 +12,7 @@ execute (client, message, args){
 
 }
 
+
 Slash Commands
 
 const { SlashCommandBuilder } = require("discord.js")
@@ -29,6 +30,7 @@ module.exports = {
         
 }
 
+
 Events
 
 module.exports = {
@@ -37,6 +39,7 @@ module.exports = {
 
   },
 };
+
 
 Schemas
 

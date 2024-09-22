@@ -10,8 +10,9 @@ const { Client, GatewayIntentBits, EmbedBuilder, ActivityType } = require('disco
 
 //*Distube
 const { DisTube } = require('distube')
-const { SpotifyPlugin } = require('@distube/spotify')
 const { YtDlpPlugin } = require("@distube/yt-dlp")
+const { SpotifyPlugin } = require('@distube/spotify')
+const { SoundCloudPlugin } = require('@distube/soundcloud')
 
 //*---------------------------------------------Necessary---------------------------------------------
 
@@ -36,7 +37,6 @@ const client = new Client({
 require("dotenv").config();
 require('./conexion')
 
-
 client.distube = new DisTube(client, {
   leaveOnStop: false,
   emitNewSongOnly: false,
@@ -45,17 +45,21 @@ client.distube = new DisTube(client, {
   leaveOnEmpty: true,
   searchSongs: 15,
   searchCooldown: 20,
+  emptyCooldown: 25,
+  nsfw: true,
+  savePreviousSongs: true,
   plugins: [
     new SpotifyPlugin({
       emitEventsAfterFetching: true
     }),
-    new YtDlpPlugin(),
+    new SoundCloudPlugin(),
+    new YtDlpPlugin({ update: false }),
   ]
 })
 
 //* Functions
 const commandHandler = require("./functions/commandsHandler")
-const slashCommandHandler = require("./functions/slashCommandsHandler")
+const slashCommandHandler = require("./functions/slashCommandsHandler");
 
 client.commands = commandHandler
 client.slashCommands = slashCommandHandler
@@ -275,15 +279,17 @@ const status = (queue) =>
   //`Volumen: \`${queue.volume}%\` | Filtro: \`${queue.filters.names.join(', ') || 'Ninguno'}\` | Loop: \`${
   `Volumen: \`${queue.volume}%\` | Loop: \`${(queue.repeatMode === 1 ? 'Activado' : 'Desactivado')}\` | Autoplay: \`${queue.autoplay ? 'Activado' : 'Desactivado'}\``
 
+
 client.distube
  .on('playSong', (queue, song) => {
+    queue.voice.setSelfDeaf(false);
     queue.textChannel.send(
       `**| ▶️ | Reproduciendo | ▶️ |** \n**\`${song.uploader.name}\`** \n*\`${song.name} - [${song.formattedDuration}]\`*\nSolicitada por: ${
       song.user
       }\n${status(queue)}`
     );
     try {
-      console.log(`[+] Cambiando presencia a: Escuchando a ${song.name} / ${song.uploader.name}`);
+      //console.log(`[+] Cambiando presencia a: Escuchando a ${song.name} / ${song.uploader.name}`);
       client.user.setPresence({ activities: [{ name: `${song.name} / ${song.uploader.name}`, type: ActivityType.Listening }], status: "dnd" })
     } catch (error) {
       console.error(error)
@@ -309,7 +315,12 @@ client.distube
   else console.error(e)
 })
 .on('empty', (message) => {
-    message.channel.send("[!] El canal de voz actual esta vació\n\nSaliendo...")
+  const empty = message.channel.send("[!] El canal de voz actual esta vació!\n\nSaliendo...")
+
+    setTimeout(() => {
+      empty.delete().catch(console.error)
+    }, 2000)
+
   }
 )
 
@@ -325,13 +336,12 @@ client.distube
   setTimeout(() => {
     search.delete().catch(console.error)
   }, 20000)
-
 })
-.on("searchCancel", message => message.channel.send("❌ | Búsqueda cancelada"))
-.on("searchInvalidAnswer", message => {
-    return message.channel.send(
-    `❌ | Respuesta Invalida, Búsqueda cancelada!`
-  )
+.on("searchCancel", async(message) => {
+  message.channel.send("❌ | Búsqueda cancelada")
+})
+.on("searchInvalidAnswer", async(message) => {
+  message.channel.send(`❌ | Respuesta Invalida, Búsqueda cancelada!`)
 })
 .on("searchDone", () => {
   //message.delete()
@@ -340,10 +350,12 @@ client.distube
 //* Finish
 .on("finish", (queue) => { //* When all of the songs of the queue has passed set the presence back to Normal
   client.user.setPresence({ activities: [{ name: "w!help - /help", type: ActivityType.Playing }], status: "dnd"});
+  console.log("\nEnded!")
 })
 .on("disconnect", (queue) => { //* When the bot disconnects set back the presence to Normal
   client.user.setPresence({ activities: [{ name: "w!help - /help", type: ActivityType.Playing }], status: "dnd"});
 })
+.on("ffmpegDebug", console.log)
 
 //Embeds
 function embedNormalBuilder(client, message, color, title, description){

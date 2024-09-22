@@ -21,6 +21,8 @@ testimages.js
 pwned.js
 Dockerfile
 *.dockerignore
+cookies.json
+*-base-js
 
 # Directories
 Templates/

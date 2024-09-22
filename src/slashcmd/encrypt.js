@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js")
 const Cryptr = require("cryptr")
 
-var AES = require("crypto-js/aes")
+var CryptoJS = require("crypto-js")
 
 var defaultPasswd = 'Password'
 
@@ -53,15 +53,12 @@ module.exports = {
             interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, ephemeral: true })
         }
 
-        if(encryptionMethod !== "aes" && password4Encrypt){
-            const cryptr = new Cryptr(password4Encrypt)
-            const encryptedText = cryptr.encrypt(text2Encrypt)
-            interaction.reply({ content: `${encryptedText}`, ephemeral: true })
-        }else if(encryptionMethod !== "aes" && !password4Encrypt){
-            const cryptr = new Cryptr(defaultPasswd)
-            const encryptedText = cryptr.encrypt(text2Encrypt)
-            interaction.reply({ content: `${encryptedText}`, ephemeral: true })
+        if(encryptionMethod === "b64" && !password4Encrypt){
+
+        } else if(encryptionMethod === "b64" && password4Encrypt){
+            
         }
+
     }
         
 }
