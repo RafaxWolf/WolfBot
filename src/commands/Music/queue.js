@@ -20,7 +20,7 @@ async execute (client, message, args){
 
     setTimeout(() => {
       embed.delete().catch(console.error)
-    }, 5000)
+    }, 15000)
 
  }
 

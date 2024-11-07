@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js")
 const Discord = require("discord.js")
-const { version } = require('../package.json')
+const { version } = require('../../package.json')
 
 module.exports = {
     data: new SlashCommandBuilder()

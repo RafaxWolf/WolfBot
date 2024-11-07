@@ -9,7 +9,7 @@ module.exports = {
 //Sistema de Verificación
 
 const channelID = '1063533274233852005';
-const filePath = "./events/verification_message_id.json";
+const filePath = "./src/events/verification_message_id.json";
 
 try {
   let data = {};

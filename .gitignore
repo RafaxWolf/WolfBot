@@ -33,4 +33,7 @@ Database/
 .vscode/
 Schema/gacha-schema.js
 Schema/poll-schema.js
-comandos/Music/filter.js
+src/commands/Music/filter.js
+dist/
+build/
+old_config/

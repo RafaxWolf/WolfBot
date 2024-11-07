@@ -1,14 +1,14 @@
 //*---------------------------------------------Necessary---------------------------------------------
 
-//*JavaScript
+//* JavaScript
 const fs = require('fs');
 const path = require('node:path');
 const chalk = require("chalk");
 
-//*Discord.js
+//* Discord.js
 const { Client, GatewayIntentBits, EmbedBuilder, ActivityType } = require('discord.js');
 
-//*Distube
+//* Distube
 const { DisTube } = require('distube')
 const { YtDlpPlugin } = require("@distube/yt-dlp")
 const { SpotifyPlugin } = require('@distube/spotify')
@@ -16,15 +16,17 @@ const { SoundCloudPlugin } = require('@distube/soundcloud')
 
 //*---------------------------------------------Necessary---------------------------------------------
 
-//*Schemas
+//* Schemas
 const economy = require('./Schema/economia-schema')
 const levels = require('./Schema/xp-schema')
 
-//*Random
+//* Random
 const pacmans = require('./pacmans')
 const canalesExcluidos = require('./canalesExcluidos')
 
 const cooldowns = new Map()
+
+//* Configuración del Client del Bot
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -36,6 +38,8 @@ const client = new Client({
 })
 require("dotenv").config();
 require('./conexion')
+
+//* Configuración de Distube
 
 client.distube = new DisTube(client, {
   leaveOnStop: false,
@@ -64,16 +68,21 @@ const slashCommandHandler = require("./functions/slashCommandsHandler");
 client.commands = commandHandler
 client.slashCommands = slashCommandHandler
 
-//-------------------------------------------------------------------------------------------
+//-----------------------------------------Prefix Commands-----------------------------------------
+
 client.on("messageCreate", async (message) => {
 
  var prefix = "w!"
+
+//!---------------------------------Log de la Consola---------------------------------
 
   console.log(chalk.greenBright(`Server Name: [${message.guild.name}]\n`) +
    chalk.blueBright(`Server ID: ([${message.guild.id}])\n`) +
     chalk.cyanBright(`Channel ID: (${message.channel.id})\n`) +
      chalk.redBright(`User Name: [${message.author.username}]\n`) +
       (`User ID: (${message.author.id})\n`) + (`Message: ${message.content}\n`))
+
+//!-----------------------------------------------------------------------------------
 
   //TODO: baneo de Pacmans
 
@@ -104,32 +113,42 @@ client.on("messageCreate", async (message) => {
     message.delete()
   }
 
+  //Lo termino en 80 años mas
+
  if(message.content === prefix) return;
 
  if(message.author.bot) return;
 
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-  const Xpdata = await levels.findOne({ userID: message.author.id, guildID: message.guild.id }) //Datos
+//?------------------------------------------------------------------Sistema de Experiencia---------------------------------------------------------------------------------------
+  const Xpdata = await levels.findOne({ userID: message.author.id, guildID: message.guild.id }) // Datos de la Database
 
-if(message.guild && message.guild.id === "338373170463506442"){
+if(message.guild && message.guild.id === "338373170463506442"){  //!Verifica si no es uno de los servidores prohibidos.
   console.log(chalk.bgRed("¡Access Denied!"))
   return;
+
 } else {
   let randomXp
   if(message.content.length <= 5){
     randomXp = Math.floor(Math.random() * 3) + 1
+
   } else if(message.content.length >= 5 && message.content.length <= 30){
     randomXp = Math.floor(Math.random() * 20) + 1
+
   } else if(message.content.length >= 30 && message.content.length <= 50){
     randomXp = Math.floor(Math.random() * 45) + 1
+
   } else if(message.content.length >= 50 && message.content.length <= 70){
     randomXp = Math.floor(Math.random() * 60) + 1
+
   } else if(message.content.length >= 70 && message.content.length <= 80){
     randomXp = Math.floor(Math.random() * 70) + 1
+
   } else if(message.content.length > 80){
     randomXp = Math.floor(Math.random() * 75) + 1
+
   }
-  console.log(chalk.blue(`randomXp: ${randomXp}`))
+
+  console.log(chalk.blue(`randomXp: ${randomXp}`)) // Muestra la EXP ganada
 
     if(!Xpdata){
       const newXpdata = new levels({
@@ -137,7 +156,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
         userID: message.author.id,
         xp: randomXp
       })
-      return await newXpdata.save()
+      return await newXpdata.save() //! Si no hay una entrada del usuario en la Database, crea una nueva
     }
 
     const xpTotal = Xpdata.xp + randomXp
@@ -145,7 +164,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
     console.log(chalk.cyan(`Limite: ${Xpdata.limit}`))
 
       if(xpTotal >= Xpdata.limit){
-      message.channel.send(`¡Felicidades ${message.author}, has ascendido a nivel **${Xpdata.level + 1}**!`)
+      message.channel.send(`¡Felicidades ${message.author}, has ascendido de nivel!\nTu nuevo nivel sera: **${Xpdata.level + 1}**`)
      return levels.findOneAndUpdate({ guildID: message.guild.id, userID: message.author.id }, { xp: randomXp, level: Xpdata.level + 1, limit: Xpdata.limit + 500 })
     }
 
@@ -156,12 +175,15 @@ if(message.guild && message.guild.id === "338373170463506442"){
     const thwguild = client.guilds.cache.get("852588155126677504")
     let rolId = thwguild.roles.cache.find(role => role.id === "1058095942835908770")
 
-    if(currentlevel >= "20") {
+    if(currentlevel >= "20" && message.guild.id === "852588155126677504") {
       return message.channel.send(`🎉 | Felicidades ${message.author}, haz alcanzado el nivel **20** y por eso seras premiado con el rol ${rolId}`).then(message.author.roles.add("1058095942835908770"))
     }
 
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-    const economyData = await economy.findOne({ userID: message.author.id, guildID: message.guild.id }) //Datos
+//?---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//*-------------------------------------------------------------------------------Sistema de economia-------------------------------------------------------------------------------
+
+    const economyData = await economy.findOne({ userID: message.author.id, guildID: message.guild.id })
 
       //Nueva entrada
         if(!economyData){
@@ -179,7 +201,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
      await economy.findOneAndUpdate({ guildID: message.guild.id, userID: message.author.id }, { dinero: pagoTotal })
 
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }
 
  if(message.content.startsWith(prefix) || message.content.startsWith(prefix.toUpperCase())) {
@@ -187,7 +209,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase()
  
-  //* Cooldown de los comandos normales
+  //* Cooldown de los Prefix Commands
   const cooldownTime = 5
  
   if(!cooldowns.has(command)) {
@@ -211,6 +233,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
   timestamps.set(message.author.id, now)
   setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
  
+//* Detecta los Prefix Commands
  let cmd = client.commands.find((c) => c.name === command || c.alias && c.alias.includes(command));
 
   if(cmd){
@@ -229,6 +252,7 @@ if(message.guild && message.guild.id === "338373170463506442"){
       message.channel.send(`[❌ | Error | ❌]\n\`${e}\``)
     }
    } else {
+    
      const errorEmbed = new EmbedBuilder()
      .setTitle("❌ | Command Type Error")
      .setDescription(`El comando "**${command}**" no existe!`)
@@ -289,7 +313,7 @@ client.distube
       }\n${status(queue)}`
     );
     try {
-      //console.log(`[+] Cambiando presencia a: Escuchando a ${song.name} / ${song.uploader.name}`);
+      console.log(`[+] Cambiando presencia a: Escuchando a ${song.name} / ${song.uploader.name}`);
       client.user.setPresence({ activities: [{ name: `${song.name} / ${song.uploader.name}`, type: ActivityType.Listening }], status: "dnd" })
     } catch (error) {
       console.error(error)
@@ -348,11 +372,11 @@ client.distube
 })
 
 //* Finish
-.on("finish", (queue) => { //* When all of the songs of the queue has passed set the presence back to Normal
+.on("finish", (queue) => { //* CUando todas las canciones de la lista hayan pasado vuelve a la presencia normal
   client.user.setPresence({ activities: [{ name: "w!help - /help", type: ActivityType.Playing }], status: "dnd"});
   console.log("\nEnded!")
 })
-.on("disconnect", (queue) => { //* When the bot disconnects set back the presence to Normal
+.on("disconnect", (queue) => { //* CUando el Bot se desconecta del VC, vuelve a poner su Presencia normal
   client.user.setPresence({ activities: [{ name: "w!help - /help", type: ActivityType.Playing }], status: "dnd"});
 })
 .on("ffmpegDebug", console.log)

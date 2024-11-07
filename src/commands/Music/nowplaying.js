@@ -30,7 +30,7 @@ async execute (client, message, args){
 
   setTimeout(() => {
     nowPlay.delete().catch(console.error)
-  }, 10000)
+  }, 20000)
 
   //! message.channel.send(`☑️ | Sonando ahora mismo: **\`${song.name}\`**${song.thumbnail}\nDuración: \`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\`\nPuesta por: ${song.user}`)
 

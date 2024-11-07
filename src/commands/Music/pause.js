@@ -1,6 +1,6 @@
 module.exports = {
   name: "pause",
-  alias: ["stop", "hold"],
+  alias: ["stop", "hold", "pausar"],
   inVoiceChannel: true,
 execute (client, message, args){
 
