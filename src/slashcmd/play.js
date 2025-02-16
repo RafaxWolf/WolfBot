@@ -4,39 +4,23 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName("play")
     .setDescription("Escuchar música en cualquier canal!")
-    .addSubcommand(subcommand =>
-        subcommand
-        .setName("songs")
-        .setDescription("Canciones sin video!")
-        .addStringOption(option =>
-            option
-            .setName("song")
-            .setDescription("Introduce una canción para buscar o introduce el link para reproducirla automáticamente")
-            )
-        .addAttachmentOption(option =>
-            option
-            .setName("audio")
-            .setDescription("Reproduce una canción directamente de un archivo mp3!")
-            )
-        )
-    .addSubcommand(subcommand =>
-        subcommand
-        .setName("videos")
-        .setDescription("Canciones con video!")
-        .addAttachmentOption(option =>
-            option
-            .setName("video")
-            .setDescription("Reproducir videos directamente del archivo mp4!")
-            )
-        .addStringOption(option => 
-            option
-            .setName("clip")
-            .setDescription("ASd")
-        )
+    .addStringOption(option =>
+        option
+        .setName("song")
+        .setDescription("Nombre de la canción a reproducir")
     ),
-    inVoiceChannel: true,
+    //inVoiceChannel: true,
     async run(client, interaction){
       const string = interaction.options.getString("song")
+      if(string) {
+        interaction.reply({ content: "✅ | Ok reproduciendo canción | ✅", ephemeral: true })
+            client.distube.play(interaction.member.voice.channel, string, {
+                member: interaction.member,
+                textChannel: interaction.channel,
+                interaction
+              }) 
+        }
+/* 
       const audioFile = interaction.options.getAttachment("audio")
       const videoFile = interaction.options.getAttachment("video")
       if(audioFile){
@@ -68,15 +52,7 @@ module.exports = {
     }
       
         //if(!fileType === "video/mp4") return interaction.reply({ content: "❌ | No puedes reproducir nada que no sea un video o una canción!" })
-
-        if(string) {
-        interaction.reply({ content: "✅ | Ok reproduciendo canción | ✅", ephemeral: true })
-            client.distube.play(interaction.member.voice.channel, string, {
-                member: interaction.member,
-                textChannel: interaction.channel,
-                interaction
-              }) 
-        }
+*/
     
     }
         

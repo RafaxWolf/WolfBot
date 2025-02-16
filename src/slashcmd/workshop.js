@@ -32,10 +32,11 @@ module.exports = {
         const row = new ActionRowBuilder().addComponents(workshopSelect)
 
         try{
-            await interaction.user.send({ components: [row] })
-            await interaction.reply({ content: "Las opciones de la Workshop fueron enviadas a los mensajes internos *(Mensaje directo)*", ephemeral: true })
+            await interaction.reply({ components: [row] })
+            //await interaction.reply({ content: "Las opciones de la Workshop fueron enviadas a los mensajes internos *(Mensaje directo)*", ephemeral: true })
         } catch (error) {
-            await interaction.reply({ content: "¡No se pudo enviar el mensaje! por favor verificar si tienes los MD activados!", ephemeral: true })
+            console.error(error)
+            //await interaction.reply({ content: "¡No se pudo enviar el mensaje! por favor verificar si tienes los MD activados!", ephemeral: true })
         }
     },
     

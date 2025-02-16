@@ -1,4 +1,4 @@
-# Binaries
+# Binaries / Files
 *.txt
 !Handler.txt
 *.env
@@ -22,7 +22,10 @@ pwned.js
 Dockerfile
 *.dockerignore
 cookies.json
-*-base-js
+*-base.js
+Schema/gacha-schema.js
+Schema/poll-schema.js
+src/commands/Music/filter.js
 
 # Directories
 Templates/
@@ -31,9 +34,7 @@ ffmpeg/
 openai/
 Database/
 .vscode/
-Schema/gacha-schema.js
-Schema/poll-schema.js
-src/commands/Music/filter.js
 dist/
 build/
 old_config/
+Website/

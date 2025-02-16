@@ -9,10 +9,30 @@ module.exports = {
     async run(client, interaction){
 //------------------------------------------------------------------------embeds------------------------------------------------------------------------
     const embedS1 = new EmbedBuilder()
-    .setTitle("Help pagina 1/2")
+    .setAuthor({ name: "Help", iconURL: "https://i.imgur.com/SaDhsHb.png" })
+    .setTitle("Sistema de Musica")
     .setColor("Aqua")
-    .setDescription("asd")
+    .setDescription(`
+    **/play <string>** - Reproducir música en cualquier canal de voz
+    **/stop** - Detener la reproducción de música
+    **/skip** - Saltar a la siguiente canción
+    **/queue** - Ver la lista de canciones en cola
+    ***[FIXING]*** **/lyrics** - Ver la letra de la canción actual
+    **/pause** - Pausar la reproducción de música / Reanudar la reproducción de música
+    **/volume <number>** - Cambiar el volumen de la música
+    **/loop <song/queue/off>** - Repetir la canción actual
+    **/shuffle** - Mezclar la lista de reproducción
+    **/seek <time>** - Buscar en la canción
+    **/autoplay** - Activar / Desactivar la reproducción automática
+    **/replay** - Repetir la canción en reproducción
+    **/previous** - Reproducir la canción anterior
+    ***[WIP]*** **/filter <string>** - Aplicar un filtro de audio a la música 
+        `)
     .setTimestamp()
+    
+    //**/jump <number>** - Saltar a una canción en la lista de reproducción
+    //**/remove <number>** - Eliminar una canción de la lista de reproducción
+    //**/clear** - Limpiar la lista de reproducción
 
     const embedS2 = new EmbedBuilder()
     .setTitle("Help pagina 2/2")
@@ -34,7 +54,7 @@ module.exports = {
         .addComponents(
             new ButtonBuilder()
             .setCustomId('before1')
-            .setLabel('Atras')
+            .setLabel('Atrás')
             .setStyle(ButtonStyle.Secondary)
             .setEmoji('⬅')
         )

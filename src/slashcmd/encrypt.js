@@ -17,13 +17,6 @@ module.exports = {
     )
     .addStringOption(option =>
         option
-        .setName("password")
-        .setDescription("La contraseña para encriptar el mensaje (por defecto 'Password')")
-        .setMinLength(5)
-        .setMaxLength(30)
-    )
-    .addStringOption(option =>
-        option
         .setName("method")
         .setDescription("Método de encriptacion a usar (por defecto 'Hex')")
         .setChoices(
@@ -31,6 +24,14 @@ module.exports = {
             { name: "Hexadecimal", value: "hex" },
             { name: "Advanced Encryption Standard (AES)", value: "aes" },
         )
+        .setRequired(true)
+    )
+    .addStringOption(option =>
+        option
+        .setName("password")
+        .setDescription("La contraseña para encriptar el mensaje (por defecto 'Password')")
+        .setMinLength(5)
+        .setMaxLength(30)
     ),
 
     async run(client, interaction){
@@ -40,7 +41,7 @@ module.exports = {
         const encryptionMethod = interaction.options.get("method").value
 
         if(encryptionMethod){
-            interaction.followUp({ content: `${encryptionMethod}`, ephemeral: true })
+            interaction.reply({ content: `Metodo de Encriptación Utilizado: ${encryptionMethod}`, ephemeral: true })
         }else {
             return;
         }
@@ -48,6 +49,7 @@ module.exports = {
         if(encryptionMethod === "aes" && !password4Encrypt){
             var ciphertext = CryptoJS.AES.encrypt(`${text2Encrypt}`, defaultPasswd)
             interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, ephemeral: true })
+
         } else if(encryptionMethod === "aes" && password4Encrypt){
             var ciphertext = CryptoJS.AES.encrypt(`${text2Encrypt}`, password4Encrypt)
             interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, ephemeral: true })

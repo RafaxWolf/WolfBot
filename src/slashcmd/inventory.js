@@ -13,27 +13,28 @@ module.exports = {
     async run(client, interaction){
       const user = interaction.options.getUser("user") || interaction.member
 
-        inventory.findOne({ userID: user.id, guildID: interaction.guild.id },
-            async (err, data) => {
-                if(!data) return interaction.reply({content: `❌ | El inventario de ${user} esta vació o no dispone de uno!`, ephemeral: true })
+        let data = await inventory.findOne({
+            userID: user.id,
+            guildID: interaction.guild.id
+        })
+
+            if(!data) return interaction.reply({content: `❌ | El inventario de ${user} esta vació o no dispone de uno!`, ephemeral: true })
                 
-                const mappedData = Object.keys(data.Inventory)
-                .map((key) => {
-                    return `Item: ${key}\nCantidad: (${data.Inventory[key]})`
-                })
-                .join(",\n\n")//.slice(0, 10)
+            const mappedData = Object.keys(data.Inventory)
+            .map((key) => {
+                return `Item: ${key}\nCantidad: (${data.Inventory[key]})`
+            })
+            .join(",\n\n")//.slice(0, 10)
 
-                const inventoryEmbed = new EmbedBuilder()
-                .setAuthor({ name: user.name, iconURL: user.displayAvatarURL() })
-                .setTitle(`Inventario de ${user.username}`)
-                .setThumbnail(user.displayAvatarURL())
-                .setDescription(`Todos los items en el inventario:\n${mappedData}`)
+            const inventoryEmbed = new EmbedBuilder()
+            .setAuthor({ name: "Inventario", iconURL: client.user.displayAvatarURL() })
+            .setTitle(`Inventario de ${user.username}`)
+            .setThumbnail(user.displayAvatarURL())
+            .setDescription(`Todos los items en el inventario:\n${mappedData}`)
+            .setColor("Green")
 
-                interaction.reply({ embeds: [inventoryEmbed], ephemeral: true })
-            }
-        )
-
-
+            interaction.reply({ embeds: [inventoryEmbed], ephemeral: true })
+        
     }
         
 }

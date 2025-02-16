@@ -1,10 +1,9 @@
 const { SlashCommandBuilder } = require("discord.js")
-const Discord = require("discord.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
     .setName("server-info")
-    .setDescription("Ver la informacion del servidor"),
+    .setDescription("Ver la información del servidor"),
 
     async run(client, interaction){
       let owner = await interaction.guild.fetchOwner()

@@ -16,7 +16,7 @@ module.exports = {
     const song = queue.songs[0]
 
     try{
-      const searches = await Client.songs.search(song.name)
+      const searches = await Client.songs.search(`${song.name} ${song.uploader.name}`)
 
       console.log(song.name)
 
@@ -32,7 +32,7 @@ module.exports = {
         .setThumbnail(song.thumbnail)
         .setTitle(`${song.name}`)//\n${song.uploader.name}
         .setURL(song.url)
-        .setDescription(lyrics)
+        .setDescription(`${lyrics.split('\n')}`)
         .setFooter({ text: 'Fuente Genius', iconURL: 'https://i.imgur.com/NwLxeay.png' })
         .setTimestamp()
 
