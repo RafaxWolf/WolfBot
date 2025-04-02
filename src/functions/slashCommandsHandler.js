@@ -24,15 +24,15 @@ const totalWidth = maxLength + 21; // +10 para el texto adicional y los espacios
 const headerText = "Slash Commands cargados:";
 const consoleWidth = Math.max(totalWidth, headerText.length + 4) // Asegurarse que sea del ancho del Header
 
-console.log("╔" + "═".repeat(consoleWidth - 2) + "╗");
-console.log("║" + centerText(headerText, consoleWidth - 2) + "║");
-console.log("╚" + "═".repeat(consoleWidth - 2) + "╝");
+console.log("\n ╔" + "═".repeat(consoleWidth - 2) + "╗");
+console.log(" ║" + centerText(headerText, consoleWidth - 2) + "║");
+console.log(" ╚" + "═".repeat(consoleWidth - 2) + "╝");
 
 console.log("╔" + "═".repeat(totalWidth) + "╗");
 slashcommandsFiles.forEach((file, index) => {
     const slash = require(path.join(__dirname, `../slashcmd/${file}`));
     const paddedFile = file.padEnd(maxLength, ' '); // Rellenar con espacios para alinear
-    console.log(`║ ✔️ Slash Commands - ${paddedFile} ║`);
+    console.log(`║ ✔️  Slash Commands - ${paddedFile}║`);
     if (index < slashcommandsFiles.length - 1) {
         console.log("╟" + "─".repeat(totalWidth) + "╢");
     }

@@ -1,0 +1,36 @@
+        const SC1 = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+            .setCustomId('next')
+            .setLabel('Siguiente')
+            .setEmoji('➡')
+            .setStyle(ButtonStyle.Secondary)
+        )
+
+        const SC2 = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+            .setCustomId('prev')
+            .setLabel('Atrás')
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji('⬅')
+            
+        )
+
+        interaction.reply({ embeds: [embedS1], ephemeral: true, components: [SC1] })
+
+      const filterA = a => a.customId === 'next'
+      const filterB = b => b.customId === 'prev'
+
+      const collector = interaction.channel.createMessageComponentCollector({ filterA, filterB });
+
+      collector.on('collect', async a => {
+        if (a.customId === 'next') {
+            await a.update({ embeds: [embedS2], ephemeral: true, components: [SC2] })
+        }
+    })
+      collector.on('collect', async b => {
+        if (b.customId === 'prev') {
+            await b.update({ embeds: [embedS1], ephemeral: true, components: [SC1] })
+        }
+    })

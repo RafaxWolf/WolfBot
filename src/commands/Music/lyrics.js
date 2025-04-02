@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js')
+const lyricsFinder = require('lyrics-finder')
 const Genius = require('genius-lyrics')
 require("dotenv").config()
 
@@ -13,20 +14,61 @@ module.exports = {
     const queue = client.distube.getQueue(message)
     if (!queue) return message.channel.send("❌ | No hay nada en la cola!")
 
-    const song = queue.songs[0]
+    const song = queue ? queue.songs[0] : null;
 
-    try{
-      const searches = await Client.songs.search(`${song.name} ${song.uploader.name}`)
+    const lyricsEngine = args[0]?.toLowerCase() || ' '
+    const songName = args.slice(1).join(" ") || (song ? song.name : null)
 
-      console.log(song.name)
+    if(!songName){
+      return message.channel.send("❌ | No hay ninguna canción en reproducción y tampoco has especificado alguna!")
+    }
 
-      const firstSong = searches[0];
+    let lyrics = ''
+    let thumbnail = ''
 
-      console.log("Sobre la canción:\n", firstSong, "\n")
+    if(lyricsEngine === 'genius') {
+      try{
+        const searches = await Client.songs.search(`${song.uploader.name} ${songName}`)
 
-      const lyrics = await firstSong.lyrics();
+        const firstSong = searches[0];
 
-      if(lyrics) {
+        if(firstSong){
+          console.log("Sobre la canción:\n", firstSong, "\n")
+
+          lyrics = await firstSong.lyrics();
+          thumbnail = firstSong.thumbnail
+        } else {
+          lyrics = 'No se encontraron resultados para la canción especificada!'
+        }
+      } catch (err) {
+        console.error(err)
+        lyrics = '[!] Hubo un error al buscar la letra en Genius!'
+      }
+    } else {
+      try{
+        lyrics = await lyricsFinder('', songName) || 'No se encontraron resultados para la canción especificada!'
+      } catch (err) {
+        console.error(err)
+        lyrics = '[!] Hubo un error al buscar la letra!'
+      }
+    }
+
+    if(lyrics.length > 4096){
+      lyrics = lyrics.slice(0, 4093) + '...'
+    }
+
+    const embed = new EmbedBuilder()
+    .setAuthor({ name: "Letra", iconURL: "https://i.imgur.com/SaDhsHb.png" })
+    .setThumbnail(thumbnail || queue?.songs[0].thumbnail || '')
+    .setTitle(`${songName}`)
+    .setURL(song.url)
+    .setDescription(lyrics)
+    .setFooter({ text: `Source: ${lyricsEngine || 'LyricsFinder'}` })
+    .setTimestamp()
+
+    message.channel.send({ embeds: [embed] })
+    
+        /*
         const embed = new EmbedBuilder()
         .setAuthor({ name: "Letra", iconURL: "https://i.imgur.com/SaDhsHb.png" })
         .setThumbnail(song.thumbnail)
@@ -37,13 +79,7 @@ module.exports = {
         .setTimestamp()
 
         message.channel.send({ embeds: [embed] })
-      } else {
-        message.channel.send("❌ | No se ha podido encontrar la letra de la canción!")
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  
+        */
    }
   
   }

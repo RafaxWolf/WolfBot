@@ -30,7 +30,7 @@ module.exports = {
             .setAuthor({ name: "Inventario", iconURL: client.user.displayAvatarURL() })
             .setTitle(`Inventario de ${user.username}`)
             .setThumbnail(user.displayAvatarURL())
-            .setDescription(`Todos los items en el inventario:\n${mappedData}`)
+            .setDescription(`**Todos los items en el inventario:**\n${mappedData}`)
             .setColor("Green")
 
             interaction.reply({ embeds: [inventoryEmbed], ephemeral: true })

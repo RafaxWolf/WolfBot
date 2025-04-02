@@ -22,11 +22,6 @@ module.exports = {
     )
     .addStringOption(option =>
         option
-        .setName("description")
-        .setDescription("Descripción del item")
-    )
-    .addStringOption(option =>
-        option
         .setName("rarity")
         .setDescription("Rareza del item")
         .addChoices(
@@ -37,6 +32,12 @@ module.exports = {
             { name: "Épico", value: "epic" },
             { name: "Único", value: "unique" }
         )
+        .setRequired(true)
+    )
+    .addStringOption(option =>
+        option
+        .setName("description")
+        .setDescription("Descripción del item")
     )
     .addStringOption(option =>
         option
@@ -45,7 +46,7 @@ module.exports = {
     ),
 
     async run(client, interaction){
-      
+
         const itemName = interaction.options.getString("name")
         const itemPrice = interaction.options.getString("price")
         const itemDescription = interaction.options.getString("description")
@@ -53,6 +54,7 @@ module.exports = {
         const itemType = interaction.options.getString("type")
 
         const newItemId = items.length + 1
+        console.log(chalk.greenBright(`[+] La nueva ID del item sera: #${newItemId}`))
 
         //* Contenido del nuevo Item
         const newItem = {
@@ -65,14 +67,15 @@ module.exports = {
         }
 
         fs.readFileSync("./src/shopitems.js", "utf-8", (err, data) => {
-            interaction.reply({ content: `[+] Leyendo contenido del archivo **./shopitems.js**...`, ephemeral: true }) 
+            interaction.reply({ content: `[+] Leyendo contenido del archivo **./src/shopitems.js**...`, ephemeral: true }) 
             if (err){
-                console.error(chalk.redBright(`[!] Ha ocurrido un error al intentar leer el archivo ./shopitems.js\n`) + err) //! Mensaje de error al leer el archivo
+                console.error(chalk.redBright(`[!] Ha ocurrido un error al intentar leer el archivo ./src/shopitems.js\n`) + err) //! Mensaje de error al leer el archivo
                 return;
             }
 
             const itemsArray = JSON.parse(data);
-            itemsArray.push(newItem);
+            const itemPush = itemsArray.push(newItem);
+            console.log(itemPush)
             interaction.followUp({ content: `[+] Creando item a Añadir...`, ephemeral: true })
 
             try {
@@ -85,7 +88,7 @@ module.exports = {
             }
         })
 
-        interaction.followUp({ content: `[+] Item añadido correctamente a la tienda con el ID: *${itemName}*#**${newItemId}**`, ephemeral: true })
+        interaction.followUp({ content: `[+] Nuevo Item añadido a la Tienda de manera Exitosa:\n*${itemName}*#**${newItemId}**`, ephemeral: true })
 
     }
         

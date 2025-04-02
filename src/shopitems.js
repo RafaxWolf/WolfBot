@@ -1,7 +1,7 @@
 module.exports = [
     {
         item: "C̵͍̙͔̔̈̀̿͑ͅò̷̖̠̰̰̚ḑ̴͕̔̕̚ȇ̵̘̩̣͙͖̉̄͂̂ ̶͇̮͈͆S̷͉̩̳̙̃̿̕w̶̰̗͘o̵͙̾̅͋͑͊r̵͎̈̏̉ḓ̴̡̆̍̅",
-        description: "Cuenta la leyenda de una entidad ancestral forjo esta arma con el poder de una deidad para crear y modificar el código del mismísimo universo",
+        description: "Cuenta la leyenda de una entidad ancestral forjo esta arma con el poder de una deidad con el propósito de crear y modificar el código del mismísimo universo",
         price: "Unknown",
         id: "Unknown",
         rarity: "Unknown",
@@ -32,7 +32,7 @@ module.exports = [
     },
     {
         item: "Espada de Diamante",
-        description: "",
+        description: "sad",
         price: "100.000",
         id: "004",
         rarity: "Muy Raro",
@@ -63,10 +63,18 @@ module.exports = [
         type: "Objeto de magia"
     },
     {
+        item: "Glock 17",
+        description: "asd",
+        price: "50.000",
+        id: "008",
+        rarity: "Común",
+        type: "Arma de fuego"
+    },
+    {
         item: "Ak-47",
         description: "asd",
-        price: "47.000.000",
-        id: "047",
+        price: "1.000.000",
+        id: "009",
         rarity: "Común",
         type: "Arma de fuego"
     }

@@ -71,14 +71,10 @@ client.slashCommands = slashCommandHandler //! Handler de los Slash Commands
 
 client.on("messageCreate", async (message) => {
 
- var prefix = "w!" //! Prefix del Bot
-
+ var prefix = "w!" //! Prefix del Bot 
+ 
  //TODO: Comandos de Creador
  var authPrefix = "wAuth!" //! Prefix para comandos de creador
-
-if(message.content.startsWith(authPrefix) && message.author.id === "594359919004614670"){ //! Verifica si el mensaje empieza con el prefix de comandos de creador
-  message.channel.send("[+] WolfBot Author Commands Working! [+]")
-}
 
 //!------------------------------------------------------------------Log de la Consola------------------------------------------------------------------
 
@@ -133,22 +129,30 @@ if(message.guild && message.guild.id === "338373170463506442"){  //! Verifica si
   console.log(chalk.bgRed("¡Access Denied!")) //! Si el mensaje fue enviado a uno de los servidores prohibidos, Regresa un mensaje de "¡Access Denied!"
   return;
 
+//* Si el mensaje fue enviado a un servidor permitido, continua con el proceso de ganar EXP
 } else {
-  //* Si el mensaje fue enviado a un servidor permitido, continua con el proceso de ganar EXP
+  
+  //? Calcula la EXP ganada por el mensaje enviado dependiendo de la longitud del mensaje
   let randomXp
   if(message.content.length <= 5){
     randomXp = Math.floor(Math.random() * 3) + 1
+
   } else if(message.content.length >= 5 && message.content.length <= 30){
     randomXp = Math.floor(Math.random() * 20) + 1
+
   } else if(message.content.length >= 30 && message.content.length <= 50){
     randomXp = Math.floor(Math.random() * 45) + 1
+
   } else if(message.content.length >= 50 && message.content.length <= 70){
     randomXp = Math.floor(Math.random() * 60) + 1
+
   } else if(message.content.length >= 70 && message.content.length <= 80){
     randomXp = Math.floor(Math.random() * 70) + 1
+
   } else if(message.content.length > 80){
     randomXp = Math.floor(Math.random() * 75) + 1
-  } //? Calcula la EXP ganada por el mensaje enviado dependiendo de la longitud del mensaje
+
+  } 
 
   console.log(chalk.blue(`randomXp: ${randomXp}`)) //* Muestra la EXP ganada
 
@@ -204,9 +208,8 @@ if(message.guild && message.guild.id === "338373170463506442"){  //! Verifica si
      ////if(isNaN(pagoTotal)) return;
      await economy.findOneAndUpdate({ guildID: message.guild.id, userID: message.author.id }, { dinero: pagoTotal }) //* Actualiza la cantidad de dinero del usuario en la Base de Datos
 
-
-//*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }
+//*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
  if(message.content.startsWith(prefix) || message.content.startsWith(prefix.toUpperCase())) { //* Verifica si el mensaje empieza con el prefix
 
@@ -278,12 +281,25 @@ if(message.guild && message.guild.id === "338373170463506442"){  //! Verifica si
  
      message.channel.send({ embeds: [errorEmbed] }) //* Envía el Embed de error al canal
      message.delete() //* Elimina el mensaje del comando
+    }
+  }
 
-   }
- 
- }
+  if(message.content.startsWith(authPrefix) && message.author.id === "594359919004614670" || message.content.startsWith(authPrefix.toUpperCase()) && message.author.id === "594359919004614670") { //* Verifica si el mensaje empieza con el prefix
+  
+    if(message.content === authPrefix) return; //! Verifica si el mensaje es solo el prefix, si es asi no hace nada
 
-})
+    if(message.author.bot) return; //! Verifica si el autor del mensaje es un Bot, si es asi no hace nada
+  
+  } else {
+    if(message.content.startsWith(authPrefix) && message.author.id !== "594359919004614670" || message.content.startsWith(authPrefix.toUpperCase()) && message.author.id !== "594359919004614670") { //* Verifica si el mensaje empieza con el prefix
+      const noAuth = message.channel.send("❌ | ¡No tienes permisos suficientes para usar este comando!")
+
+      setTimeout(async () => {
+        await noAuth.delete().catch(console.error)
+      }, 3000);
+    }
+  }
+  })
 
 //* Events Handler
 const eventsPath = path.join(__dirname, 'events');
@@ -297,9 +313,13 @@ for (const file of eventFiles) {
   if(event.name === 'interactionCreate') {
     client.on('interactionCreate', async (interaction) => {
       try {
+        //* Ejecuta el evento
         await event.execute(client, interaction)
+
       } catch (error) {
+        //* Si ocurre un error, lo muestra en consola
         console.error(error)
+
       }
     })
 
@@ -307,9 +327,13 @@ for (const file of eventFiles) {
   } else if(event.name === 'guildCreate' || event.name === 'guildDelete') {
     client.on(event.name, async (guild) => {
       try{
+        //* Ejecuta el evento
         await event.execute(client, guild)
+
       } catch (error) {
+        //* Si ocurre un error, lo muestra en consola
         console.error(error)
+
       }
     })
 
@@ -332,24 +356,29 @@ const status = (queue) =>
 client.distube
  .on('playSong', (queue, song) => {
     queue.voice.setSelfDeaf(false);
-    embedPlayBuilder(
-      client,
-       queue,
-        song,
-          song.thumbnail,
-            `Reproduciendo`,
-              `${song.name}`,
-                song.url,
-                  `*\`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\`* | **\`${song.uploader.name
-                  }\`**\n${status(queue)}`
-                  );
+    embedPlayBuilder(           //* Crea el Embed de la canción que se esta reproduciendo
+      client,                   //* Obtiene el Client
+      queue,                    //* Obtiene la Cola
+      song,                     //* Obtiene la Canción
+      song.thumbnail,           //* Obtiene la Miniatura de la Canción
+      `Reproduciendo`,          //* Título del Embed
+      `${song.name}`,           //* Nombre de la Canción
+      song.url,                 //* URL de la Canción
+      `*\`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\`* | **\`${song.uploader.name //? Crea el Embed de la canción que se esta reproduciendo
+      }\`**\n${status(queue)}` //* Información sobre la configuración del reproductor
+    );
 
     try {
-      console.log(`[+] Cambiando presencia a: Escuchando a ${song.name} / ${song.uploader.name}`);
+      //* Muestra en consola que el Bot esta escuchando a la canción
+      console.log(`[+] Cambiando presencia a: Escuchando a ${song.name} / ${song.uploader.name}`); 
       
+      //* Cambia la presencia del Bot a "Escuchando a <Nombre de la Canción> / <Nombre del Uploader>"
       client.user.setPresence({ activities: [{ name: `${song.name} / ${song.uploader.name}`, type: ActivityType.Listening }], status: "dnd" })
+
     } catch (error) {
+      //* Si ocurre un error, lo muestra en consola
       console.error(error)
+
     }
 
   }
@@ -365,6 +394,7 @@ client.distube
 
 //* Add List
 .on('addList', (queue, playlist) => 
+  //TODO: Crear el Embed con la información de la lista de canciones añadida
   queue.textChannel.send(
     `☑️ | Añadido \`${playlist.name}\` playlist\n (${
        playlist.songs.length
@@ -374,12 +404,14 @@ client.distube
 
 //* Error Handler
 .on('error', (channel, e) => {
+  //TODO: Mejorar el sistema de errores
   if (channel) channel.send(`❌ | Un error ha ocurrido: ${e.toString().slice(0, 1974)}`).then(console.error(e))
   else console.error(e)
 })
 
 //* No People in VC
 .on('empty', (message) => {
+  //TODO: Arreglar algunos bugs al enviar el mensaje al canal de texto
   const empty = message.channel.send("**[!]** El canal de voz actual esta vació! **[!]**\n\nSaliendo...")
 
     setTimeout(() => {

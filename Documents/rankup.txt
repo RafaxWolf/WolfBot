@@ -1,0 +1,30 @@
+const levels = require('../../Schema/xp-schema')
+
+module.exports = {
+  name: "rankup",
+  alias: ["levelup", "get-role"],
+  
+async execute (client, message, args){
+  
+    let data = await levels.findOne({ userID: message.author.id, guildID: message.guild.id })
+
+    if(!data) {
+        message.channel.send(`❌ | ${message.author} No tienes experiencia!`)
+    }
+
+      let currentlevel = data.level
+      let faltante = 20 - currentlevel
+
+      if(message.author.roles.cache.find(rol => rol.id === "1058095942835908770")) return message.channel.send("Ya posees el rango")
+
+      if(!currentlevel >= "20") {
+        message.channel.send(`❌ | ${message.author} No tienes el nivel necesario!.\nse necesita tener al menos nivel **20** para desbloquear el rango\nte faltan **${faltante}** niveles!`)
+      } else {
+        message.channel.send("").then(message.author.roles.add("1058095942835908770"))
+      }
+
+   }
+  
+  }
+
+  
