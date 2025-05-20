@@ -1,6 +1,9 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ActivityType } = require("discord.js")
 const fs = require("fs")
 const chalk = require("chalk")
+const path = require("path")
+const getBasePath = require("../utils/getBasePath");
+require("dotenv").config()
 
 module.exports = {
   name: 'ready',
@@ -8,8 +11,9 @@ module.exports = {
 
 //Sistema de Verificación
 
-const channelID = '1063533274233852005';
-const filePath = "./src/events/verification_message_id.json";
+const channelID = process.env.VERIFICATION_CHANNEL;
+const filePath = path.join(getBasePath(), "events", "verification_message_id.json");
+////const filePath = "./src/events/verification_message_id.json";
 
 try {
   let data = {};
@@ -29,14 +33,15 @@ try {
         const existingMessage = await channel.messages.fetch(verificationMessageID);
 
         if(existingMessage) {
-          console.log(chalk.greenBright("\n[+] El mensaje sigue existiendo! [+]"))
+          console.log(chalk.greenBright("\n[+] El mensaje sigue existiendo!\n"))
         }
+        
       } catch (error) {
         if(error.code === 10008) {
-          console.log(chalk.redBright("[!] El mensaje ya no existe o no se encuentra! [!]"))
+          console.log(chalk.redBright("\n[!] El embed de Verificación ya no existe o no se encuentra!\n"))
 
-          fs.writeFileSync(filePath, JSON.stringify({}))
-          console.log(chalk.blueBright("[-] ID del mensaje anterior eliminado. enviando nuevo mensaje de verificación... [-]"))
+          fs.writeFileSync(filePath, JSON.stringify({ verificationMessageID: null })) //* Elimina el ID del embed anterior
+          console.log(chalk.blueBright("[-] ID del embed anterior eliminado. enviando nuevo mensaje de verificación...\n"))
   
           const row = new ActionRowBuilder()
           .addComponents(
@@ -58,7 +63,7 @@ try {
   
           fs.writeFileSync(filePath, JSON.stringify({ verificationMessageID: newVerificationMessageID })) 
         } else {
-          console.log(chalk.redBright(`[!] Ha ocurrido un error [!]\n`), error)
+          console.log(chalk.redBright(`[!] Ha ocurrido un error\n`), error)
         }
       }
     }
@@ -85,25 +90,27 @@ try {
 
         fs.writeFileSync(filePath, JSON.stringify({ verificationMessageID: newVerificationMessageID }))
     } else {
-      console.log(chalk.greenBright("\n[+] El mensaje de verificación ya existe! [+]\n"))
+      console.log(chalk.greenBright("[+] El mensaje de verificación ya existe!\n"))
     }
   } else {
-    console.log(chalk.red("[-] No se pudo encontrar el canal de verificación! [-]"))
+    console.log(chalk.red("[!] No se pudo encontrar el canal de verificación!\n"))
   }
 } catch (err) {
-  console.log(chalk.bgRed("[!] Error al Leer/Escribir al archivo [!]\n"), err)
+  console.log(chalk.redBright("[!] Error al Leer/Escribir al archivo\n"), err)
 }
 
     //Encendido del bot
     console.log(chalk.cyanBright(`Logged in as ${client.user.tag}.\n`));
     client.user.setPresence({ activities: [{ name: "w!help - /help", type: ActivityType.Playing }], status: "dnd"});
 
+    /*
     //Votaciones y likes
-    const poll = require('../poll')
-    const likes = require('../likes')
+    //const poll = require('../poll')
+    //const likes = require('../likes')
 
-    poll(client)
-    likes(client)
+    //poll(client)
+    //likes(client)
+    */
     
   },
 };

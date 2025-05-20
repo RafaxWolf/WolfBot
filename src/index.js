@@ -1,4 +1,4 @@
-//*---------------------------------------------Necessary---------------------------------------------
+//*--------------------------------------------- Necessary ---------------------------------------------
 
 //* JavaScript
 const fs = require('fs');
@@ -14,7 +14,7 @@ const { YtDlpPlugin } = require("@distube/yt-dlp")
 const { SpotifyPlugin } = require('@distube/spotify')
 const { SoundCloudPlugin } = require('@distube/soundcloud')
 
-//*---------------------------------------------Necessary---------------------------------------------
+//*--------------------------------------------- Necessary ---------------------------------------------
 
 //* Schemas
 const economy = require('./Schema/economia-schema')
@@ -125,8 +125,8 @@ client.on("messageCreate", async (message) => {
 
 const Xpdata = await levels.findOne({ userID: message.author.id, guildID: message.guild.id }) //* Encuentra los datos de la EXP del usuario
 
-if(message.guild && message.guild.id === "338373170463506442"){  //! Verifica si el mensaje fue enviado a uno de los servidores prohibidos.
-  console.log(chalk.bgRed("¡Access Denied!")) //! Si el mensaje fue enviado a uno de los servidores prohibidos, Regresa un mensaje de "¡Access Denied!"
+if(message.guild && message.guild.id === "338373170463506442" || message.guild && message.guild.id === "1351577010400395325"){  //! Verifica si el mensaje fue enviado a uno de los servidores prohibidos.
+  console.log(chalk.red("¡Access Denied!")) //! Si el mensaje fue enviado a uno de los servidores prohibidos, Regresa un mensaje de "¡Access Denied!"
   return;
 
 //* Si el mensaje fue enviado a un servidor permitido, continua con el proceso de ganar EXP
@@ -460,6 +460,7 @@ client.distube
 //* Disconnect from VC
 .on("disconnect", (queue) => { //* Cuando el Bot se desconecta del VC, vuelve a poner su Presencia normal
   client.user.setPresence({ activities: [{ name: "w!help - /help", type: ActivityType.Playing }], status: "dnd"});
+  console.log("\nDisconnected!")
 })
 
 //* Debug

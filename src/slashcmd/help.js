@@ -8,10 +8,12 @@ module.exports = {
 
     async run(client, interaction){
 
+//------------------------------------------------------------------------Embeds------------------------------------------------------------------------
+
         const pages = [
             new EmbedBuilder()
             .setAuthor({ name: "Help", iconURL: "https://i.imgur.com/SaDhsHb.png" })
-            .setTitle("Ayuda COmandos Básicos")
+            .setTitle("Ayuda Comandos Básicos")
             .setColor("Aqua")
             .addFields(
                 { name: "/ping", value: "Muestra la latencia del bot" },
@@ -20,6 +22,7 @@ module.exports = {
                 { name: "/help", value: "Muestra la ayuda de los comandos" },
             )
             .setTimestamp(),
+
             new EmbedBuilder()
             .setAuthor({ name: "Help", iconURL: "https://i.imgur.com/SaDhsHb.png" })
             .setTitle("Ayuda Encriptacion/Desencriptación")
@@ -29,6 +32,7 @@ module.exports = {
                 { name: "/decrypt <texto> <contraseña> <método> (AES, B64, Hex)", value: "Desencriptar un mensaje con diversos métodos y con contraseñas hechas por el usuario" },
             )
             .setTimestamp(),
+
             new EmbedBuilder()
             .setAuthor({ name: "Help", iconURL: "https://i.imgur.com/SaDhsHb.png" })
             .setTitle("Ayuda Inventario")
@@ -40,7 +44,7 @@ module.exports = {
             .setTimestamp(),
         ]
 
-//------------------------------------------------------------------------Embeds------------------------------------------------------------------------
+/*
     const help1 = new EmbedBuilder()
     .setAuthor({ name: "Help", iconURL: "https://i.imgur.com/SaDhsHb.png" })
     .setTitle("Sistema de Encriptacion/Desencriptación")
@@ -50,6 +54,7 @@ module.exports = {
         { name: "/decrypt <texto> <contraseña> <método> (AES, B64, Hex)", value: "Desencriptar un mensaje con diversos métodos y con contraseñas hechas por el usuario" },
     )
     .setTimestamp()
+*/
     
     //  **/jump <number>** - Saltar a una canción en la lista de reproducción
     //  **/remove <number>** - Eliminar una canción de la lista de reproducción

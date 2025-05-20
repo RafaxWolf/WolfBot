@@ -1,8 +1,10 @@
 const { SlashCommandBuilder } = require("discord.js")
 const fs = require("fs")
-const chalk = require("chalk")
-
 const items = require("../shopitems")
+const chalk = require("chalk")
+const path = require("path")
+const getBasePath = require("../utils/getBasePath");
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -66,10 +68,12 @@ module.exports = {
             type: itemType
         }
 
-        fs.readFileSync("./src/shopitems.js", "utf-8", (err, data) => {
-            interaction.reply({ content: `[+] Leyendo contenido del archivo **./src/shopitems.js**...`, ephemeral: true }) 
+        const shopItemsPath = path.join(getBasePath(), "shopitems.js")
+
+        fs.readFileSync(shopItemsPath, "utf-8", (err, data) => {
+            interaction.reply({ content: `[+] Leyendo contenido del archivo **${shopItemsPath}**...`, ephemeral: true }) 
             if (err){
-                console.error(chalk.redBright(`[!] Ha ocurrido un error al intentar leer el archivo ./src/shopitems.js\n`) + err) //! Mensaje de error al leer el archivo
+                console.error(chalk.redBright(`[!] Ha ocurrido un error al intentar leer el archivo ${shopItemsPath}\n`) + err) //! Mensaje de error al leer el archivo
                 return;
             }
 
@@ -79,7 +83,7 @@ module.exports = {
             interaction.followUp({ content: `[+] Creando item a Añadir...`, ephemeral: true })
 
             try {
-                fs.writeFileSync("./src/shopitems.js", JSON.stringify(itemsArray, null, 2));
+                fs.writeFileSync(shopItemsPath, JSON.stringify(itemsArray, null, 2));
                 console.log(chalk.greenBright(`[+] Añadiendo item al archivo ./shopitems.js...`));
                 interaction.followUp({ content: `[+] Aplicando cambios al archivo **./shopitems.js**...`, ephemeral: true })
             } catch (err) {

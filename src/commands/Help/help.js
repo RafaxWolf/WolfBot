@@ -15,11 +15,11 @@ async execute (client, message, args){
         .addFields(
           { name: "\u200B", value: "\u200B" },
           { name: "Ayuda del sistema de economia", value: "**\`w!help economy (or w!help money)\`**", inline: true },
-          { name: "Ayuda del sistema de Hackeo", value: "**\`w!help hacking\`**", inline: true },
-          { name: "Ayuda de las recompensas de los niveles de Patreon", value: "**\`w!help Patreon\`**", inline: true },
-          { name: "Ayuda del casino", value: "**\`w!help casino\`**", inline: true },
+          //{ name: "Ayuda del sistema de Hackeo", value: "**\`w!help hacking\`**", inline: true },
+          //{ name: "Ayuda de las recompensas de los niveles de Patreon", value: "**\`w!help Patreon\`**", inline: true },
+          //{ name: "Ayuda del casino", value: "**\`w!help casino\`**", inline: true },
           { name: "Ayuda del sistema de música", value: "**\`w!help music\`**", inline: true },
-          { name: "Ayuda del sistema de experiencia", value: "**\`w!help experience (or w!help xp)\`**", inline: true },
+          //{ name: "Ayuda del sistema de experiencia", value: "**\`w!help experience (or w!help xp)\`**", inline: true },
         )
         .setTimestamp()
 
@@ -88,16 +88,21 @@ async execute (client, message, args){
         .setColor("Red")
         .addFields(
           { name: "\u200B", value: "\u200B" },
-          { name: "Unir", value: "w!join <Channel ID or Nothing>", inline: true },
-          { name: "Reproducir", value: "w!play / w!p <song URL or Name>", inline: true },
+          { name: "Unir", value: "w!join <Channel ID> (Optional)", inline: true },
           { name: "Salir", value: "w!leave", inline: true },
+          { name: "Reproducir", value: "w!play <Song name or URL> / w!p <Song name or URL>", inline: true },
+          { name: "Reanudar", value: "w!pause (If is already paused it will resume the song) / w!play (Without anything it will resume the song)", inline: true },
+          { name: "Añadir", value: "w!add <Song name or URL>", inline: true },
+          { name: "Pausar", value: "w!pause / w!stop", inline: true },
+          { name: "Anterior", value: "w!previous", inline: true },
+          { name: "Siguiente/Saltar", value: "w!skip", inline: true },
+          { name: "Volver a reproducir", value: "w!replay", inline: true },
+          { name: "Letra", value: "w!lyrics <genius/default> <Song name> (Optional)", inline: true },
           { name: "Cola", value: "w!queue", inline: true },
           { name: "Loop", value: "w!loop <song/queue/off>", inline: true },
-          { name: "Pausar", value: "w!pause / w!stop", inline: true },
           { name: "Sonando Ahora", value: "w!nowplaying / w!np", inline: true },
-          { name: "Saltar", value: "w!skip", inline: true },
-          { name: "AutoPlay", value: "w!autoplay", inline: true },
           { name: "Volumen", value: "w!volume <Number>", inline: true },
+          { name: "Auto-Reproducción", value: "w!autoplay", inline: true },
         )
 
         message.channel.send({ embeds: [music] })
@@ -116,10 +121,8 @@ async execute (client, message, args){
       `)*/
         break
       case 'experience', 'xp':
-        message.channel.send(`
-        asd
-        `)
-        break
+        
+      break
     }        
         
       

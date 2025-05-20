@@ -26,9 +26,11 @@ Dockerfile
 *.dockerignore
 cookies.json
 *-base.js
+*-player-script.js
 Schema/gacha-schema.js
 Schema/poll-schema.js
 src/commands/Music/filter.js
+*.buildignore
 
 # Directories
 Templates/
