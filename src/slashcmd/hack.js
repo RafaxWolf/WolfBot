@@ -9,8 +9,7 @@ module.exports = {
         option
         .setName("user")
         .setDescription("Usuario al cual hackear")
-        .setRequired(true))
-        .setDMPermission(false),
+        .setRequired(true)),
 
     async run(client, interaction){
       const user = interaction.options.getUser("user")

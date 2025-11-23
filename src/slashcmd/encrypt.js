@@ -1,9 +1,7 @@
-const { SlashCommandBuilder } = require("discord.js")
-const Cryptr = require("cryptr")
-
+const { SlashCommandBuilder, MessageFlags } = require("discord.js")
 var CryptoJS = require("crypto-js")
-
 var defaultPasswd = 'Password'
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,50 +13,51 @@ module.exports = {
         .setDescription("Texto o mensaje a encriptar")
         .setRequired(true)
     )
+
     .addStringOption(option =>
         option
         .setName("method")
-        .setDescription("Método de encriptacion a usar (por defecto 'Hex')")
+        .setDescription("Método de encriptacion a usar (por defecto 'Base64')")
         .setChoices(
             { name: "Base64", value: "b64" },
-            { name: "Hexadecimal", value: "hex" },
+            { name: "Hex", value: "hex" },
             { name: "Advanced Encryption Standard (AES)", value: "aes" },
         )
         .setRequired(true)
     )
+
     .addStringOption(option =>
         option
         .setName("password")
-        .setDescription("La contraseña para encriptar el mensaje (por defecto 'Password')")
+        .setDescription("La contraseña para encriptar el mensaje (por defecto: 'Password')")
         .setMinLength(5)
         .setMaxLength(30)
     ),
 
     async run(client, interaction){
-      
-        const text2Encrypt = interaction.options.getString("text")
-        const password4Encrypt = interaction.options.getString("password")
-        const encryptionMethod = interaction.options.get("method").value
+        const message = interaction.options.getString("text")
+        const password = interaction.options.getString("password") || defaultPasswd
+        const encryptMethod = interaction.options.get("method").value
 
-        if(encryptionMethod){
-            interaction.reply({ content: `Metodo de Encriptación Utilizado: ${encryptionMethod}`, ephemeral: true })
+
+        function encrypt(text,passwd,method){
+            if(method === "b64"){
+                var ciphertext = CryptoJS.enc.Base64(text).toString();
+                interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, flags: MessageFlags.Ephemeral })
+            } else if(method === "hex"){
+                var ciphertext = CryptoJS.enc.Hex(text).toString();
+                interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, flags: MessageFlags.Ephemeral })
+            } else if(method === "aes"){
+                var ciphertext = CryptoJS.AES.encrypt(text, passwd).toString();
+                interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}\nContraseña: ${passwd}`, flags: MessageFlags.Ephemeral })
+            }
+        }
+
+        if(encryptMethod){
+            interaction.reply({ content: `Método de Encriptacion Utilizado: ${encryptMethod}`, flags: MessageFlags.Ephemeral })
+            encrypt(message,password,encryptMethod)
         }else {
             return;
-        }
-
-        if(encryptionMethod === "aes" && !password4Encrypt){
-            var ciphertext = CryptoJS.AES.encrypt(`${text2Encrypt}`, defaultPasswd)
-            interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, ephemeral: true })
-
-        } else if(encryptionMethod === "aes" && password4Encrypt){
-            var ciphertext = CryptoJS.AES.encrypt(`${text2Encrypt}`, password4Encrypt)
-            interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, ephemeral: true })
-        }
-
-        if(encryptionMethod === "b64" && !password4Encrypt){
-
-        } else if(encryptionMethod === "b64" && password4Encrypt){
-            
         }
 
     }

@@ -22,7 +22,7 @@ execute (client, message, args){
       user.roles.remove(mainrole);
       user.roles.add(muterole);
       message.channel.send(`El usuario **${user.user.username}** ha sido muteado por **${message.author.username}** por tiempo *indefinido*!`);
-      return
+      return;
     }
 
     user.roles.remove(mainrole);

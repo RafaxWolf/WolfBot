@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js")
+const { SlashCommandBuilder, MessageFlags } = require("discord.js")
 const fs = require("fs")
 const items = require("../shopitems")
 const chalk = require("chalk")
@@ -48,52 +48,68 @@ module.exports = {
     ),
 
     async run(client, interaction){
-
+    // ----------------------- Item Data ----------------------- \\
         const itemName = interaction.options.getString("name")
         const itemPrice = interaction.options.getString("price")
-        const itemDescription = interaction.options.getString("description")
-        const itemRarity = interaction.options.getString("rarity").value
-        const itemType = interaction.options.getString("type")
+        const itemDescription = interaction.options.getString("description") || "No Description"
+        const itemRarity = interaction.options.getString("rarity").value || "common"
+        const itemType = interaction.options.getString("type") || "No type"
+    // ----------------------- Item Data ----------------------- \\
 
         const newItemId = items.length + 1
         console.log(chalk.greenBright(`[+] La nueva ID del item sera: #${newItemId}`))
+        /* console.log(`
+            ID: ${newItemId}
+            Item Name: ${itemName}
+            Descripción: ${itemDescription}
+            Precio: ${itemPrice}
+            Rareza: ${itemRarity}
+            Tipo: ${itemType}
+        `) */
 
         //* Contenido del nuevo Item
         const newItem = {
+            id: newItemId,
             item: itemName,
             description: itemDescription,
             price: itemPrice,
-            id: newItemId,
             rarity: itemRarity,
             type: itemType
         }
 
-        const shopItemsPath = path.join(getBasePath(), "shopitems.js")
+        console.log(newItem)
 
-        fs.readFileSync(shopItemsPath, "utf-8", (err, data) => {
-            interaction.reply({ content: `[+] Leyendo contenido del archivo **${shopItemsPath}**...`, ephemeral: true }) 
-            if (err){
-                console.error(chalk.redBright(`[!] Ha ocurrido un error al intentar leer el archivo ${shopItemsPath}\n`) + err) //! Mensaje de error al leer el archivo
-                return;
-            }
+        const shopItemsPath = path.join(getBasePath() + "/shopitems.json")
+        console.log(shopItemsPath)
 
-            const itemsArray = JSON.parse(data);
-            const itemPush = itemsArray.push(newItem);
-            console.log(itemPush)
-            interaction.followUp({ content: `[+] Creando item a Añadir...`, ephemeral: true })
+        try{
+            fs.readFileSync(shopItemsPath, "utf-8", (err, data) => {
+                interaction.reply({ content: `[+] Leyendo contenido del archivo **${shopItemsPath}**...`, flags: MessageFlags.Ephemeral })
 
-            try {
-                fs.writeFileSync(shopItemsPath, JSON.stringify(itemsArray, null, 2));
-                console.log(chalk.greenBright(`[+] Añadiendo item al archivo ./shopitems.js...`));
-                interaction.followUp({ content: `[+] Aplicando cambios al archivo **./shopitems.js**...`, ephemeral: true })
-            } catch (err) {
-                console.error(chalk.redBright(`[!] Ha ocurrido un error al intentar añadir el item a la tienda\n`) + err) //! Mensaje de error al añadir item
-                return;
-            }
-        })
+                const itemsArray = JSON.parse(data);
+                const itemPush = itemsArray.push(newItem);
+                    console.log(itemPush)
+                    interaction.followUp({ content: `[+] Creando item a Añadir...`, flags: MessageFlags.Ephemeral })
 
-        interaction.followUp({ content: `[+] Nuevo Item añadido a la Tienda de manera Exitosa:\n*${itemName}*#**${newItemId}**`, ephemeral: true })
-
+                try {
+                    fs.writeFileSync(shopItemsPath, JSON.stringify(itemsArray, null, 4), err => {
+                        if (err) return console.error(chalk.redBright(`[!] Ha ocurrido un error al intentar escribir el archivo ${shopItemsPath}\n`) + err)
+                    });
+                    console.log(chalk.greenBright(`[+] Añadiendo item al archivo ./shopitems.js...`));
+                    interaction.followUp({ content: `[+] Aplicando cambios al archivo **./shopitems.js**...`, flags: MessageFlags.Ephemeral })
+                    interaction.followUp({ content: `[+] Nuevo Item añadido a la Tienda de manera Exitosa:\n*${itemName}*#**${newItemId}**`, flags: MessageFlags.Ephemeral })
+                } catch (err) {
+                    //! Mensaje de error al añadir item
+                    console.error(chalk.redBright(`[!] Ha ocurrido un error al intentar añadir el item a la tienda\n`) + err)
+                    return;
+                }
+            })
+        } catch (err) {
+            //! Mensaje de error al leer el archivo
+            console.error(chalk.redBright(`[!] Ha ocurrido un error al intentar leer el archivo ${shopItemsPath}\n`) + err)
+            return;
+        }    
+        
     }
         
 }

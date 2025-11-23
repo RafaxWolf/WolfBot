@@ -11,6 +11,7 @@ missions.js
 bannedsongs.js
 *asd.js
 *dsa.js
+bannedsongs.json
 embed.js
 testimages.js
 iFrame.js
@@ -31,6 +32,7 @@ Schema/gacha-schema.js
 Schema/poll-schema.js
 src/commands/Music/filter.js
 *.buildignore
+shopitems.json
 
 # Directories
 Templates/
@@ -41,3 +43,5 @@ Database/
 dist/
 build/
 Logs/
+Apps/
+.stfolder/

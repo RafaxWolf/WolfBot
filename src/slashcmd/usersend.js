@@ -1,5 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js")
-const Discord = require("discord.js")
+const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType, MessageFlags } = require("discord.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -17,7 +16,7 @@ module.exports = {
         .setDescription("Mensaje a enviar")
         .setRequired(true)
         )
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
     async run(client, interaction){
       const user = interaction.options.getUser("user")
@@ -25,7 +24,7 @@ module.exports = {
 
       user.send(msg)
 
-      interaction.reply({ content: 'Mensage enviado', ephemeral: true })
+      interaction.reply({ content: 'Mensage enviado', flags: MessageFlags.Ephemeral })
     }
         
 }

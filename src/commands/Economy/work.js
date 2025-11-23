@@ -4,7 +4,7 @@ const { EmbedBuilder } = require('discord.js')
 module.exports = {
   name: "work",
   alias: ["trabajar"],
-
+  vacRestricted: true,
 async execute (client, message, args){
 
   let datos = await economia.findOne({ userID: message.author.id })

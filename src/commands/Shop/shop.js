@@ -15,8 +15,7 @@ module.exports = {
   alias: ["tienda"],
 
 async execute (client, message, args){
-    const q = items
-      .map((value, index) => {
+    const q = items.map((value, index) => {
       return `**${index + 1})** ${value.item}*#${value.id}*
       Rareza: **${value.rarity}** | Tipo: **${value.type}**
       Descripción:

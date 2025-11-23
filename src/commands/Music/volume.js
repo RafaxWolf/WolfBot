@@ -1,13 +1,10 @@
-//const { PermissionsBitField } = require('discord.js')
-
 module.exports = {
   name: "volume",
   alias: ["volumen", "set-volume"],
   inVoiceChannel: true,
 execute (client, message, args){
   //let admin = message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)
-
-//if (!admin) return message.channel.send(`${message.author} No eres un moderador!\n\`Solo los moderadores pueden usar el comando de volumen!\``)
+  //if (!admin) return message.channel.send(`${message.author} No eres un moderador!\n\`Solo los moderadores pueden usar el comando de volumen!\``)
 
   const queue = client.distube.getQueue(message)
   if (!queue) return message.channel.send("❌ | No hay nada en la cola!")

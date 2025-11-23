@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js")
+const { SlashCommandBuilder, MessageFlags } = require("discord.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,7 +8,10 @@ module.exports = {
     async run(client, interaction){
       let owner = await interaction.guild.fetchOwner()
 
-      interaction.reply({ content: `Nombre del servidor: \`${interaction.guild.name}\`\nMiembros en total: **${interaction.guild.memberCount}**\nDueño del servidor ${owner}`, ephemeral: true })
+      interaction.reply({ content: `Nombre del servidor: \`${interaction.guild.name}\`
+        Miembros en total: **${interaction.guild.memberCount}**
+        Dueño del servidor ${owner}`,
+        flags: MessageFlags.Ephemeral })
     }
         
 }

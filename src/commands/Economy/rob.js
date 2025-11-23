@@ -2,8 +2,8 @@ const economia = require('../../Schema/economia-schema')
 
 module.exports = {
   name: "rob",
-  alias: [""],
-
+  alias: ["steal", "robar"],
+  vacRestricted: true,
 async execute (client, message, args){
 
   let user = message.mentions.users.first()

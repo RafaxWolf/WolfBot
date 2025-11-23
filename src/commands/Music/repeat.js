@@ -10,19 +10,25 @@ async execute (client, message, args){
   switch (args[0]) {
     case 'off':
       mode = 0
-      break
+
     case 'song':
       mode = 1
-      break
+
     case 'queue':
       mode = 2
-      break
+
+    default:
+      message.channel.send("[❌ | Syntax Error | ❌]\nPara poner la canción en bucle usa:\`w!loop song\`\nPara poner la cola en Bucle usa: \`w!loop queue\`\n\nPara detener el Bucle usa: \`w!loop off\`.")
   }
-  if(!isNaN(mode)) return message.channel.send("❌ | Para poner la canción actual en Loop usa: \`w!loop song\`\nPara poner la cola en Loop usa: \`w!loop queue\`\n\nPara detener el Loop usa: \`w!loop off\`.")
+
+  if(!isNaN(mode)) return message.channel.send("[❌ | Syntax Error | ❌]\nPara poner la canción en bucle usa:\`w!loop song\`\nPara poner la cola en Bucle usa: \`w!loop queue\`\n\nPara detener el Bucle usa: \`w!loop off\`.")
+  
   mode = queue.setRepeatMode(mode)
   mode = mode ? (mode === 2 ? 'Loop cola' : 'Loop canción') : 'Desactivado'
-  if(!mode) return message.channel.send("❌ | Para poner la canción actual en Loop usa: \`w!loop song\`\nPara poner la cola en Loop usa: \`w!loop queue\`\n\nPara detener el Loop usa: \`w!loop off\`.")
-  message.channel.send(`🔁 | Modo loop puesto en: \`${mode}\``)
+  
+  if(!mode) return message.channel.send("[❌ | Syntax Error | ❌]\nPara poner la canción en bucle usa:\`w!loop song\`\nPara poner la cola en Bucle usa: \`w!loop queue\`\n\nPara detener el Bucle usa: \`w!loop off\`.")
+
+    message.channel.send(`🔁 | Modo loop puesto en: \`${mode}\``)
  }
 
 }

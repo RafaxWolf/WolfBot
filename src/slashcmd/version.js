@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js")
-const Discord = require("discord.js")
+const { SlashCommandBuilder, MessageFlags } = require("discord.js")
 const { version } = require('../../package.json')
 
 module.exports = {
@@ -8,7 +7,7 @@ module.exports = {
     .setDescription("Ver la actual version de WolfBot!"),
 
     async run(client, interaction){
-      interaction.reply({ content: `Version actual: **${version}**`, ephemeral: true })
+      interaction.reply({ content: `Version actual: **${version}**`, flags: MessageFlags.Ephemeral })
     }
         
 }

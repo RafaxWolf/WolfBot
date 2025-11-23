@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js')
-const lyricsFinder = require('lyrics-finder')
 const Genius = require('genius-lyrics')
 require("dotenv").config()
 
@@ -9,12 +8,13 @@ module.exports = {
   
   async execute (client, message, args){
   
-    const Client = new Genius.Client(process.env.GENIUS_API_KEY)
+    const genius = new Genius.Client(process.env.GENIUS_API_KEY)
 
     const queue = client.distube.getQueue(message)
     if (!queue) return message.channel.send("❌ | No hay nada en la cola!")
 
     const song = queue ? queue.songs[0] : null;
+
 
     const lyricsEngine = args[0]?.toLowerCase() || ' '
     const songName = args.slice(1).join(" ") || (song ? song.name : null)

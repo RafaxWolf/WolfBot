@@ -1,4 +1,3 @@
-const { PermissionsBitField } = require('discord.js')
 const economia = require('../../Schema/economia-schema')
 
 module.exports = {
@@ -7,29 +6,29 @@ module.exports = {
 
 async execute (client, message, args){
 
-  var perms = message.member.permissions.has(PermissionsBitField.Flags.Administrator)
-  if(!perms) return message.author.send("❌ | No puedes usar este comando!")
-
-  const user = message.mentions.users.first()
-  if(!user) message.author.send("❌ | Debes mencionar a un usuario!")
-
+  const user = message.mentions.users.first() || message.author
+  ////if(!user) message.author.send("❌ | Debes mencionar a un usuario!")
   const cantidad = Number(args[1])
   if(!cantidad) return message.author.send("❌ | Debes decir una cantidad!")
 
-  let datos = await economia.findOne({ userID: user.id, guildID: message.guild.id })
-  if(!datos) {
-    let nuevosdatos = new economia({
-        guildID: message.guild.id,
-        userID: user.id,
-        dinero: 0,
-        dinerobanco: 0
-    })
-    await nuevosdatos.save()
-    return message.reply(`Los datos de ${user} están siendo guardados, use otra vez el comando.`)
-    }
 
-    await economia.findOneAndUpdate({ userID: user.id, guildID: message.guild.id }, { dinerobanco: datos.dinerobanco + cantidad })
+  async function addmoney(user, guild) {
+    let datos = await economia.findOne({ userID: user, guildID: guild })
+    if(!datos) {
+      let nuevosdatos = new economia({
+          guildID: message.guild.id,
+          userID: user.id,
+          dinero: 0,
+          dinerobanco: 0
+      })
+      await nuevosdatos.save()
+      return message.reply(`Los datos de ${user} están siendo guardados, use otra vez el comando.`)
+      } else {
+        await economia.findOneAndUpdate({ userID: user.id, guildID: message.guild.id }, { dinerobanco: datos.dinerobanco + cantidad })
+      }
+  }
 
+    addmoney(user.id, message.guild.id)
     message.channel.send(`✅ | Se han añadido **${cantidad}** <:wolfcoin:935657063621726208> WolfCoins a **${user}**`) 
 
  }

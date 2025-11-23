@@ -11,15 +11,17 @@ module.exports = {
         .addStringOption(option =>
             option
             .setName("item")
-            .setDescription("dsa")))
+            .setDescription("Item a comprar")))
+
         .addSubcommand(subcommand =>
             subcommand
             .setName("list")
-            .setDescription("asd"))
+            .setDescription("Mostrar los items de la tienda"))
+            
         .addSubcommand(subcommand =>
             subcommand
             .setName("help")
-            .setDescription("asd")),
+            .setDescription("Ayuda de la tienda")),
     async run(client, interaction){
       
         

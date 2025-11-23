@@ -1,5 +1,6 @@
 //*--------------------------------------------- Necessary ---------------------------------------------
 
+
 //* JavaScript
 const fs = require('fs');
 const path = require('node:path');
@@ -10,9 +11,11 @@ const { Client, GatewayIntentBits, EmbedBuilder, ActivityType } = require('disco
 
 //* Distube
 const { DisTube } = require('distube')
-const { YtDlpPlugin } = require("@distube/yt-dlp")
-const { SpotifyPlugin } = require('@distube/spotify')
-const { SoundCloudPlugin } = require('@distube/soundcloud')
+const { YouTubePlugin } = require('@distube/youtube')
+//const { SpotifyPlugin } = require('@distube/spotify')
+//const { SoundCloudPlugin } = require('@distube/soundcloud')
+//const { FilePlugin } = require('@distube/file')
+const { DirectLinkPlugin } = require('@distube/direct-link')
 
 //*--------------------------------------------- Necessary ---------------------------------------------
 
@@ -42,23 +45,21 @@ require('./conexion')
 //* Configuración de Distube
 
 client.distube = new DisTube(client, {
-  leaveOnStop: false,
   emitNewSongOnly: false,
   emitAddSongWhenCreatingQueue: false,
   emitAddListWhenCreatingQueue: false,
-  leaveOnEmpty: true,
-  searchSongs: 15,
-  searchCooldown: 20,
-  emptyCooldown: 25,
   nsfw: true,
   savePreviousSongs: true,
   plugins: [
-    new SpotifyPlugin({
-      emitEventsAfterFetching: true
-    }),
-    new YtDlpPlugin({ update: true }),
+    new YouTubePlugin(),
+    //new SpotifyPlugin(),
+    //new SoundCloudPlugin(),
+    new DirectLinkPlugin(),
+    //new FilePlugin(),
   ]
 })
+
+//const vacRole = "862051677720936448" //Rol de VAC Baneado
 
 //* Functions
 const commandHandler = require("./functions/commandsHandler") //! Archivo de las funciones de los Prefix Commands
@@ -247,22 +248,37 @@ if(message.guild && message.guild.id === "338373170463506442" || message.guild &
   timestamps.set(message.author.id, now)
   setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
  
-//* Detecta los Prefix Commands
- let cmd = client.commands.find((c) => c.name === command || c.alias && c.alias.includes(command));
+  //* Detector Prefix Commands
+  let cmd = client.commands.find((c) => c.name === command || c.alias && c.alias.includes(command));
 
   //* Después de ejecutar el comando, elimina el mensaje del autor
   if(cmd){
       setTimeout(function(){
         message.delete()
       }, 750)
-  
-      //* Verifica si el comando necesita estar en un canal de voz
+    
+    /*
+      Verificadores / Validadores
+      en los comandos
+    */
+
+    //* Verifica si el comando necesita estar en un canal de voz
     if (cmd.inVoiceChannel && !message.member.voice.channel) {
-      return message.author.send("❌ | Debes estar en un canal de voz!")
+      return message.author.send("❌ | Para usar este comando debes estar en un canal de voz!")
     }
 
+    //* Verifica si el comando solo esta disponible para moderadores
+    if (cmd.modOnly && !message.member.permissions.has("ManageMessages")) {
+      return message.author.send("❌ | No tienes permisos para usar este comando!")
+    }
+
+    //* Verifica si el comando solo esta disponible para el desarrollador
+    if (cmd.authOnly && !message.author.id === "594359919004614670") {
+      return message.author.send("❌ | No tienes permisos para usar este comando!")
+    }
+
+    //* Ejecución del comando
     try {
-      //* Ejecuta el comando
       cmd.execute(client, message, args)
 
     } catch (e) {
@@ -403,10 +419,9 @@ client.distube
 )
 
 //* Error Handler
-.on('error', (channel, e) => {
+.on('error', (e, queue, song) => {
   //TODO: Mejorar el sistema de errores
-  if (channel) channel.send(`❌ | Un error ha ocurrido: ${e.toString().slice(0, 1974)}`).then(console.error(e))
-  else console.error(e)
+  queue.textChannel.send(`❌ | Ha ocurrido un error: ${e}`)
 })
 
 //* No People in VC
@@ -421,6 +436,7 @@ client.distube
   }
 )
 
+/*
 //* Search
 .on('searchNoResult', (message, query) =>
   message.channel.send(`❌ | No se ha encontrado un resultado para \`${query}\``)
@@ -447,9 +463,7 @@ client.distube
 .on("searchInvalidAnswer", async(message) => {
   message.channel.send(`❌ | Respuesta Invalida, Búsqueda cancelada!`)
 })
-
-//* Search Done
-.on("searchDone", () => {})
+*/
 
 //* Finish
 .on("finish", (queue) => { //* Cuando todas las canciones de la lista hayan pasado vuelve a la presencia normal
@@ -467,18 +481,6 @@ client.distube
 .on("ffmpegDebug", console.log)
 
 //? --------------------------------------------------------Embeds--------------------------------------------------------
-
-// Embed Search / Normal Function
-function embedNormalBuilder(client, message, color, title, description){
-
-  let embed = new EmbedBuilder()
-  .setColor(color)
-  .setFooter({ text: `${message.author.username}`, iconURL: message.author.displayAvatarURL() })
-  if(title) embed.setTitle(title)
-  if(description) embed.setDescription(description)
-  return message.channel.send({ embeds: [embed] })
-
-}
 
 // Embed Play Function
 function embedPlayBuilder(client, queue, song, thumbnail, username, title, url, description){

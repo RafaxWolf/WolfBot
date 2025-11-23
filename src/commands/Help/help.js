@@ -60,22 +60,18 @@ async execute (client, message, args){
         .setTimestamp()
 
         message.channel.send({ embeds: [economy] })
-        break
       case 'hacking':
         message.channel.send(`
         das
         `)
-        break
       case 'patreon':
         message.channel.send(`
         sad
         `)
-        break
       case 'casino':
         message.channel.send(`
         dsa
         `)
-        break
       case 'music':
         messages.forEach(msg => {
           if(msg.author.id === client.user.id) {
@@ -119,7 +115,6 @@ async execute (client, message, args){
         w!autoplay
         w!volume (or v)
       `)*/
-        break
       case 'experience', 'xp':
         
       break

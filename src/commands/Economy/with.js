@@ -2,9 +2,9 @@ const economia = require('../../Schema/economia-schema')
 
 module.exports = {
   name: "with",
-  alias: ["withdraw"],
+  alias: ["withdraw", "retirar"],
 
-async execute (client, message, args){
+  async execute (client, message, args){
 
     let datos = await economia.findOne({ userID: message.author.id })
     if(!datos) {

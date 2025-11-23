@@ -1,27 +1,43 @@
 
 # WolfBot
 
-### Un bot desarrollado durante mas de 3 años para la comunidad.
+### Un bot desarrollado durante mas de 4 años para la comunidad.
+Empezado como un proyecto de fin de semana este Bot ha sido mi mayor orgullo como developer.
+hecho casi un 100% en JavaScript, hecho por las ansias de aprender.
 
-## Instalacion
+* Nunca dejare de estar orgulloso de mi Trabajo como Creador de WolfBot.
+
+## Instalación
 
 ```txt
 RECOMENDADO:
-Usar el codigo de los archivos .js 
+Usar el código de los archivos .js y Modificarlos a tu gustu
 ```
 
 ```txt
 NO RECOMENDADO:
 Clonar todo el repositorio y nada mas incorporar lo necesario para hacer al bot funcionar
-
-    git clone https://github.com/RafaxWolf/WolfBot/
+```
+```bash
+    git clone https://github.com/RafaxWolf/WolfBot
     cd Wolfbot/
 
-    npm install
+    npm install # Instala los paquetes necesarios para el funcionamiento del Bot
 
-    <Crear archivo .env y editarlo>
-    # .env
+    # ============== .env ============= #
+    < Crear archivo .env y editarlo >
+    CLIENTID = <Bot ID> # ID del bot (para el funcionamiento de algunas funciones)
+    GUILDID = <Server ID> # ID del servidor principal para el bot (para el funcionamiento de algunas funciones)
+    VERIFICATION_CHANNEL = <Verification Channel ID> # Solo si se utiliza el sistema de verificacion (/src/events/ready.js)
+
     TOKEN = "<Token>"
+
+    # Base de Datos
+    MONGODB_USER = "<MongoDB User>"
+    MONGODB_PASSWD = "<MongoDB Password>"
+    # ================================= #
+
+    ## Cualquier pregunta o problema consultar en el servidor de Discord
 ```
 
     
@@ -29,22 +45,21 @@ Clonar todo el repositorio y nada mas incorporar lo necesario para hacer al bot 
 
 #### Q: ¿Donde se puede utilizar este Bot?
 
-R: Este bot es de uso exclusivo en mi servidor oficial de Discord: **The Hidden Wolf's**
+R: El uso de este bot es exclusivo de mi servidor oficial de Discord: [**The Hidden Wolf's**](https://discord.gg/qPytEmwCSP)
 
-#### Q: ¿Se puede reutilizar este codigo?
+#### Q: ¿Se puede reutilizar este código?
 
-R: Este codigo no es exclusivo del bot. asi que si, puedes utilizarlo para tus proyectos.
+R: Este código no es exclusivo del bot. asi que si, puedes utilizarlo para tus proyectos.
+AHORA eso no significa que vayas y copies todo el código y/o te apropies de el!
+Sé creativo y solo utiliza esto como una base.
 
-(PD: Si buscar mas funcionalidades de las que hay en este bot o si te interesa hacer algo parecido y/o lo mismo en diferentes lenguajes de programación puedes ver: [**WolfBot-Open-Source Official Repo**](https://github.com/RafaxWolf/WolfBot-Open-Source))
 
-#### Q: ¿Cuales son las limitaciones y/o las cosas prohibidas o dodne no se puede utilizar este codigo?
+(PD: Si necesitas mas funcionalidades de las que hay en este bot o si te interesa hacer algo parecido y/o lo mismo en diferentes lenguajes de programación puedes buscar en: [**WolfBot-Open-Source Official Repo**](https://github.com/RafaxWolf/WolfBot-Open-Source))
 
-Todas las limitaciones y cosas prohibidas se encuentran en: 
 
 ## Autor
 
 - [@RafaxWolf](https://www.github.com/rafaxwolf)
-
 
 
 

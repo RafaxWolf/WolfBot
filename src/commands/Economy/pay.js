@@ -3,7 +3,7 @@ const economia = require('../../Schema/economia-schema')
 module.exports = {
   name: "pay",
   alias: ["pagar"],
-
+  vacRestricted: true,
 async execute (client, message, args){
 
     let user = message.mentions.users.first()

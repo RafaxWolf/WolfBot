@@ -2,7 +2,7 @@ const economia = require('../../Schema/economia-schema')
 
 module.exports = {
   name: "dep",
-  alias: ["depositar"],
+  alias: ["depositar", "deposit"],
 
 async execute (client, message, args){
 

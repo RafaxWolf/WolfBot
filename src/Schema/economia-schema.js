@@ -12,7 +12,6 @@ const economia = new Schema({
         type: Number,
         default: 0
     },
-//    id: ObjectId
 });
 
 module.exports = model('economia', economia)

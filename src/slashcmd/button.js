@@ -1,11 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js")
-const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, EmbedBuilder, InteractionContextType, MessageFlags } = require("discord.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
     .setName("button")
     .setDescription("prueba de botones")
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     async run(client, interaction){
@@ -33,13 +32,13 @@ module.exports = {
         
         collector.on('collect', async i => {
             if (i.customId === 'accept') {
-                await i.update({ content: 'Has aceptado los términos y condiciones.', ephemeral: true, components: [] })
+                await i.update({ content: 'Has aceptado los términos y condiciones.', flags: MessageFlags.Ephemeral, components: [] })
             }
         });
 
         collector.on('collect', async d => {
             if (d.customId === 'decline') {
-                await d.update({ content: 'Has rechazado los términos y condiciones.', ephemeral: true, components: [] })
+                await d.update({ content: 'Has rechazado los términos y condiciones.', flags: MessageFlags.Ephemeral, components: [] })
             }
         });
         collector.on('end', collected => console.log(`Collected ${collected.size} items`));

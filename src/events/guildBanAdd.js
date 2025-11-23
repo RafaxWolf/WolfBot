@@ -5,7 +5,7 @@ module.exports = {
     name: 'guildBanAdd',
     execute(client, guild, user) {
 
-    // Registra el evento de un usuario baneado
+    //* Registra el evento de un usuario baneado
     console.log(chalk.red(`[!] El usuario ${user.tag}#${user.id} Ha sido baneado del servidor ${guild.name} (${guild.id})!`));
 
     if (guild.id !== '852588155126677504') { 
@@ -15,7 +15,7 @@ module.exports = {
 
     console.log(chalk.redBright(`[!] Procediendo a eliminar el usuario ${user.tag}#${user.id} de la base de datos...`));
 
-    // Elimina el usuario de la base de datos
+    //* Elimina el usuario de la base de datos
     mongoose.connection.db.listCollections().toArray((err, collections) => {
         if (err) {
             console.log(chalk.redBright(`[!] Error al listar las colecciones de la base de datos [!]`), err);

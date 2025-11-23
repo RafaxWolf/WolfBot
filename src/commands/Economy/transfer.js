@@ -3,13 +3,13 @@ const economia = require('../../Schema/economia-schema')
 module.exports = {
   name: "transfer",
   alias: ["transferir"],
-
+  vacRestricted: true,
 async execute (client, message, args){
 
     let user = message.mentions.users.first()
     if(!user) return message.channel.send("⚠ | Debes mencionar a un usuario!")
 
-  let datosnuestros = await economia.findOne({ userID: message.author.id })
+  let datosnuestros = await economia.findOne({ userID: message.author.id, guildID: message.guild.id })
   if(!datosnuestros) {
       let datosnuestrosnuevos = new economia({
         userID: user.id,
@@ -21,14 +21,15 @@ async execute (client, message, args){
       return message.channel.send("✅ | Tus datos están siendo guardados, use otra vez el comando.")
   }
 
-  let datos2 = await economia.findOne({ userID: user.id })
+  let datos2 = await economia.findOne({ userID: user.id, guildID: message.guild.id })
   if(!datos2){
-      const peo = new economia({
+      const newUserData = new economia({
           userID: user.id,
+          guildID: message.guild.id,
           dinero: 0,
           dinerobanco: 0
       })
-      await peo.save()
+      await newUserData.save()
       return message.channel.send(`✅ | Los datos de ${user} están siendo guardados, vuelve a usar el comando.`)
   }
 
