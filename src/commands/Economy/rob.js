@@ -7,7 +7,7 @@ module.exports = {
 async execute (client, message, args){
 
   let user = message.mentions.users.first()
-    if(!user) return message.channel.send("Debes mencionar a un usuario!")
+    if(!user) return message.channel.send("❌ | Debes mencionar a un usuario!")
 
   let datos = await economia.findOne({ userID: message.author.id })
     if(!datos) {
@@ -22,15 +22,15 @@ async execute (client, message, args){
             dinerobanco: 0
         })
         await peo.save()
-        return message.author.send(`Los datos de ${user} están siendo guardados, asi que no tiene dinero que puedas robar.`)
+        return message.author.send(`**${user}** no tiene <:wolfcoin:935657063621726208> WolfCoins!`)
     }
 
     let dineronuestro = datos.dinero
     let dinerosuyo = datos2.dinero
     let dinerorobar = Math.floor(Math.random() * dinerosuyo) + 1
-    let probabilidad = Math.floor(Math.random() * 200) + 1
+    let probabilidad = Math.floor(Math.random() * 150) + 1
 
-    if(dinerosuyo === '0') return message.author.send(`**${user}** no tiene WolfCoins fuera del banco!`)
+    if(dinerosuyo === '0') return message.author.send(`**${user}** no tiene <:wolfcoin:935657063621726208> WolfCoins!`)
     if(user === message.author.id) return message.author.send("No puedes robarte a ti mismo!")
     if(user.id === "765454346061086770") return message.author.send(`${message.author} No puedes robarme!`)
     if(user.id === "769609763188506655") return message.author.send(`${message.author} No puedes robar a ${user}!`)
@@ -39,10 +39,10 @@ async execute (client, message, args){
     if(probabilidad < 100){
         message.channel.send(`${message.author} Ha intentado robar a **${user}** y no ha podido.`)
     }
-    if(probabilidad > 100){
+    if(probabilidad >= 100){
         await economia.findOneAndUpdate({ userID: user.id }, { dinero: dinerosuyo - Number(dinerorobar) })
         await economia.findOneAndUpdate({ userID: message.author.id }, { dinero: dineronuestro + Number(dinerorobar) })
-        return message.channel.send(`${message.author} Ha robado **${dinerorobar}** WolfCoins a **${user}**`)
+        return message.channel.send(`${message.author} Ha robado **${dinerorobar}** <:wolfcoin:935657063621726208> WolfCoins a **${user}**`)
     }
 
  }

@@ -38,7 +38,7 @@ async execute (client, message, args){
   let cantidad = Number(args[1])
   if(!cantidad) return message.channel.send("❌ | Debes escribir una cantidad!")
   if(isNaN(cantidad)) return message.channel.send("❌ | Usa una cantidad valida!")
-  if(dinerototal < cantidad) return message.channel.send("❌ | No puedes pagarle mas <:wolfcoin:935657063621726208> WolfCoins de las que tienes!")
+  if(dinerototal < cantidad) return message.channel.send("❌ | No puedes pagar mas <:wolfcoin:935657063621726208> WolfCoins de las que tienes!")
   if(cantidad < '1') return message.channel.send("❌ | La cantidad debe ser mayor a 0!")
 
   await economia.findOneAndUpdate({ userID: message.author.id }, {dinero: dinerototal - cantidad})

@@ -1,18 +1,17 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ActivityType } = require("discord.js")
-const fs = require("fs")
+const getBasePath = require("../utils/getBasePath");
 const chalk = require("chalk")
 const path = require("path")
-const getBasePath = require("../utils/getBasePath");
-require("dotenv").config()
+const fs = require("fs")
+const { VERIFICATION_CHANNEL } = require("../config")
 
 module.exports = {
-  name: 'ready',
+  name: 'clientReady',
   async execute(client) {
 
 
 //* Sistema de Verificación
 
-const channelID = process.env.VERIFICATION_CHANNEL; //* ID del canal de verificación
 const filePath = path.join(getBasePath(), "events", "verification_message_id.json"); //* Ruta del archivo JSON donde se guarda el ID del mensaje de verificación
 
 //? Función para crear y enviar el mensaje de verificación
@@ -65,7 +64,7 @@ async function createVerificationMessage(channel) {
     }
 
     //*----- Canal de verificación e ID del mensaje -----
-    const channel = client.channels.cache.get(channelID)
+    const channel = client.channels.cache.get(VERIFICATION_CHANNEL)
     const { verificationMessageID } = JSON.parse(data)
     //*--------------------------------------------------
 
@@ -108,12 +107,16 @@ async function createVerificationMessage(channel) {
 
   // Si ocurre un error al leer o escribir el archivo JSON, muestra el error
   } catch (err) {
-    console.log(chalk.redBright("[!] Error al Leer/Escribir al archivo\n"), err)
+    console.error(chalk.redBright("[!] Error al Leer/Escribir al archivo\n"), err)
   }
 
     //! Encendido del bot
     console.log(chalk.cyanBright(`Logged in as ${client.user.tag}.\n`));
-    client.user.setPresence({ activities: [{ name: "w!help - /help", type: ActivityType.Playing }], status: "dnd"});
+    client.user.setPresence({ 
+      activities: [
+        { name: "w!help - /help", type: ActivityType.Playing }
+      ], status: "dnd"
+    });
 
     /* Deprecated
     //Votaciones y likes

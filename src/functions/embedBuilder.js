@@ -2,11 +2,11 @@ const { EmbedBuilder } = require("discord.js")
 
 /**
  * Crea el Embed que se utilizara de forma normal en los comandos.
- * @param {*} client Cliente del bot | null.
+ * @param {any | null} client Cliente del bot | null.
  * @param {*} message Mensaje donde se enviará el embed.
- * @param {*} color Color del embed.
- * @param {*} title Titulo del embed.
- * @param {*} description Contenido/Descripción del embed.
+ * @param {string} color Color del embed.
+ * @param {string} title Titulo del embed.
+ * @param {string} description Contenido/Descripción del embed.
  * @returns Envia el embed al canal donde esta el mensaje.
  */
 function embedNormalBuilder(client, message, color, title, description) {

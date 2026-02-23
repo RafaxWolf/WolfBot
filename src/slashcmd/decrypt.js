@@ -1,64 +1,79 @@
-const { SlashCommandBuilder } = require("discord.js")
-const Cryptr = require("cryptr")
-
-var AES = require("crypto-js/aes")
-
-var defaultPasswd = 'Password'
+const { SlashCommandBuilder, MessageFlags } = require("discord.js")
+var CryptoJS = require("crypto-js")
+var defaultPasswd = "Password";
 
 module.exports = {
     data: new SlashCommandBuilder()
     .setName("decrypt")
-    .setDescription("Desencripta cualquier mensaje encriptado")
+    .setDescription("Desencripta un mensaje encriptado")
     .addStringOption(option =>
         option
         .setName("text")
         .setDescription("Texto o mensaje a desencriptar")
         .setRequired(true)
     )
-    .addStringOption(option =>
-        option
-        .setName("password")
-        .setDescription("La contraseña para desencriptar el mensaje")
-        .setMinLength(5)
-        .setMaxLength(30)
-    )
+
     .addStringOption(option =>
         option
         .setName("method")
-        .setDescription("Método de encriptacion a usar (por defecto 'Hex')")
+        .setDescription("Método de encriptacion usado (por defecto 'Base64')")
         .setChoices(
             { name: "Base64", value: "b64" },
-            { name: "Hexadecimal", value: "hex" },
+            { name: "Hex", value: "hex" },
             { name: "Advanced Encryption Standard (AES)", value: "aes" },
         )
+        .setRequired(true)
+    )
+
+    .addStringOption(option =>
+        option
+        .setName("password")
+        .setDescription("La contraseña para desencriptar el mensaje (por defecto: 'Password')")
+        .setMinLength(5)
+        .setMaxLength(30)
     ),
 
     async run(client, interaction){
-        const text2eDecrypt = interaction.options.getString("text")
-        const password4Decrypt = interaction.options.getString("password")
-        const encryptionMethod = interaction.options.get("method").value
+        const message = interaction.options.getString("text")
+        const password = interaction.options.getString("password") || defaultPasswd
+        const encryptMethod = interaction.options.get("method").value
 
-        if(encryptionMethod){
-            interaction.reply({ content: `${encryptionMethod}`, ephemeral: true })
-        }else {
+        /**
+         * Decrypt a text with a password and with a different methods
+         * @param {string} text Text to Encrypt
+         * @param {string} passwd Password of the Encryted Text
+         * @param {string} method Method of Encryption
+         */
+        function decrypt(text,passwd,method){
+            switch (method){
+                case "b64":
+                    var ciphertext = CryptoJS.enc.Utf8(text).toString();
+                    interaction.reply({ content: `Mensaje Desencriptado:\n${ciphertext}`, flags: MessageFlags.Ephemeral })
+                    break;
+                
+                case "aes":
+                    var ciphertext = CryptoJS.AES.decrypt(text, passwd).toString();
+                    interaction.reply({ content: `Mensaje Desencriptado:\n${ciphertext}\nContraseña: ${passwd}`, flags: MessageFlags.Ephemeral })
+                    break;
+
+                case "hex":
+                    var ciphertext = CryptoJS.enc.Utf8(text).toString();
+                    interaction.reply({ content: `Mensaje Desencriptado:\n${ciphertext}`, flags: MessageFlags.Ephemeral })
+                    break;
+
+                case _:
+                    interaction.reply({ content: "[!] Error al desencriptar.", flags: MessageFlags.Ephemeral })
+                    break;
+            }
+        }
+
+        if(encryptMethod){
+            //interaction.reply({ content: `Método de Encriptacion Utilizado: ${encryptMethod}`, flags: MessageFlags.Ephemeral })
+            decrypt(message,password,encryptMethod)
+        } else {
             return;
         }
-        
-        if(password4Decrypt){
-            try{
-                const cryptr = new Cryptr(password4Decrypt)
-                const decryptedText = cryptr.decrypt(text2eDecrypt)                
-                interaction.reply({content: decryptedText, ephemeral: true})
-            } catch (error) {
-                interaction.reply({content: "[!] Ha ocurrido un error al intentar desencriptar el mensaje!", ephemeral: true})
-            }            
-        }else {
-            const cryptr = new Cryptr(defaultPasswd)
-            const decryptedText = cryptr.decrypt(text2eDecrypt)
-                interaction.reply({content: decryptedText, ephemeral: true})            
 
-            
-        }
     }
         
 }

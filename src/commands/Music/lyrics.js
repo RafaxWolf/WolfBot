@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require('discord.js')
 const Genius = require('genius-lyrics')
-require("dotenv").config()
+const { GENIUS_API_KEY } = require("../../config")
+const { EmbedBuilder } = require('discord.js')
 
 module.exports = {
     name: "lyrics",
@@ -8,13 +8,12 @@ module.exports = {
   
   async execute (client, message, args){
   
-    const genius = new Genius.Client(process.env.GENIUS_API_KEY)
+    const genius = new Genius.Client(GENIUS_API_KEY)
 
     const queue = client.distube.getQueue(message)
     if (!queue) return message.channel.send("❌ | No hay nada en la cola!")
 
     const song = queue ? queue.songs[0] : null;
-
 
     const lyricsEngine = args[0]?.toLowerCase() || ' '
     const songName = args.slice(1).join(" ") || (song ? song.name : null)
@@ -68,7 +67,7 @@ module.exports = {
 
     message.channel.send({ embeds: [embed] })
     
-        /*
+        /* DEPRECATED
         const embed = new EmbedBuilder()
         .setAuthor({ name: "Letra", iconURL: "https://i.imgur.com/SaDhsHb.png" })
         .setThumbnail(song.thumbnail)

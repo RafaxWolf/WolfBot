@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, MessageFlags } = require("discord.js")
 var CryptoJS = require("crypto-js")
-var defaultPasswd = 'Password'
-
+var defaultPasswd = "Password";
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -39,24 +38,39 @@ module.exports = {
         const password = interaction.options.getString("password") || defaultPasswd
         const encryptMethod = interaction.options.get("method").value
 
-
+        /**
+         * Encrypt a text with a password and with a different methods
+         * @param {string} text Text to Encrypt
+         * @param {string} passwd Password of the Encryted Text
+         * @param {string} method Method of Encryption
+         */
         function encrypt(text,passwd,method){
-            if(method === "b64"){
-                var ciphertext = CryptoJS.enc.Base64(text).toString();
-                interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, flags: MessageFlags.Ephemeral })
-            } else if(method === "hex"){
-                var ciphertext = CryptoJS.enc.Hex(text).toString();
-                interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, flags: MessageFlags.Ephemeral })
-            } else if(method === "aes"){
-                var ciphertext = CryptoJS.AES.encrypt(text, passwd).toString();
-                interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}\nContraseña: ${passwd}`, flags: MessageFlags.Ephemeral })
+            switch (method){
+                case "b64":
+                    var ciphertext = CryptoJS.enc.Base64(text).toString();
+                    interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, flags: MessageFlags.Ephemeral })
+                    break;
+                
+                case "aes":
+                    var ciphertext = CryptoJS.AES.encrypt(text, passwd).toString();
+                    interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}\nContraseña: ${passwd}`, flags: MessageFlags.Ephemeral })
+                    break;
+
+                case "hex":
+                    var ciphertext = CryptoJS.enc.Hex(text).toString();
+                    interaction.reply({ content: `Mensaje Encriptado:\n${ciphertext}`, flags: MessageFlags.Ephemeral })
+                    break;
+
+                case _:
+                    interaction.reply({ content: "[!] Error al encriptar.", flags: MessageFlags.Ephemeral })
+                    break;
             }
         }
 
         if(encryptMethod){
             interaction.reply({ content: `Método de Encriptacion Utilizado: ${encryptMethod}`, flags: MessageFlags.Ephemeral })
             encrypt(message,password,encryptMethod)
-        }else {
+        } else {
             return;
         }
 

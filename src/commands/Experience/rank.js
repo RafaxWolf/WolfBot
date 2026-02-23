@@ -1,6 +1,6 @@
 const { AttachmentBuilder } = require("discord.js")
+const { RankCardBuilder } = require("canvacord")
 const levels = require('../../Schema/xp-schema')
-const { Rank } = require("canvacord")
 
 module.exports = {
   name: "rank",
@@ -18,18 +18,20 @@ async execute (client, message, args){
   if(!dataGlobal) return message.author.send("❌ | Nadie en el servidor tiene algún progreso")
 
   dataGlobal = dataGlobal
-  const rankCard = new Rank()
+  const rankCard = new RankCardBuilder()
   .setAvatar(user.displayAvatarURL({ size: 2048, format: "png" }))
   .setCurrentXP(data.xp)
   .setRequiredXP(data.limit)
   .setLevel(data.level)
   .setStatus("online")
-  .setProgressBar("#0D6E00", "COLOR")
+  //.setProgressBar("#0D6E00", "COLOR")
   .setUsername(user.username)
-  .setDiscriminator(message.guild.name)
+  //.setDiscriminator(message.guild.name)
   .setRank(dataGlobal.findIndex(dataUser => dataUser.userID === user.id) + 1)
 
-  const buffer = await rankCard.build()
+  const buffer = await rankCard.build({
+    format: "png"
+  })
 
   const attachment = new AttachmentBuilder(buffer, "rank.png")
 

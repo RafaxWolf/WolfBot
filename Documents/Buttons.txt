@@ -14,7 +14,6 @@
             .setLabel('Atrás')
             .setStyle(ButtonStyle.Secondary)
             .setEmoji('⬅')
-            
         )
 
         interaction.reply({ embeds: [embedS1], ephemeral: true, components: [SC1] })

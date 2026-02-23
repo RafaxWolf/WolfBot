@@ -4,14 +4,19 @@ const bans = new Schema({
   guildID: String,
   userID: String,
   moderadorID: String,
+  
   reason: {
-    type: String
+    type: String,
+    default: "Razon no especificada."
   },
+
   startBan: {
-    type: Date
+    type: Date,
+    default: Date.now()
   },
   endBan: {
-    type: Date
+    type: Date,
+    default: Date.now()
   }
 });
 

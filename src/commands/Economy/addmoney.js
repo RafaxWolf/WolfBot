@@ -10,10 +10,10 @@ async execute (client, message, args){
   ////if(!user) message.author.send("❌ | Debes mencionar a un usuario!")
   const cantidad = Number(args[1])
   if(!cantidad) return message.author.send("❌ | Debes decir una cantidad!")
-
-
+  if(isNaN(cantidad)) return message.author.send("❌ | Debes poner una cantidad valida!")
+  
   async function addmoney(user, guild) {
-    let datos = await economia.findOne({ userID: user, guildID: guild })
+    let datos = await economia.findOne({ userID: user.id, guildID: guild })
     if(!datos) {
       let nuevosdatos = new economia({
           guildID: message.guild.id,

@@ -14,6 +14,7 @@ module.exports = {
       message.channel.send("❌ | Esta Canción/Video ha sido baneada del sistema de música!")
       return;
     } // Evita que la canción con un nombre baneado se reproduzca
+    
     if(bannedSongsUrl.includes(string) || bannedSongsUrl.includes(args[0])) {
       message.channel.send("❌ | Esta Canción/Video ha sido baneada del sistema de música!")
       return;

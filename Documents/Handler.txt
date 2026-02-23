@@ -1,8 +1,8 @@
 Prefix Commands
 
 module.exports = {
-  name: "",
-  alias: [""],
+  name: "name",
+  alias: ["desc"],
 
 execute (client, message, args){
 
@@ -19,8 +19,8 @@ const { SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName("")
-    .setDescription(""),
+    .setName("name")
+    .setDescription("desc"),
 
     async run(client, interaction){
       
@@ -34,7 +34,7 @@ module.exports = {
 Events
 
 module.exports = {
-  name: '',
+  name: 'name',
   execute(client) {
 
   },
@@ -45,10 +45,10 @@ Schemas
 
 const { Schema, model} = require("mongoose")
 
-const <name> = new Schema({
+const name = new Schema({
   guildID: String,
   userID: String
 
 });
 
-module.exports = model('<name>', <name>)
+module.exports = model('name', name)

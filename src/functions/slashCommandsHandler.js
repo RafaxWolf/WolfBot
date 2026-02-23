@@ -1,7 +1,7 @@
-//* Importaciones
-const { Collection } = require("discord.js")
+//* Librerias
 const fs = require("fs")
 const path = require("path")
+const { Collection } = require("discord.js")
 
 function centerText(text, width){
     const padding = Math.max(0, Math.floor((width - text.length) / 2))
@@ -39,12 +39,5 @@ slashcommandsFiles.forEach((file, index) => {
     slashCommands.set(slash.data.name, slash);
 });
 console.log("╚" + "═".repeat(totalWidth) + "╝");
-
-/* 
-for(const file of slashcommandsFiles){
-    const slash = require(path.join(__dirname, `../slashcmd/${file}`))
-    console.log(`✔️ | Slash Commands - ${file} cargado.`)
-    slashCommands.set(slash.data.name, slash)
-} */
 
 module.exports = slashCommands;

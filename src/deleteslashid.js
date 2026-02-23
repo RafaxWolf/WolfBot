@@ -1,13 +1,13 @@
 const chalk = require('chalk');
 const { REST, Routes } = require('discord.js');
-require("dotenv").config();
+const { TOKEN, CLIENTID } = require("./config")
 
-if (!process.env.TOKEN || !process.env.CLIENTID) {
+if ( !TOKEN || !CLIENTID ) {
     console.error(chalk.bgRed("[!] Falta el TOKEN o el CLIENTID en las variables de entorno."));
     process.exit(1);
 }
 
-const rest = new REST({ version: '10' }).setToken(process.env.TOKEN)
+const rest = new REST({ version: '10' }).setToken(TOKEN)
 
 const args = process.argv.slice(2)
 
@@ -23,7 +23,7 @@ function isValidDiscordID(id){
 			process.exit(1)
 		}
 
-		rest.delete(Routes.applicationCommand(process.env.CLIENTID, slashcmdid))
+		rest.delete(Routes.applicationCommand(CLIENTID, slashcmdid))
 		.then(() => console.log(chalk.greenBright(`[+] Has eliminado el Slash Command con ID: ${slashcmdid} Exitosamente!`)))
 		.catch(error => {
 			if(error.status === 404 && error.code === 10063){

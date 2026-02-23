@@ -122,7 +122,7 @@ async execute (client, message, args){
         const shopHelp = message.channel.send({ embeds: [shoppingEmbed] }) //* Envía el mensaje de ayuda de la tienda
 
         setTimeout(() => {
-          shopHelp.delete().catch(console.error)
+          // shopHelp.delete().catch(console.error)
         }, 5000)
     }
 

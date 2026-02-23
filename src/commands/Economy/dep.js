@@ -26,19 +26,11 @@ async execute (client, message, args){
     var cantidad = args[0] //? La cantidad de dinero a guardar en el Banco
     if(!cantidad) return message.author.send("❌ | Debes poner una cantidad.").then(message.author.send("❌ | Syntax Error | ❌\nUso correcto del comando:\nw!dep <numero o all> (all es para almacenar todo el dinero de tu cartera al banco)"))
 
-    if(cantidad === 'all'){ //* Guardar todo el dinero en el Banco
-        await economia.findOneAndUpdate({ userID: message.author.id }, {dinero: 0})
-        await economia.findOneAndUpdate({ userID: message.author.id }, {dinerobanco: dinerobancototal + Number(dinerototal) })
-        return message.channel.send("✅ | Has guardado todas tus <:wolfcoin:935657063621726208> WolfCoins en el banco.")
-    }
-
-    if(cantidad === 'todo'){ //* Guardar todo el dinero en el Banco
+    if(cantidad === 'all' || cantidad === 'todo'){ //* Guardar todo el dinero en el Banco
       await economia.findOneAndUpdate({ userID: message.author.id }, {dinero: 0})
       await economia.findOneAndUpdate({ userID: message.author.id }, {dinerobanco: dinerobancototal + Number(dinerototal) })
       return message.channel.send("✅ | Has guardado todas tus <:wolfcoin:935657063621726208> WolfCoins en el banco.")
-  }
-
-    if(cantidad !== 'all'){
+    } else {
         if(isNaN(cantidad)) return message.author.send("❌ | Debes poner una cantidad valida!").then(message.author.send("❌ | Syntax Error | ❌\nUso correcto del comando:\nw!dep <numero o all> (all es para almacenar todo el dinero de tu cartera al banco)"))
         if(cantidad < '1') return message.author.send("❌ | Necesitas poner una cantidad mayor que 0!.").then(message.author.send("❌ | Syntax Error | ❌\nUso correcto del comando:\nw!dep <numero o all> (all es para almacenar todo el dinero de tu cartera al banco)"))
         if(cantidad > dinerototal) return message.author.send("❌ | No puedes guardar mas <:wolfcoin:935657063621726208> WolfCoins de las que ya tienes!").then(message.author.send("❌ | Syntax Error | ❌\nUso correcto del comando:\nw!dep <numero o all> (all es para almacenar todo el dinero de tu cartera al banco)"))

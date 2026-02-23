@@ -7,9 +7,8 @@ module.exports = {
 
     async run(client, interaction){
 
-        //const vipRole = "937228279063138384"
-
-        //const hasRole = interaction.member.roles.cache.has()
+        //const vipRoleId = "937228279063138384"
+        //const hasRole = interaction.member.roles.cache.has(rol => rol.id === vipRoleId)
 
         const workshopSelect = new StringSelectMenuBuilder()
         .setCustomId('workshop')
@@ -19,10 +18,12 @@ module.exports = {
                 .setLabel('Home')
                 .setDescription("Revisa lo mas popular, lo mas reciente, etc")
                 .setValue('wshome'),
+
             new StringSelectMenuOptionBuilder()
                 .setLabel('Search')
                 .setDescription("Busca el item que quieras y/o necesites con su nombre, autor o ID")
                 .setValue('wssearch'),
+                
             new StringSelectMenuOptionBuilder()
                 .setLabel('About')
                 .setDescription("Acerca de la Workshop")
@@ -31,12 +32,12 @@ module.exports = {
 
         const row = new ActionRowBuilder().addComponents(workshopSelect)
 
-        try{
+        try {
             await interaction.reply({ components: [row] })
             //await interaction.reply({ content: "Las opciones de la Workshop fueron enviadas a los mensajes internos *(Mensaje directo)*", ephemeral: true })
         } catch (error) {
             console.error(error)
-            //await interaction.reply({ content: "¡No se pudo enviar el mensaje! por favor verificar si tienes los MD activados!", ephemeral: true })
+            await interaction.reply({ content: "¡No se pudo enviar el mensaje! por favor verificar si tienes los MD activados!", ephemeral: true })
         }
     },
     

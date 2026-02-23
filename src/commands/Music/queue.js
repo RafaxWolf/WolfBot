@@ -16,11 +16,11 @@ async execute (client, message, args){
     .setDescription(q)
     .setColor("Orange")
 
-    const embed = await message.channel.send({ embeds: [queueEmbed] })
+    await message.channel.send({ embeds: [queueEmbed] })
 
-    setTimeout(() => {
+    /* setTimeout(() => {
       embed.delete().catch(console.error)
-    }, 15000)
+    }, 15000) */
 
  }
 

@@ -1,8 +1,8 @@
 const fs = require("fs")
 const path = require("path")
-const { REST, Routes } = require("discord.js")
 const chalk = require("chalk")
-require("dotenv").config();
+const { TOKEN, CLIENTID } = require("./config")
+const { REST, Routes } = require("discord.js")
 
 const commands = [];
 
@@ -20,7 +20,9 @@ if (!fs.existsSync(slashCommandsPath)) {
 const slashcommandsFiles = fs.readdirSync(slashCommandsPath).filter(file => file.endsWith('.js'));
 
 console.log(chalk.yellowBright(`Loading Slash Commands from: ${slashCommandsPath}...`))
+console.log(chalk.yellowBright(`Found ${slashcommandsFiles.length} Slash Command files.`))
 
+//* Cargar cada archivo de Slash Command
 for (const file of slashcommandsFiles) {
     try {
         const slash = require(path.join(slashCommandsPath, file));
@@ -31,18 +33,18 @@ for (const file of slashcommandsFiles) {
     }
 }
 
-const rest = new REST().setToken(process.env.TOKEN);
+const rest = new REST().setToken(TOKEN);
 
 //* Cargador de Slash Commands
 (async () => {
     try{
         console.log(chalk.blueBright(`Started refreshing ${commands.length} application (/) commands.`))
         const data = await rest.put(
-            Routes.applicationCommands(process.env.CLIENTID), 
+            Routes.applicationCommands(CLIENTID), 
             { body: commands },
         );
         console.log(`Successfully reloaded ${data.length} application (/) commands.`)
-    }catch(e) {
+    } catch (e) {
         console.error(chalk.red("❌ | Error trying to reload application (/) commands:\n"), e)
     }
 })();

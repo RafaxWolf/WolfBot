@@ -42,7 +42,6 @@ async execute (client, message, args){
   
   } else if(!queue && !string) {
     return await message.channel.send(`▶️ | No hay ninguna canción en pausa y no hay ninguna Canción en la cola.\n Agrega una Canción con **w!play (Nombre o enlace de la canción)**!`)
-  
   }      
 
  }

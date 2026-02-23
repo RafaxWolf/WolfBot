@@ -10,7 +10,7 @@ async execute (client, message, args){
   let user = message.mentions.users.first() || message.author //? Si no menciona a nadie, se toma a si mismo
   if(user === client.user) return message.channel.send("[-] No tienes permisos suficientes...") //? Si menciona al bot, no se muestra el balance
   
-  let datos = await economia.findOne({ userID: user, guildID: message.guild.id }) //* Busca los datos del usuario mencionado o del mismo usuario
+  let datos = await economia.findOne({ userID: user.id, guildID: message.guild.id }) //* Busca los datos del usuario mencionado o del mismo usuario
 
   if(!datos) { //! Si no tiene datos, se le crean
     message.author.send(`❌ | El usuario ${user} No esta registrado en la base de datos`)

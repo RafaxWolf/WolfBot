@@ -13,12 +13,14 @@ async execute (client, message, args){
   var total = song.duration * 1000 //? Duración total de la canción
   var current = queue.currentTime * 1000 //? Duración actual de la canción 
 
+  var songProgress = progressbar.splitBar(total, current, 25)[0] //? Barra de progreso de la canción
+
   const embed = new EmbedBuilder() //* Creates the 'Now Playing' Embed
   .setTitle(song.name)
   .setAuthor({ name: 'Playing Now!', iconURL: client.user.displayAvatarURL() })
   .setURL(song.url)
   .setThumbnail(song.thumbnail)
-  .setDescription(`**Duración**\n\`[${queue.formattedCurrentTime}] ${progressbar.splitBar(total, current, 25)[0]} [${song.formattedDuration}]\``)
+  .setDescription(`**Duración**\n\`[${queue.formattedCurrentTime}] ${songProgress} [${song.formattedDuration}]\``)
   .addFields(
       ////{ name: "Duración", value: `\`[${queue.formattedCurrentTime}/${song.formattedDuration}]\``, inline: true },
       ////{ name: "Duración", value: `\`[${queue.formattedCurrentTime}] ${songProgress} [${song.formattedDuration}]\``, inline: true },

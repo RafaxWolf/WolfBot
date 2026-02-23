@@ -1,13 +1,18 @@
 const path = require("path")
 
 /**
- * A function to seee if the bots is executing in the build or src folder.
+ * See if the bot is executing from the source or from the build.
  * @returns Gives the path where is executing the bot, For the perfect working of all of the Systems.
  */
-
 function getBasePath() {
-    const isBuild = __dirname.includes(path.join(path.sep, "build"));
-    return isBuild ? "./build" : "./src";
+    try {
+        const isBuild = __dirname.includes(path.join(path.sep, "build"));
+        return isBuild ? "./build" : "./src";
+    } catch (err) {
+        console.error("[!] Error: " + e)
+        return null;
+    }
+    
 }
 
 module.exports = getBasePath;

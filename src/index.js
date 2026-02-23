@@ -1,6 +1,4 @@
 //*--------------------------------------------- Necessary ---------------------------------------------
-
-
 //* JavaScript
 const fs = require('fs');
 const path = require('node:path');
@@ -12,53 +10,47 @@ const { Client, GatewayIntentBits, EmbedBuilder, ActivityType } = require('disco
 //* Distube
 const { DisTube } = require('distube')
 const { YouTubePlugin } = require('@distube/youtube')
-//const { SpotifyPlugin } = require('@distube/spotify')
-//const { SoundCloudPlugin } = require('@distube/soundcloud')
-//const { FilePlugin } = require('@distube/file')
 const { DirectLinkPlugin } = require('@distube/direct-link')
-
 //*--------------------------------------------- Necessary ---------------------------------------------
 
 //* Schemas
 const economy = require('./Schema/economia-schema')
 const levels = require('./Schema/xp-schema')
 
-//* Random
+//TODO:
+/* //* Random
 const pacmans = require('./pacmans')
-const canalesExcluidos = require('./canalesExcluidos')
+const canalesExcluidos = require('./canalesExcluidos') */
 
-const cooldowns = new Map()
 
 //* Configuración del Client del Bot
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildVoiceStates,
-    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildMembers
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.MessageContent
   ]
 })
-require("dotenv").config();
-require('./conexion')
+const { TOKEN } = require('./config') // Token del bot
+require('./conexion') // Conexion a la base de datos
 
 //* Configuración de Distube
 
 client.distube = new DisTube(client, {
-  emitNewSongOnly: false,
   emitAddSongWhenCreatingQueue: false,
   emitAddListWhenCreatingQueue: false,
   nsfw: true,
   savePreviousSongs: true,
   plugins: [
     new YouTubePlugin(),
-    //new SpotifyPlugin(),
-    //new SoundCloudPlugin(),
     new DirectLinkPlugin(),
-    //new FilePlugin(),
   ]
 })
 
+const cooldowns = new Map()
+// TODO: 
 //const vacRole = "862051677720936448" //Rol de VAC Baneado
 
 //* Functions
@@ -86,37 +78,6 @@ client.on("messageCreate", async (message) => {
       (`User ID: (${message.author.id})\n`) + (`Message: ${message.content}\n`)) //? Muestra el ID del usuario y el mensaje enviado
 
 //!-----------------------------------------------------------------------------------------------------------------------------------------------------
-
-  //TODO: baneo de Pacmans
-
-  if(message.content.includes(":v")){
-    ////message.author.send("[!] | Has incumplido una regla, pero no te preocupes solo tu mensaje sera eliminado por el bien mental del servidor.")
-    message.delete()
-  } else if(message.content.includes(":V")){
-    message.delete()
-  } else if(message.content.includes(":u")){
-    message.delete()
-  } else if(message.content.includes(":U")){
-    message.delete()
-  } else if(message.content.includes(":y")){
-    message.delete()
-  } else if(message.content.includes(":Y")){
-    message.delete()
-  } else if(message.content.includes(";v")){
-    message.delete()
-  } else if(message.content.includes(";V")){
-    message.delete()
-  } else if(message.content.includes(";u")){
-    message.delete()
-  } else if(message.content.includes(";U")){
-    message.delete()
-  } else if(message.content.includes(";y")){
-    message.delete()
-  } else if(message.content.includes(";Y")){
-    message.delete()
-  }
-
-  ////Lo termino en 80 años mas FÁCIL
 
  if(message.content === prefix) return; //! Verifica si el mensaje es solo el prefix, si es asi no hace nada
 
@@ -339,7 +300,7 @@ for (const file of eventFiles) {
       }
     })
 
-    //* Verifica si el evento es de tipo guildCreate o guildDelete
+  //* Verifica si el evento es de tipo guildCreate o guildDelete
   } else if(event.name === 'guildCreate' || event.name === 'guildDelete') {
     client.on(event.name, async (guild) => {
       try{
@@ -436,7 +397,7 @@ client.distube
   }
 )
 
-/*
+
 //* Search
 .on('searchNoResult', (message, query) =>
   message.channel.send(`❌ | No se ha encontrado un resultado para \`${query}\``)
@@ -463,7 +424,7 @@ client.distube
 .on("searchInvalidAnswer", async(message) => {
   message.channel.send(`❌ | Respuesta Invalida, Búsqueda cancelada!`)
 })
-*/
+
 
 //* Finish
 .on("finish", (queue) => { //* Cuando todas las canciones de la lista hayan pasado vuelve a la presencia normal
@@ -498,4 +459,4 @@ function embedPlayBuilder(client, queue, song, thumbnail, username, title, url, 
 }
 
 //! Token in .env file
-client.login(process.env.TOKEN);
+client.login(TOKEN);

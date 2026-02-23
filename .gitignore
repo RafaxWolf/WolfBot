@@ -33,6 +33,8 @@ Schema/poll-schema.js
 src/commands/Music/filter.js
 *.buildignore
 shopitems.json
+new-modals.js
+old-decrypt.js
 
 # Directories
 Templates/
@@ -44,4 +46,6 @@ dist/
 build/
 Logs/
 Apps/
-.stfolder/
+Wordlists/
+old-config-files/
+.cache/
