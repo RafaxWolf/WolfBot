@@ -107,6 +107,35 @@ async function backupBuild(buildPath, backupDir){
     })
 }
 
+/**
+ * The main build process that copies files from the source directory to the destination directory, while showing progress and handling errors.
+ * @param {*} src The Source Code Path, the Code that will be Builded.
+ * @param {*} dest The Build / Dest Path, where the builded code will be saved.
+ */
+async function buildProcess(src, dest) {
+    try {
+        for(const file of filesToBuild) {
+            const destPath = path.join(dest, file.relative)
+            await fse.ensureDir(path.dirname(destPath))
+            await fse.copy(file.src, destPath)
+
+            //! Build Message
+            console.log(chalk.greenBright(`[+] ${file.relative} Buildeado en: ${destPath}`)); 
+        }
+
+        //* Ending message
+        console.log()
+        console.log(chalk.blueBright("[+] Build completada con éxito!"))
+        sleep(300)
+        process.exit(0);
+    } catch (error) {
+
+        //! Error Message
+        console.error(chalk.redBright("[-] Error durante el proceso de build:\n"), error);
+        process.exit(1);
+    }
+}
+
 //! Main function
 (async () => {
 
@@ -140,36 +169,6 @@ async function backupBuild(buildPath, backupDir){
     console.log()
     console.log(chalk.cyanBright(`[+] ${filesToBuild.length} archivos encontrados para buildear.`));
     console.log()
-
-
-    /**
-     * The main build process that copies files from the source directory to the destination directory, while showing progress and handling errors.
-     * @param {*} src The Source Code Path, the Code that will be Builded.
-     * @param {*} dest The Build / Dest Path, where the builded code will be saved.
-     */
-    async function buildProcess(src, dest) {
-        try {
-            for(const file of filesToBuild) {
-                const destPath = path.join(dest, file.relative)
-                await fse.ensureDir(path.dirname(destPath))
-                await fse.copy(file.src, destPath)
-
-                //! Build Message
-                console.log(chalk.greenBright(`[+] ${file.relative} Buildeado en: ${destPath}`)); 
-            }
-
-            //* Ending message
-            console.log()
-            console.log(chalk.blueBright("[+] Build completada con éxito!"))
-            sleep(300)
-            process.exit(0);
-        } catch (error) {
-
-            //! Error Message
-            console.error(chalk.redBright("[-] Error durante el proceso de build:\n"), error);
-            process.exit(1);
-        }
-    }
     
 
     //* Create the build directory if it doesn't exist
