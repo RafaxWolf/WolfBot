@@ -35,6 +35,7 @@ src/commands/Music/filter.js
 shopitems.json
 new-modals.js
 old-decrypt.js
+package-lock.json
 
 # Directories
 Templates/
@@ -47,6 +48,6 @@ build/
 Logs/
 Apps/
 Wordlists/
-old-config-files/
+old_config/
 .cache/
 old_builds/
