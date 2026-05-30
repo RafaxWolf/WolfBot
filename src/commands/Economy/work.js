@@ -7,7 +7,7 @@ module.exports = {
   vacRestricted: true,
 async execute (client, message, args){
 
-  let datos = await economia.findOne({ userID: message.author.id })
+  let datos = await economia.findOne({ userID: message.author.id, guildID: message.guild.id })
     if(!datos){
       let datosnuevos = new economia({
           userID: message.author.id,

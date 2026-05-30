@@ -1,27 +1,26 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ActivityType } = require("discord.js")
-const getBasePath = require("../utils/getBasePath");
+
 const chalk = require("chalk")
 const path = require("path")
 const fs = require("fs")
-const { VERIFICATION_CHANNEL } = require("../config")
+
+const getBasePath = require("../utils/getBasePath");
+const { VERIFICATION_CHANNEL } = require("../config");
 
 module.exports = {
   name: 'clientReady',
+  once: true,
   async execute(client) {
 
-
 //* Sistema de Verificación
-
 const filePath = path.join(getBasePath(), "events", "verification_message_id.json"); //* Ruta del archivo JSON donde se guarda el ID del mensaje de verificación
 
 //? Función para crear y enviar el mensaje de verificación
-
 /**
  * Creates, sends the verification message to the specified channel and register the message ID.
  * @param {*} channel Channel where the verification message will be sent.
  */
 async function createVerificationMessage(channel) {
-
   // Crea el botón de verificación
   const row = new ActionRowBuilder()
     .addComponents(
@@ -70,7 +69,7 @@ async function createVerificationMessage(channel) {
 
     if(channel) {
 
-      // Si existe el ID del mensaje de verificación, verifica si el mensaje sigue existiendo
+      //* Si existe el ID del mensaje de verificación, verifica si el mensaje sigue existiendo
       if(verificationMessageID) {
         try{
           const existingMessage = await channel.messages.fetch(verificationMessageID);
@@ -117,15 +116,6 @@ async function createVerificationMessage(channel) {
         { name: "w!help - /help", type: ActivityType.Playing }
       ], status: "dnd"
     });
-
-    /* Deprecated
-    //Votaciones y likes
-    //const poll = require('../poll')
-    //const likes = require('../likes')
-
-    //poll(client)
-    //likes(client)
-    */
     
   },
 };

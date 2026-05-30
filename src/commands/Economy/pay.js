@@ -44,7 +44,8 @@ async execute (client, message, args){
   await economia.findOneAndUpdate({ userID: message.author.id }, {dinero: dinerototal - cantidad})
   await economia.findOneAndUpdate({ userID: user.id }, { dinero: dinerosuyo + cantidad })
 
-  return message.channel.send(`✅ | Le has depositado **${cantidad}** <:wolfcoin:935657063621726208> WolfCoins a **${user}** exitosamente`)
+  message.channel.send(`✅ | Le has pagado **${cantidad}** <:wolfcoin:935657063621726208> WolfCoins a **${user}** exitosamente`)
+  user.send(`✅ | **${message.author}** te ha pagado **${cantidad}** <:wolfcoin:935657063621726208> WolfCoins!`)
 
  }
 

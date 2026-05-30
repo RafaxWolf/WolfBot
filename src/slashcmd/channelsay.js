@@ -5,19 +5,19 @@ module.exports = {
     .setName("chsay")
     .setDescription("Mandar un mensaje a un canal en especifico")
     .addChannelOption(option =>
-         option
-         .setName("channel")
-         .setDescription("Canal donde enviar el mensaje")
-         .setRequired(true)
-         )
+        option
+        .setName("channel")
+        .setDescription("Canal donde enviar el mensaje")
+        .setRequired(true)
+    )
     .addStringOption(option =>
         option
         .setName("message")
         .setDescription("Mensaje a enviar")
         .setRequired(true)
-        )
-        .setContexts(InteractionContextType.Guild)
-        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
+    )
+    .setContexts(InteractionContextType.Guild)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
         
     async run(client, interaction){
       if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) return interaction.reply({ content: 'No eres un moderador!', ephemeral: true })

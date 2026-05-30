@@ -22,8 +22,6 @@ async execute (client, message, args){
   .setThumbnail(song.thumbnail)
   .setDescription(`**Duración**\n\`[${queue.formattedCurrentTime}] ${songProgress} [${song.formattedDuration}]\``)
   .addFields(
-      ////{ name: "Duración", value: `\`[${queue.formattedCurrentTime}/${song.formattedDuration}]\``, inline: true },
-      ////{ name: "Duración", value: `\`[${queue.formattedCurrentTime}] ${songProgress} [${song.formattedDuration}]\``, inline: true },
       { name: "Visitas", value: `**\`[${parseInt(song.views).toLocaleString()}]\`**`, inline: true },
       { name: "Likes | Dislikes", value: `\`[${parseInt(song.likes).toLocaleString()}] | [${parseInt(song.dislikes).toLocaleString()}]\``, inline: true },
       { name: "Volumen", value: `\`${queue.volume}%\``, inline: true },
@@ -39,8 +37,6 @@ async execute (client, message, args){
   setTimeout(() => {
     nowPlay.delete().catch(console.error)
   }, 20000)
-
-  ////message.channel.send(`☑️ | Sonando ahora mismo: **\`${song.name}\`**${song.thumbnail}\nDuración: \`[${queue.formattedCurrentTime} / ${song.formattedDuration}]\`\nPuesta por: ${song.user}`)
 
  }
 

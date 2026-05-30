@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js')
 
 module.exports = {
   name: "economyleaderboard",
-  alias: ["economylb", "elb", "economyLeaderBoard", "eLB", "economyLb", "economyLB", "eLeaderboard", "eLeaderBoard"],
+  alias: ["economylb", "elb"],
 
 async execute (client, message, args){
 

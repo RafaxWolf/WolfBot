@@ -42,10 +42,11 @@ async execute (client, message, args){
   if(dinerototal < cantidad) return message.channel.send("❌ | No puedes pagarle mas <:wolfcoin:935657063621726208> WolfCoins de las que tienes!")
   if(cantidad < '1') return message.channel.send("❌ | La cantidad debe ser mayor a 0!")
 
-  await economia.findOneAndUpdate({ userID: message.author.id }, {dinero: dinerototal - cantidad})
+  await economia.findOneAndUpdate({ userID: message.author.id }, { dinero: dinerototal - cantidad })
   await economia.findOneAndUpdate({ userID: user.id }, { dinero: dinerosuyo + cantidad })
 
-  return message.channel.send(`✅ | Le has depositado **${cantidad}** <:wolfcoin:935657063621726208> WolfCoins a **${user}** exitosamente`)
+  message.channel.send(`✅ | Le has depositado **${cantidad}** <:wolfcoin:935657063621726208> WolfCoins a **${user}** exitosamente`)
+  user.send(`✅ | **${message.author}** te ha transferido **${cantidad}** <:wolfcoin:935657063621726208> WolfCoins!`)
 
  }
 

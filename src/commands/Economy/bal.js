@@ -11,11 +11,10 @@ async execute (client, message, args){
   if(user === client.user) return message.channel.send("[-] No tienes permisos suficientes...") //? Si menciona al bot, no se muestra el balance
   
   let datos = await economia.findOne({ userID: user.id, guildID: message.guild.id }) //* Busca los datos del usuario mencionado o del mismo usuario
-
   if(!datos) { //! Si no tiene datos, se le crean
     message.author.send(`❌ | El usuario ${user} No esta registrado en la base de datos`)
     let datosnuevos = new economia({
-      userID: user,
+      userID: user.id,
       guildID: message.guild.id,
       dinero: 0,
       dinerobanco: 0
