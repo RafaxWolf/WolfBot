@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  # WolfBot Service
+  wolfbot:
+    build: .
+    container_name: wolfbot
+    depends_on:
+      - mongo_db
+
+  # MongoDB Service
+  mongo_db:
+    image: mongo:latest
+    container_name: mongo_db
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
