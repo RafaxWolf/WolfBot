@@ -14,12 +14,12 @@ async execute (client, message, args){
         .setDescription("Para obtener ayuda de un sistema en específico, usa el comando de la siguiente manera: **\`w!help (sistema)\`**")
         .setColor("White")
         .addFields(
-          { name: "Ayuda del sistema de economia", value: "**\`w!help economy (or w!help money)\`**", inline: true },
+          { name: "Ayuda del sistema de economia", value: "**\`w!help economy | w!help money\`**", inline: true },
           { name: "Ayuda del sistema de música", value: "**\`w!help music\`**", inline: true },
-          //{ name: "Ayuda de las recompensas de los niveles de Patreon", value: "**\`w!help Patreon\`**", inline: true },
-          //{ name: "Ayuda del sistema de experiencia", value: "**\`w!help experience (or w!help xp)\`**", inline: true },
-          //{ name: "Ayuda del sistema de Hackeo", value: "**\`w!help hacking\`**", inline: true },
-          //{ name: "Ayuda del casino", value: "**\`w!help casino\`**", inline: true },
+          { name: "Ayuda de las recompensas de los niveles de Patreon", value: "**\`w!help Patreon\`**", inline: true },
+          { name: "Ayuda del sistema de experiencia", value: "**\`w!help experience | w!help xp\`**", inline: true },
+          { name: "Ayuda del sistema de Hackeo", value: "**\`w!help hacking\`**", inline: true },
+          { name: "Ayuda del casino", value: "**\`w!help casino\`**", inline: true },
         )
         .setTimestamp()
 
@@ -50,7 +50,7 @@ async execute (client, message, args){
 
       case 'hacking':
         message.channel.send(`
-        das
+        Work In Progress...
         `)
         break;
 

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline")
+const crypto = require("crypto");
 
 const fse = require("fs-extra");
 const chalk = require("chalk");
@@ -15,6 +16,7 @@ const rl = readline.createInterface({
 
 /**
  * Makes the script wait for a specified amount of milliseconds.
+ * 
  * @param {Number} ms The number of milliseconds to wait.
  * @returns {Promise} A promise that resolves after the specified time.
  */
@@ -24,7 +26,8 @@ function sleep(ms) {
 
 /**
  * Get the ignored files from the .buildignore file
- * @param {string} ignoreFilePath 
+ * 
+ * @param {string} ignoreFilePath The path to the .buildignore file.
  * @returns {object} An instance of the ignore package with the patterns from the .buildignore file.
  */
 function getIgnoredPaths(ignoreFilePath) {
@@ -43,6 +46,7 @@ function getIgnoredPaths(ignoreFilePath) {
 
 /**
  * Recursively lists all files in a directory, excluding those that match the ignore patterns.
+ * 
  * @param {string} srcDir The source directory to list files from.
  * @param {object} ig An instance of the ignore package with the patterns to ignore.
  * @param {string} baseDir The base directory to calculate relative paths (default is the same as srcDir).
@@ -58,6 +62,7 @@ async function listFiles(srcDir, ig, baseDir = srcDir) {
 
         if(ig.ignores(relative)) {
             console.log(chalk.yellowBright(`[!] ${relative} Ignorado.`)); 
+            await sleep(20)
             continue;
         }
 
@@ -69,6 +74,72 @@ async function listFiles(srcDir, ig, baseDir = srcDir) {
         }
     }
     return results;
+}
+
+//* Hash Functions
+
+/**
+ * Calculates a hash based on the contents of the files to be built, as well as their relative paths.
+ * This can be used to determine if a build is necessary by comparing the calculated hash with a previously stored hash.
+ * 
+ * @param {Array} files 
+ * @returns {string} The calculated hash as a hexadecimal string.
+ */
+function hashCalc(files) {
+    const hash = crypto.createHash("sha256")
+
+    for(const file of files) {
+        const fileBuffer = fs.readFileSync(file.src)
+
+        hash.update(file.relative)
+        hash.update(fileBuffer)
+    }
+    
+    //* If the .buildignore file exists, include its contents in the hash calculation to ensure that changes to the ignore patterns also trigger a new build
+    if(fs.existsSync(".buildignore")) {
+        const ignoreFile = fs.readFileSync(".buildignore", "utf8")
+        hash.update(ignoreFile)
+    }
+
+    return hash.digest("hex")
+}
+
+/**
+ * Reads the hash from a specified file path.
+ * If the file does not exist, it returns null.
+ * 
+ * @param {string} hashPath 
+ * @returns {string | null} The hash read from the specified file, or null if the file does not exist.
+ */
+function hashReader(hashPath) {
+    if(!fs.existsSync(hashPath)) return null;
+
+    return fs.readFileSync(hashPath, "utf8").trim()
+}
+
+/**
+ * Writes the provided hash to a specified file path.
+ * If the file does not exist, it will be created.
+ * 
+ * @param {*} hashPath
+ * @param {*} hash 
+ */
+function hashWriter(hashPath, hash) {
+    fs.writeFileSync(hashPath, hash)
+}
+
+//* Build Functions
+
+function writeBuildInfo(dest, buildHash, filesCount) {
+    const buildInfo = {
+        hash: buildHash,
+        files: filesCount,
+        date: new Date().toISOString(),
+
+        nodeVersion: process.version
+    }
+
+    fs.writeFileSync(path.join(dest, "buildinfo.json"), JSON.stringify(buildInfo, null, 2))
 }
 
 /**
@@ -112,22 +183,31 @@ async function backupBuild(buildPath, backupDir){
  * @param {*} src The Source Code Path, the Code that will be Builded.
  * @param {*} dest The Build / Dest Path, where the builded code will be saved.
  */
-async function buildProcess(src, dest) {
+async function buildProcess(src, dest, buildHash) {
     try {
-        for(const file of filesToBuild) {
+        for(const file of src) {
             const destPath = path.join(dest, file.relative)
             await fse.ensureDir(path.dirname(destPath))
             await fse.copy(file.src, destPath)
 
             //! Build Message
             console.log(chalk.greenBright(`[+] ${file.relative} Buildeado en: ${destPath}`)); 
+            await sleep(10)
         }
+
+        hashWriter(path.join(dest, ".buildhash"), buildHash) //! Save the current hash to the .buildhash file in the build directory
+        writeBuildInfo(dest, buildHash, src.length) //! Write the build info to a buildinfo.json file in the build directory
 
         //* Ending message
         console.log()
+        console.log(chalk.cyanBright("[+] Informacion de la Build:"))
+        console.log(chalk.cyanBright(`    - Hash: ${buildHash}`))
+        console.log(chalk.cyanBright(`    - Files: ${src.length}`))
+        console.log()
+        await sleep(300)
         console.log(chalk.blueBright("[+] Build completada con éxito!"))
-        sleep(300)
-        process.exit(0);
+
+        
     } catch (error) {
 
         //! Error Message
@@ -139,37 +219,67 @@ async function buildProcess(src, dest) {
 //! Main function
 (async () => {
 
-    console.clear();
+    console.clear()
 
-    console.log(chalk.blueBright("=========================================="))
-    sleep(1000)
-    console.log(chalk.blueBright("           Node.Js Build Script           "))
-    sleep(1000)
-    console.log(chalk.blueBright("=========================================="))
-    sleep(1000)
+    console.log(chalk.greenBright("=========================================="))
+    await sleep(90)
+    console.log(chalk.greenBright("           Node Build.js Script           "))
+    await sleep(90)
+    console.log(chalk.redBright("           Made By TheHiddenWolf           "))
+    await sleep(90)
+    console.log(chalk.greenBright("=========================================="))
+    await sleep(600)
     console.log()
-    console.log(chalk.greenBright("[+] Iniciando la creación de la build..."))
-    sleep(5000)
-
+    console.log()
+    console.log(chalk.cyanBright("[+] Verificando archivos a buildear..."))
+    await sleep(500)
+    console.log()
+    
     //* Essential Folders
     const src = 'src';
     const dest = 'build';
+    const tempDir = 'temp_build'; // A temporary directory used during the build process to avoid issues with copying files while the build is in progress
     const backupDir = 'old_builds';
-
+    
     //* Ignore System
     const ignorePatterns = getIgnoredPaths(".buildignore"); //! Get ignored paths from .buildignore
-
+    console.log(chalk.cyanBright("[/] Leyendo .buildignore..."))
+    await sleep(500)
+    console.log()
+    
     //* Check if the source directory exists
     if (!fs.existsSync(src)) {
-        console.log(chalk.redBright("[-] El directorio de origen no existe!")); //! Error Message
+        console.error(chalk.redBright("[-] El directorio de origen no existe!")); //! Error Message
         process.exit(1);
     }
 
+    //* List files to be built
     const filesToBuild = await listFiles(src, ignorePatterns);
-    console.log()
-    console.log(chalk.cyanBright(`[+] ${filesToBuild.length} archivos encontrados para buildear.`));
-    console.log()
     
+    //* Calculate the hash of the files to be built
+    const currentHash = hashCalc(filesToBuild);
+
+    const hashFile = path.join(dest, ".buildhash"); //! Path to the file where the hash of the last build is stored
+    const previousHash = hashReader(hashFile); //! Read the previous hash from the file
+
+    if (previousHash && previousHash === currentHash) {
+        console.log()
+        console.log(chalk.greenBright("[+] No se han detectado cambios desde la última build. Proceso de build cancelado."));
+        process.exit(0);
+    }
+
+    await sleep(500)
+
+    console.log()
+    console.log(chalk.cyanBright(`[+] ${filesToBuild.length} archivos encontrados a buildear.`));
+    console.log()
+
+    console.log(chalk.greenBright("[+] Iniciando la creación de la build..."))
+    console.log()
+
+    if(fs.existsSync(tempDir)) {
+        await fse.remove(tempDir) //! Remove the temporary directory if it already exists to ensure a clean build
+    }
 
     //* Create the build directory if it doesn't exist
     if(fs.existsSync(dest)) {
@@ -188,14 +298,22 @@ async function buildProcess(src, dest) {
 
             console.log()
             console.log(chalk.yellowBright("[!] Eliminando build actual..."))
-            await fse.remove(dest)
 
-            await buildProcess(src, dest)
+            await buildProcess(filesToBuild, tempDir, currentHash)
+
+            if(fs.existsSync(dest)) {
+                console.log()
+                console.log(chalk.yellowBright("[!] Reemplazando la build antigua con la nueva..."))
+                await fse.remove(dest) //! Remove the temporary directory used during the build process
+            }
+
+            await fse.move(tempDir, dest) //! Move the temporary build to the final destination
+
             rl.close();
         
         })
     } else {
-        await buildProcess(src, dest)
+        await buildProcess(filesToBuild, dest, currentHash)
         rl.close();
     }
     

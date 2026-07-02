@@ -23,8 +23,6 @@ giverole.js
 uploadfile.js
 testimages.js
 pwned.js
-Dockerfile
-*.dockerignore
 cookies.json
 *-base.js
 *-player-script.js
