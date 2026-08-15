@@ -4,6 +4,8 @@
 !Buttons.txt
 !OldSlots.txt
 !rankup.txt
+
+*.pem
 *.env
 verification_message_id.json
 banners.json

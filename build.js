@@ -200,7 +200,7 @@ async function buildProcess(src, dest, buildHash) {
 
         //* Ending message
         console.log()
-        console.log(chalk.cyanBright("[+] Informacion de la Build:"))
+        console.log(chalk.cyanBright("[+] Information de la Build:"))
         console.log(chalk.cyanBright(`    - Hash: ${buildHash}`))
         console.log(chalk.cyanBright(`    - Files: ${src.length}`))
         console.log()
