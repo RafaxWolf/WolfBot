@@ -11,6 +11,7 @@ execute (client, message, args){
     
   const volume = parseInt(args[0])
   if (isNaN(volume)) return message.channel.send(`🔊 | El volumen actual es: **\`${queue.volume}%\`**`)
+  if (volume < 0) return message.channel.send("❌ | El volumen no puede ser negativo!")
   if (volume >= 101) return message.channel.send("❌ | No se puede poner el volumen a mas de 100!")
   
   queue.setVolume(volume)

@@ -2,14 +2,17 @@ module.exports = {
   name: "previous",
   alias: ["anterior", "prev"],
   inVoiceChannel: true,
-execute (client, message, args){
+async execute (client, message, args){
 
   const queue = client.distube.getQueue(message)
   if(!queue) return message.channel.send("❌ | No hay nada en la cola!")
 
-  queue.previous()
-
-  if(!queue.previous) return message.channel.send("asd")
+  try {
+    await queue.previous()
+    await message.channel.send("☑️ | Volviendo a la canción anterior.")
+  } catch (error) {
+    await message.channel.send("❌ | No hay una canción anterior disponible.")
+  }
 
  }
 

@@ -1,84 +1,48 @@
 const Genius = require('genius-lyrics')
-const { GENIUS_API_KEY } = require("../../config")
+const { GENIUS_API_KEY } = require('../../config')
 const { EmbedBuilder } = require('discord.js')
 
 module.exports = {
-    name: "lyrics",
-    alias: ["letra"],
-  
-  async execute (client, message, args){
-  
-    const genius = new Genius.Client(GENIUS_API_KEY)
+  name: 'lyrics',
+  alias: ['letra'],
 
-    const queue = client.distube.getQueue(message)
-    if (!queue) return message.channel.send("❌ | No hay nada en la cola!")
+  async execute(client, message, args) {
+    const queue = client.distube.getQueue(message.guild)
+    const currentSong = queue?.songs[0]
+    const query = args.join(' ').trim() || currentSong?.name
 
-    const song = queue ? queue.songs[0] : null;
-
-    const lyricsEngine = args[0]?.toLowerCase() || ' '
-    const songName = args.slice(1).join(" ") || (song ? song.name : null)
-
-    if(!songName){
-      return message.channel.send("❌ | No hay ninguna canción en reproducción y tampoco has especificado alguna!")
+    if (!query) {
+      return message.channel.send('❌ | Indica una canción o reproduce una antes de pedir la letra.')
     }
 
-    let lyrics = ''
-    let thumbnail = ''
+    if (!GENIUS_API_KEY) {
+      return message.channel.send('❌ | Falta configurar `GENIUS_API_KEY` para buscar letras.')
+    }
 
-    if(lyricsEngine === 'genius') {
-      try{
-        const searches = await Client.songs.search(`${song.uploader.name} ${songName}`)
+    try {
+      const genius = new Genius.Client(GENIUS_API_KEY)
+      const [result] = await genius.songs.search(query)
 
-        const firstSong = searches[0];
-
-        if(firstSong){
-          console.log("Sobre la canción:\n", firstSong, "\n")
-
-          lyrics = await firstSong.lyrics();
-          thumbnail = firstSong.thumbnail
-        } else {
-          lyrics = 'No se encontraron resultados para la canción especificada!'
-        }
-      } catch (err) {
-        console.error(err)
-        lyrics = '[!] Hubo un error al buscar la letra en Genius!'
+      if (!result) {
+        return message.channel.send('❌ | No se encontraron letras para esa canción.')
       }
-    } else {
-      try{
-        lyrics = await lyricsFinder('', songName) || 'No se encontraron resultados para la canción especificada!'
-      } catch (err) {
-        console.error(err)
-        lyrics = '[!] Hubo un error al buscar la letra!'
-      }
-    }
 
-    if(lyrics.length > 4096){
-      lyrics = lyrics.slice(0, 4093) + '...'
-    }
-
-    const embed = new EmbedBuilder()
-    .setAuthor({ name: "Letra", iconURL: "https://i.imgur.com/SaDhsHb.png" })
-    .setThumbnail(thumbnail || queue?.songs[0].thumbnail || '')
-    .setTitle(`${songName}`)
-    .setURL(song.url)
-    .setDescription(lyrics)
-    .setFooter({ text: `Source: ${lyricsEngine || 'LyricsFinder'}` })
-    .setTimestamp()
-
-    message.channel.send({ embeds: [embed] })
-    
-        /* DEPRECATED
-        const embed = new EmbedBuilder()
-        .setAuthor({ name: "Letra", iconURL: "https://i.imgur.com/SaDhsHb.png" })
-        .setThumbnail(song.thumbnail)
-        .setTitle(`${song.name}`)//\n${song.uploader.name}
-        .setURL(song.url)
-        .setDescription(`${lyrics.split('\n')}`)
-        .setFooter({ text: 'Fuente Genius', iconURL: 'https://i.imgur.com/NwLxeay.png' })
+      const lyrics = await result.lyrics()
+      const embed = new EmbedBuilder()
+        .setColor('Blue')
+        .setAuthor({ name: 'Letra' })
+        .setTitle(result.title || query)
+        .setDescription(lyrics.length > 4096 ? `${lyrics.slice(0, 4093)}...` : lyrics)
+        .setFooter({ text: 'Fuente: Genius' })
         .setTimestamp()
 
-        message.channel.send({ embeds: [embed] })
-        */
-   }
-  
+      if (result.url) embed.setURL(result.url)
+      if (result.thumbnail) embed.setThumbnail(result.thumbnail)
+
+      await message.channel.send({ embeds: [embed] })
+    } catch (error) {
+      console.error('Error al buscar letra:', error)
+      await message.channel.send('❌ | No pude obtener la letra de esa canción.')
+    }
   }
+}

@@ -1,6 +1,3 @@
-const fs = require("fs")
-const getBasePath = require("../utils/getBasePath")
-
 // Discord.js
 const { ActivityType } = require("discord.js")
 
@@ -10,6 +7,10 @@ const { YouTubePlugin } = require("@distube/youtube");
 const { DirectLinkPlugin } = require("@distube/direct-link");
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");
+const { YtDlpPlugin } = require("@distube/yt-dlp");
+
+// Libs
+const fs = require("fs")
 
 // Embeds
 const { normalEmbedBuilder, musicEmbedBuilder } = require("./embedBuilder")
@@ -21,10 +22,10 @@ module.exports = (client) => {
         savePreviousSongs: true,
         nsfw: true,
         plugins: [
-            new YouTubePlugin({ cookies: JSON.parse(fs.readFileSync(getBasePath() + "/cookies.json")) }),
+            new YouTubePlugin(),
             new DirectLinkPlugin(),
             new SpotifyPlugin(),
-            new SoundCloudPlugin()
+            new YtDlpPlugin({ update: true })
         ]
     })
     client.distube = distube
@@ -34,7 +35,7 @@ module.exports = (client) => {
         queue.voice.setSelfDeaf(false)
         const playEmbed = musicEmbedBuilder(client, queue, song, { color: "Red", text: "Reproduciendo ahora", showProgress: true })
         try {
-            queue.textChannel.send({ embeds: [playEmbed] }) //* Envia el embed al canal de texto donde se esta reproduciendo la canción
+            queue.textChannel.send({ embeds: [playEmbed] }) //* Envía el embed al canal de texto donde se esta reproduciendo la canción
             
             //* Muestra en consola que el Bot esta escuchando a la canción
             console.log(`[+] Cambiando presencia a: Escuchando a ${song.name} / ${song.uploader.name}`); 
@@ -58,15 +59,46 @@ module.exports = (client) => {
     })
 
     .on("error", (err, queue, song) => {
-        console.log(`[!] Ocurrió un error${song ? ` con la canción ${song.name}` : ""}: ${err}`)
+        console.log()
+        console.warn(`[!] Ocurrió un error${song ? ` con la canción ${song.name}` : ""}: ${err}`)
+
+        console.error("\n========== DISTUBE ERROR ==========");
+        console.error("Message:", err.message);
+        console.error("Name:", err.name);
+        console.error("Code:", err.code);
+        console.error("Stack:", err.stack);
+        console.error("Cause:", err.cause);
+        console.error("Full error:", err);
+        console.error("===================================");
+
+        const log = `
+==========================
+${new Date().toLocaleString()}
+==========================
+
+Usuario: ${song ? song.user.tag : "N/A"}
+Canción: ${song ? song.name : "N/A"}
+Mensaje de error: ${err}
+
+Stack: ${err.stack || "N/A"}
+Full Error: ${JSON.stringify(err, Object.getOwnPropertyNames(err), 2)}
+
+`
+        fs.appendFileSync("./logs/error.log", log)
+        console.log()
+        console.log(`[!] Se ha registrado el error en ./logs/error.log`)
+        console.log()
+
         try {
             const errorEmbed = normalEmbedBuilder(client, queue.textChannel, { color: "Red", title: "Error", description: `❌ | Ocurrió un error${song ? ` con la canción **${song.name}**` : ""}!\n\`${err}\``})
             queue.textChannel.send({ embeds: [errorEmbed] })
 
         } catch (msgErr) {
-            console.log(err)
-            console.log(msgErr)
+            console.error(err)
+            console.error(msgErr)
         }
+
+        
     })
 
     //* Search
@@ -101,7 +133,7 @@ module.exports = (client) => {
     })
 
     .on("empty", (message) => {
-        message.channel.send("**[-]** El canal de voz se encuentra vacio, saliendo del canal...")
+        message.channel.send("**[-]** El canal de voz se encuentra vació, Saliendo del canal...")
     })
 
     .on("finish", (queue) => {
@@ -114,5 +146,7 @@ module.exports = (client) => {
         console.log("\nDisconnected!")
     })
 
-    .on("ffmpegDebug", console.log)
+    .on("ffmpegDebug", (message) => {
+        console.log(`[FFMPEG Debug]`, message)
+    })
 }

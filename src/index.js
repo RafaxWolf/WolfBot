@@ -21,8 +21,8 @@ const client = new Client({
   ]
 });
 
-//* Configuración de Distube
-require('./functions/musicHandler')(client) //* Archivo de las funciones de musica (Distube)
+//* Configuración de DisTube
+require('./functions/musicHandler')(client)
 
 const { TOKEN } = require('./config') //! Token del bot
 require('./conexion') //* Conexion a la base de datos
@@ -44,8 +44,11 @@ client.on("messageCreate", async (message) => {
 
   var prefix = "w!" //! Prefix del Bot 
  
-  //TODO: Comandos de Creador
   var authPrefix = "wAuth!" //! Prefix para comandos de creador
+
+  if (message.content.startsWith(authPrefix) && message.author.id === "594359919004614670") {
+    message.channel.send("[+] WolfBot Author Commands Working! [+]")
+  }
 
 //!------------------------------------------------------------------Log de la Consola------------------------------------------------------------------
 

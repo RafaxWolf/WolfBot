@@ -7,6 +7,9 @@
 
 *.pem
 *.env
+*.zip
+*.log
+*.rar
 verification_message_id.json
 banners.json
 missions.js

@@ -6,10 +6,10 @@ async execute (client, message, args){
   const queue = client.distube.getQueue(message)
   if (!queue) return message.channel.send("❌ | No hay nada en la cola!")
   try {
-    queue.skip()
-    message.channel.send(`☑️ | Skipeado! Saltando a la canción siguiente...`)
+    await queue.skip()
+    message.channel.send(`☑️ | Saltando a la canción siguiente...`)
   } catch (e) {
-    message.channel.send(`❌ | ${e}`)
+    message.channel.send(`❌ | Ha ocurrido un error al saltar a la siguiente canción:\n${e}`)
   }
 
  }

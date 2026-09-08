@@ -1,12 +1,10 @@
-const { searchResult, searchCancel, searchInvalidAnswer } = require("../../functions/searchHandler")
-
 module.exports = {
   name: "play",
   alias: ["p"],
   inVoiceChannel: true,
 async execute (client, message, args){
   const string = args.join(' ')
-  const queue = client.distube.getQueue(message)
+  const queue = client.distube.getQueue(message.guild)
 
 /*   
   const bannedSongsName = ['Eso Tilin', 'El rap de eso tilin', 'el rap de eso tilin', 'el rap de eso tilin remix', 'El rap de eso tilin remix', 'el rap del tilin', 'El rap del tilin', 'gata only remix', 'Gata Only Remix']
@@ -28,15 +26,15 @@ async execute (client, message, args){
         member: message.member, // Usuario que solicito la canción
         textChannel: message.channel, // Canal de texto donde se ejecuto el comando
         message, // Mensaje
-        skip: true, // Skipea si hay alguna canción sonando
+        skip: false,
       })
 
     } catch (error) {
       console.log(error)
-      message.channel.send(`**[❌ | ¡Ha ocurrido un error! | ❌]**\n${error}`)
+      message.channel.send('❌ | No pude reproducir esa canción. Prueba con otro nombre o enlace.')
     }
 
-  } else if(queue.paused) {
+  } else if(queue?.paused) {
     queue.resume()
     return message.channel.send("▶️ | Reproduciendo la canción!")
   

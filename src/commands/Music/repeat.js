@@ -6,29 +6,28 @@ async execute (client, message, args){
   const queue = client.distube.getQueue(message)
   if (!queue) return message.channel.send("❌ | No hay nada en la cola!")
 
-  let mode = null
+  let mode
   switch (args[0]) {
     case 'off':
       mode = 0
+      break
 
     case 'song':
       mode = 1
+      break
 
     case 'queue':
       mode = 2
+      break
 
     default:
-      message.channel.send("[❌ | Syntax Error | ❌]\nPara poner la canción en bucle usa:\`w!loop song\`\nPara poner la cola en Bucle usa: \`w!loop queue\`\n\nPara detener el Bucle usa: \`w!loop off\`.")
+      return message.channel.send("[❌ | Syntax Error | ❌]\nPara poner la canción en bucle usa: \`w!loop song\`\nPara poner la cola en bucle usa: \`w!loop queue\`\n\nPara detener el bucle usa: \`w!loop off\`.")
   }
 
-  if(!isNaN(mode)) return message.channel.send("[❌ | Syntax Error | ❌]\nPara poner la canción en bucle usa:\`w!loop song\`\nPara poner la cola en Bucle usa: \`w!loop queue\`\n\nPara detener el Bucle usa: \`w!loop off\`.")
-  
   mode = queue.setRepeatMode(mode)
   mode = mode ? (mode === 2 ? 'Loop cola' : 'Loop canción') : 'Desactivado'
-  
-  if(!mode) return message.channel.send("[❌ | Syntax Error | ❌]\nPara poner la canción en bucle usa:\`w!loop song\`\nPara poner la cola en Bucle usa: \`w!loop queue\`\n\nPara detener el Bucle usa: \`w!loop off\`.")
 
-    message.channel.send(`🔁 | Modo loop puesto en: \`${mode}\``)
+  message.channel.send(`🔁 | Modo loop puesto en: \`${mode}\``)
  }
 
 }

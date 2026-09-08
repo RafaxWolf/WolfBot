@@ -41,6 +41,9 @@ function musicEmbedBuilder(client, queue, song, {
     text = "Title",
     showProgress = false
 } ) {
+
+    const requester = song.user
+
     const status = (queue) => 
     ////`Volumen: \`${queue.volume}%\` | Filtro: \`${queue.filters.names.join(', ') || 'Ninguno'}\` | Loop: \`${
     `Volumen: \`${queue.volume}%\` | Loop: \`${(queue.repeatMode === 1 ? 'Activado' : 'Desactivado')}\` | Autoplay: \`${queue.autoplay ? 'Activado' : 'Desactivado'}\``
@@ -49,13 +52,13 @@ function musicEmbedBuilder(client, queue, song, {
     .setColor(color)
     .setAuthor({ name: text, iconURL: `https://upload.wikimedia.org/wikipedia/commons/d/d8/YouTubeMusic_Logo.png` })
     .setThumbnail(song.thumbnail)
-    .setTitle(song.title)
+    .setTitle(song.name)
     .setURL(song.url)
-    .setFooter({ text: `Solicitada por: ${song.username}`, iconURL: song.username.displayAvatarURL()})
+    .setFooter({ text: `Solicitada por: ${requester.username}`, iconURL: requester.displayAvatarURL()})
     if(showProgress){
-        embed.setDescription(`*\`[${song.formattedCurrentTime}]\`* / *\`[${song.duration}]\`* | **\`${song.uploader.name}\`**\n${status(queue)}`)
+        embed.setDescription(`*\`[${queue.formattedCurrentTime}]\`* / *\`[${song.formattedDuration}]\`* | **\`${song.uploader.name}\`**\n${status(queue)}`)
     } else {
-        embed.setDescription(`Duración: **\`${song.duration}\`**\nAutor: **\`${song.uploader.name}\`**`)
+        embed.setDescription(`Duración: **\`${song.formattedDuration}\`**\nAutor: **\`${song.uploader.name}\`**`)
     }
 
     return embed;

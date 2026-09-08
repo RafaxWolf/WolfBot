@@ -1,9 +1,7 @@
-const ms = require('ms')
-
 module.exports = {
   name: "seek",
   alias: [""],
-  inVoiceCHannel: true,
+  inVoiceChannel: true,
 async execute (client, message, args){
 
   const queue = client.distube.getQueue(message)
@@ -13,34 +11,39 @@ async execute (client, message, args){
   }
 
   const time = Number(args[0])
-  if(isNaN(time)) return message.channel.send("❌ | Por favor ingrese un segundo valido!")
+  if(!Number.isFinite(time) || time < 0) return message.channel.send("❌ | Por favor ingrese un segundo valido!")
 
   const secondaryTime = Number(args[2])
 
-    if(args[1] === "minute" && secondaryTime){
+  try {
+    if(args[1] === "minute" && Number.isFinite(secondaryTime)){
       let minuto = time * 60
       let minutoNuevo = minuto + secondaryTime
-      queue.seek(minutoNuevo)
-      message.channel.send(`☑️ | Reproduciendo desde el minuto: \`${time}\` con \`${secondaryTime}\` segundos`)
+      await queue.seek(minutoNuevo)
+      return message.channel.send(`☑️ | Reproduciendo desde el minuto: \`${time}\` con \`${secondaryTime}\` segundos`)
     } else {
 
     if(args[1] === "hour"){
       let hora = time * 3600
-      queue.seek(hora)
-      message.channel.send(`☑️ | Reproduciendo desde la hora: \`${time}\``)
+      await queue.seek(hora)
+      return message.channel.send(`☑️ | Reproduciendo desde la hora: \`${time}\``)
     } else {
 
       if(args[1] === "minute"){
         let minuto = time * 60
-        queue.seek(minuto)
-        message.channel.send(`☑️ | Reproduciendo desde el minuto: \`${time}\``)
+        await queue.seek(minuto)
+        return message.channel.send(`☑️ | Reproduciendo desde el minuto: \`${time}\``)
         } else {
 
-          queue.seek(time)
-          message.channel.send(`☑️ | Reproduciendo desde el segundo: \`${time}\``)
+          await queue.seek(time)
+          return message.channel.send(`☑️ | Reproduciendo desde el segundo: \`${time}\``)
         }
       }
     }
+  } catch (error) {
+    console.error('Error al adelantar la canción:', error)
+    return message.channel.send('❌ | No pude adelantar la canción a ese punto.')
+  }
     
   }
 }
