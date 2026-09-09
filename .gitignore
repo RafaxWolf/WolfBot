@@ -7,7 +7,6 @@
 
 *.pem
 *.env
-*.zip
 *.log
 *.rar
 verification_message_id.json
