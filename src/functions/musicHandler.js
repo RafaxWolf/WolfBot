@@ -22,10 +22,11 @@ module.exports = (client) => {
         savePreviousSongs: true,
         nsfw: true,
         plugins: [
-            new YouTubePlugin(),
+            //new YouTubePlugin(),
             new DirectLinkPlugin(),
             new SpotifyPlugin(),
-            new YtDlpPlugin({ update: true })
+            new SoundCloudPlugin(),
+            new YtDlpPlugin()
         ]
     })
     client.distube = distube

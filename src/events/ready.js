@@ -13,7 +13,7 @@ module.exports = {
   async execute(client) {
 
 //* Sistema de Verificación
-const filePath = path.join(getBasePath(), "events", "verification_id.json"); //* Ruta del archivo JSON donde se guarda el ID del mensaje de verificación
+const filePath = path.join(getBasePath(), "events", "verification_message_id.json"); //* Ruta del archivo JSON donde se guarda el ID del mensaje de verificación
 const channel = client.channels.cache.get(VERIFICATION_CHANNEL)
 
 // Crea el botón de verificación
