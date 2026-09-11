@@ -1,4 +1,13 @@
+# Folders
 node_modules
+fixed_modules
+old_config
+old_builds
+build
 Logs
 Documents
-old_builds
+
+# Files
+LICENSE
+.gitignore
+.env.template

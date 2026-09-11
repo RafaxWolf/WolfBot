@@ -23,13 +23,12 @@ function normalEmbedBuilder(client, message, {
     if(showFooter) {
         embed.setFooter({ text: `${message.author.username}`, iconURL: message.author.displayAvatarURL() })
     }
-        
-        
+
     return embed;
 }
 
 /**
- * 
+ * Creador de los Embeds para el sistema de Musica
  * @param {any | null} client Cliente del bot.
  * @param {*} queue Cola de reproducción actual.
  * @param {*} song Cancion actual / por reproducir.
@@ -41,13 +40,12 @@ function musicEmbedBuilder(client, queue, song, {
     text = "Title",
     showProgress = false
 } ) {
-
-    const requester = song.user
-
+    
     const status = (queue) => 
-    ////`Volumen: \`${queue.volume}%\` | Filtro: \`${queue.filters.names.join(', ') || 'Ninguno'}\` | Loop: \`${
-    `Volumen: \`${queue.volume}%\` | Loop: \`${(queue.repeatMode === 1 ? 'Activado' : 'Desactivado')}\` | Autoplay: \`${queue.autoplay ? 'Activado' : 'Desactivado'}\``
-
+        `Volumen: \`${queue.volume}%\` | Loop: \`${(queue.repeatMode === 1 ? 'Activado' : 'Desactivado')}\` | Autoplay: \`${queue.autoplay ? 'Activado' : 'Desactivado'}\``
+    
+    const requester = song.user
+    
     const embed = new EmbedBuilder()
     .setColor(color)
     .setAuthor({ name: text, iconURL: `https://upload.wikimedia.org/wikipedia/commons/d/d8/YouTubeMusic_Logo.png` })
@@ -64,4 +62,25 @@ function musicEmbedBuilder(client, queue, song, {
     return embed;
 }
 
-module.exports = { normalEmbedBuilder, musicEmbedBuilder }
+/**
+ * Creador del Embed de Verificacion
+ * @param {*} client Cliente de lBot
+ * @param {*} termsChannel Canal de los Terminos / Reglas
+ * @param {object} param2 Opciones personalizadas
+ * @returns Embed de Verificacion
+ */
+function verificationEmbedBuilder(client, termsChannel, {
+    authorText = "The Hidden Wolfs",
+    authorIcon = "https://i.imgur.com/xTNwaQR.png",
+}) {
+    const embed = new EmbedBuilder() //* Embed de verificación
+    .setAuthor({ name: authorText, iconURL: authorIcon })
+    .setTitle("Verificación")
+    .setDescription(`Para verificarte debes pulsar el botón de abajo.\nRecuerda leer las <#${termsChannel}> del servidor.`)
+    .setColor("Grey")
+    .setFooter({ text: "(Si no puedes verificarte abre un ticket con moderación para poder verificarte)", iconURL: client.user.displayAvatarURL() })
+
+    return embed;
+}
+
+module.exports = { normalEmbedBuilder, musicEmbedBuilder, verificationEmbedBuilder }

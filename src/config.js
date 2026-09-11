@@ -1,5 +1,5 @@
 const chalk = require("chalk");
-require("dotenv").config();
+require("dotenv").config({ quiet: true });
 
 let { TOKEN, CLIENTID, GUILD, VERIFICATION_CHANNEL, MONGODB_USER, MONGODB_PASSWD, GENIUS_API_KEY, TERMS_CHANNEL } = process.env;
 

@@ -23,7 +23,8 @@ setServers(["1.1.1.1", "8.8.8.8"])
 
 mongoose.connect(
   `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWD}@cluster0.vrs4i.mongodb.net/Database?retryWrites=true&w=majority`,
-)
-.then(db => console.log(
-  "Conectado a " + chalk.greenBright("MongoDB")
-)).catch(err => console.log(err))
+).then(db => {
+  console.log("Conectado a " + chalk.greenBright("MongoDB"))
+  console.log("Base de Datos: " + chalk.greenBright(db.connection.name))
+}
+).catch(err => console.error(chalk.red("[!] Ha ocurrido un error al intentar conectarse a la Base de Datos:\n" + err)))
