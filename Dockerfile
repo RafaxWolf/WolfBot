@@ -1,23 +1,19 @@
-FROM node:26-slim
+FROM node:26-bookworm-slim
 
 # Instala FFMPEG para el correcto funcionamiento de DisTube
-RUN apt-get update && apt-get install -y ffmpeg
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential ffmpeg python3 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Carpeta donde estara el Bot
 WORKDIR /app
 
 # Copia e Instala las dependencias
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
-# Copia todo el Source Code
-COPY . .
+# Copia la Ultima Build
+COPY ./build .
 
-RUN useradd -m wolfbot
-USER wolfbot
-
-# Buildea el bot
-RUN npm run build
-
-#Ejecuta el Bot
+# Ejecuta el Bot
 CMD ["npm", "start"]

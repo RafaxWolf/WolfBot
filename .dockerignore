@@ -10,4 +10,5 @@ Documents
 # Files
 LICENSE
 .gitignore
+.env
 .env.template

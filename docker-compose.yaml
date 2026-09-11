@@ -3,12 +3,19 @@ services:
   mongo_db:
     image: mongo:latest
     container_name: mongo_db
+    restart: unless-stopped
     ports:
       - 27017:27017
     volumes:
       - mongo_data:/data/db
     networks:
       - wolfbot_network
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval \"db.adminCommand('ping').ok ? quit(0) : quit(1)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     
   # WolfBot Service
   wolfbot-backend:
@@ -16,7 +23,8 @@ services:
       context: .
     container_name: wolfbot-backend
     depends_on:
-      - mongo_db
+      mongo_db:
+        condition: service_healthy
     networks:
       - wolfbot_network
 

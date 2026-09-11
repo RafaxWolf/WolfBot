@@ -207,7 +207,7 @@ async function buildProcess(src, dest, buildHash) {
         await sleep(300)
         console.log(chalk.blueBright("[+] Build completada con éxito!"))
 
-        
+        process.exit(0)
     } catch (error) {
 
         //! Error Message
