@@ -46,7 +46,7 @@ module.exports = {
         return createVerificationMessage(client, channel, TERMS_CHANNEL, filePath)
       }
       
-      const existingMessage = await channel.messages.fetch(verificationMessageID) || null;
+      const existingMessage = await channel.messages.fetch(verificationMessageID);
       
       //* Si el mensaje no existe, lo crea de nuevo y elimina el ID del mensaje anterior del archivo JSON
       if(!existingMessage) {
