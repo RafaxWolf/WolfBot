@@ -6,9 +6,15 @@ old_builds
 build
 Logs
 Documents
+.git
+.vscode
 
 # Files
-LICENSE
+*.rar
+*.zip
+*.pem
 .gitignore
-.env
 .env.template
+LICENSE
+readme.md
+nodemon.json

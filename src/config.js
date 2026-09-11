@@ -1,9 +1,9 @@
-const chalk = require("chalk");
 require("dotenv").config({ quiet: true });
+const chalk = require("chalk");
 
 let { TOKEN, CLIENTID, GUILD, VERIFICATION_CHANNEL, MONGODB_URI, MONGODB_USER, MONGODB_PASSWD, GENIUS_API_KEY, TERMS_CHANNEL } = process.env;
 
-//* Validación de credenciales de Discord
+//* Validación de credenciales de Discord 
 if (!TOKEN || !CLIENTID) {
     console.error(chalk.red("❌ | Error: Token o Client ID Faltantes.\nPor favor, revisa tu archivo '.env' y asegúrate de que las variables 'TOKEN' y 'CLIENTID' estén definidas.\n"));
     process.exit(1);
@@ -21,7 +21,7 @@ if (!TERMS_CHANNEL) {
     console.warn(chalk.yellow("⚠️ | La variable TERMS_CHANNEL no está definida en el archivo .env. Se utilizará el valor predeterminado: 936741059642413107"));
 }
 
-if (!MONGO_URI){
+if (!MONGODB_URI){
     MONGODB_URI = "mongodb://mongo_db:27017/Database"
 }
 

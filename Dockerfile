@@ -12,8 +12,12 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-# Copia la Ultima Build
-COPY ./build .
+# Copia el codigo al Contenedor
+COPY . .
 
-# Ejecuta el Bot
+# Buildea el Source Code y luego lo elimina junto al builder
+RUN npm run build
+RUN rm -rf ./src ./build.js ./.buildignore
+
+# Ejecuta el Bot desde la Build
 CMD ["npm", "start"]

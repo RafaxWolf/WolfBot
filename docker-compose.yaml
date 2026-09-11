@@ -1,7 +1,7 @@
 services:
   # MongoDB Service
   mongo_db:
-    image: mongo:latest
+    image: mongo:8
     container_name: mongo_db
     restart: unless-stopped
     ports:

@@ -9,10 +9,18 @@ const chalk = require("chalk");
 const ignore = require("ignore");
 const { ZipArchive } = require("archiver");
 
+/* const timestamp = new Date().toISOString()
+.replace(/[:.]/g, "-"); */
+
+const date = new Date()
+const timestamp = date.toLocaleString('en-CA', { hour12: false }).replace(',', '')
+const backupTimestamp = timestamp.replace(/[:.]/g, "-")
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
+
 
 /**
  * Makes the script wait for a specified amount of milliseconds.
@@ -134,7 +142,7 @@ function writeBuildInfo(dest, buildHash, filesCount) {
     const buildInfo = {
         hash: buildHash,
         files: filesCount,
-        date: new Date().toISOString(),
+        date: timestamp,
 
         nodeVersion: process.version
     }
@@ -151,9 +159,7 @@ function writeBuildInfo(dest, buildHash, filesCount) {
 async function backupBuild(buildPath, backupDir){
     if(!fs.existsSync(buildPath)) return; // If the backup directory doesn't exist, skip the backup process
     await fse.ensureDir(backupDir) // Ensure the backup directory exists
-
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-"); // Create a timestamp for the backup file
-    const backupPath = path.join(backupDir, `build-${timestamp}.zip`); // Define the backup file path
+    const backupPath = path.join(backupDir, `build-${backupTimestamp}.zip`); // Define the backup file path
 
     // Create a zip archive of the existing build
     return new Promise((resolve, reject) => {
@@ -203,11 +209,11 @@ async function buildProcess(src, dest, buildHash) {
         console.log(chalk.cyanBright("[+] Information de la Build:"))
         console.log(chalk.cyanBright(`    - Hash: ${buildHash}`))
         console.log(chalk.cyanBright(`    - Files: ${src.length}`))
+        console.log(chalk.cyanBright(`    - Date: ${timestamp}`))
         console.log()
+
         await sleep(300)
         console.log(chalk.blueBright("[+] Build completada con éxito!"))
-
-        process.exit(0)
     } catch (error) {
 
         //! Error Message
@@ -223,9 +229,9 @@ async function buildProcess(src, dest, buildHash) {
 
     console.log(chalk.greenBright("=========================================="))
     await sleep(90)
-    console.log(chalk.greenBright("           Node Build.js Script           "))
+    console.log(chalk.greenBright("           Node ") + chalk.reset("Build.js Script           "))
     await sleep(90)
-    console.log(chalk.redBright("           Made By TheHiddenWolf           "))
+    console.log("           Made By " + chalk.redBright( "TheHiddenWolf           "))
     await sleep(90)
     console.log(chalk.greenBright("=========================================="))
     await sleep(600)

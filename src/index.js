@@ -5,6 +5,7 @@ const chalk = require("chalk");
 
 //* Discord.js
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { TOKEN } = require('./config') //! Token del bot
 
 //* Schemas
 const economy = require('./Schema/economia-schema')
@@ -24,16 +25,14 @@ const client = new Client({
 //* Configuración de DisTube
 require('./functions/musicHandler')(client)
 
-const { TOKEN } = require('./config') //! Token del bot
 require('./conexion') //* Conexion a la base de datos
 
 // TODO: 
-//const vacRole = "862051677720936448" //Rol de VAC Baneado
+//const vacRole = "862051677720936448"
 
 //* Functions
 const commandHandler = require("./functions/commandsHandler") //* Archivo de las funciones de los Prefix Commands
 const slashCommandHandler = require("./functions/slashCommandsHandler"); //* Archivo de las funciones de los Slash Commands
-const { match } = require('minimatch');
 
 client.commands = commandHandler //* Handler de los Prefix Commands
 client.slashCommands = slashCommandHandler //* Handler de los Slash Commands
