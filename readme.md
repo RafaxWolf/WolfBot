@@ -9,24 +9,17 @@ hecho casi un 100% en JavaScript, hecho por las ansias de aprender.
 
 ## Instalación
 
-```txt
-RECOMENDADO:
-Usar el código de los archivos .js y Modificarlos a tu gusto
-```
-
-```txt
-NO RECOMENDADO:
-Clonar todo el repositorio y nada mas incorporar lo necesario para hacer al bot funcionar
-```
+Este bot requiere tener instalado NodeJS para su Funcionamiento.
 
 ```bash
     git clone https://github.com/RafaxWolf/WolfBot
     cd Wolfbot/
 
-    npm install # Instala los paquetes necesarios para el funcionamiento del Bot
+    # Instalar los paquetes necesarios para el funcionamiento del Bot
+    npm install
+    # O usar PNPM (pnpm install)
 
     # ============== .env ============= #
-    < Crear archivo .env y editarlo >
     CLIENTID = <Bot ID> # ID del bot (para el funcionamiento de algunas funciones)
     GUILDID = <Server ID> # ID del servidor principal para el bot (para el funcionamiento de algunas funciones)
     VERIFICATION_CHANNEL = <Verification Channel ID> # Solo si se utiliza el sistema de verificacion (/src/events/ready.js)
