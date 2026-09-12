@@ -7,13 +7,14 @@ const { YouTubePlugin } = require("@distube/youtube");
 const { DirectLinkPlugin } = require("@distube/direct-link");
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");
+const { FilePlugin } = require("@distube/file");
 const { YtDlpPlugin } = require("@distube/yt-dlp");
 
 // Libs
 const fs = require("fs")
 
 // Embeds
-const { normalEmbedBuilder, musicEmbedBuilder } = require("./embedBuilder")
+const { normalEmbedBuilder, musicEmbedBuilder } = require("./embedBuilder");
 
 module.exports = (client) => {
     const distube = new DisTube(client, {
@@ -23,6 +24,7 @@ module.exports = (client) => {
         nsfw: true,
         plugins: [
             //new YouTubePlugin(),
+            new FilePlugin(),
             new DirectLinkPlugin(),
             new SpotifyPlugin(),
             new SoundCloudPlugin(),

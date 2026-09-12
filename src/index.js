@@ -25,7 +25,7 @@ const client = new Client({
 //* Configuración de DisTube
 require('./functions/musicHandler')(client)
 
-require('./conexion') //* Conexion a la base de datos
+require('./conexion-atlas') //* Conexion a la base de datos
 
 // TODO: 
 //const vacRole = "862051677720936448"

@@ -1,7 +1,15 @@
 /*
- * Conexión anterior a MongoDB Atlas. Este archivo se conserva como referencia;
- * el bot usa ahora conexion.js para conectar con el servicio local de Docker.
- */
+  *  ╔═════════════════════════════════════════════════════════════════════════════════════════╗
+  *  ║                   Conexión a la base de datos en MongoDB Atlas                          ║
+  *  ╠═════════════════════════════════════════════════════════════════════════════════════════╣
+  *  ║                                                                                         ║
+  *  ║ Para poder usar la base de datos,                                                       ║
+  *  ║ debes especificar en el archivo .env las siguientes variables:                          ║
+  *  ║ MONGODB_USER: Usuario de la base de datos                                               ║
+  *  ║ MONGODB_PASSWD: Contraseña de la base de datos                                          ║
+  *  ║                                                                                         ║
+  *  ╚═════════════════════════════════════════════════════════════════════════════════════════╝
+*/
 const mongoose = require("mongoose")
 const chalk = require("chalk")
 const { setServers } = require("dns/promises")
