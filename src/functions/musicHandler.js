@@ -24,7 +24,6 @@ module.exports = (client) => {
         nsfw: true,
         plugins: [
             //new YouTubePlugin(),
-            new FilePlugin(),
             new DirectLinkPlugin(),
             new SpotifyPlugin(),
             new SoundCloudPlugin(),
@@ -65,7 +64,7 @@ module.exports = (client) => {
         console.log()
         console.warn(`[!] Ocurrió un error${song ? ` con la canción ${song.name}` : ""}: ${err}`)
 
-        console.error("\n========== DISTUBE ERROR ==========");
+        console.error("\n========== DisTube Error ==========");
         console.error("Message:", err.message);
         console.error("Name:", err.name);
         console.error("Code:", err.code);
@@ -75,9 +74,11 @@ module.exports = (client) => {
         console.error("===================================");
 
         const log = `
-==========================
+=============================
 ${new Date().toLocaleString()}
-==========================
+=============================
+
+------- DisTube Error -------
 
 Usuario: ${song ? song.user.tag : "N/A"}
 Canción: ${song ? song.name : "N/A"}
@@ -88,12 +89,14 @@ Full Error: ${JSON.stringify(err, Object.getOwnPropertyNames(err), 2)}
 
 `
         fs.appendFileSync("./logs/error.log", log)
-        console.log()
-        console.log(`[!] Se ha registrado el error en ./logs/error.log`)
-        console.log()
+        console.log(`\n[!] Se ha registrado el error en ./logs/error.log\n`)
 
         try {
-            const errorEmbed = normalEmbedBuilder(client, queue.textChannel, { color: "Red", title: "Error", description: `❌ | Ocurrió un error${song ? ` con la canción **${song.name}**` : ""}!\n\`${err}\``})
+            const errorEmbed = normalEmbedBuilder(client, queue.textChannel, { 
+                color: "Red", 
+                title: "Error", 
+                description: `❌ | Ocurrió un error ${song ? `con la canción **${song.name}**` : ""}!\n\`${err}\``
+            })
             queue.textChannel.send({ embeds: [errorEmbed] })
 
         } catch (msgErr) {
@@ -136,7 +139,7 @@ Full Error: ${JSON.stringify(err, Object.getOwnPropertyNames(err), 2)}
     })
 
     .on("empty", (message) => {
-        message.channel.send("**[-]** El canal de voz se encuentra vació, Saliendo del canal...")
+        message.channel.send("**[!]** El canal de voz se encuentra vació, Saliendo del canal...")
     })
 
     .on("finish", (queue) => {
@@ -150,6 +153,6 @@ Full Error: ${JSON.stringify(err, Object.getOwnPropertyNames(err), 2)}
     })
 
     .on("ffmpegDebug", (message) => {
-        console.log(`[FFMPEG Debug]`, message)
+        console.log(`[FFMPEG Debug] `, message)
     })
 }
