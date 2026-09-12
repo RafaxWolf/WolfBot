@@ -20,4 +20,4 @@ RUN npm run build
 RUN rm -rf ./src ./build.js ./.buildignore
 
 # Ejecuta el Bot desde la Build
-CMD ["npm", "start"]
+ENTRYPOINT ["npm", "start"]
